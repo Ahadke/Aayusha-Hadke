@@ -289,12 +289,12 @@
   [data-theme="light"] .header-name {
     color: #0a0a0a;
   }
-  /* Logo tint = light accent burgundy (#4a0520); hover lifts brightness + accent glow */
+  /* Logo tint = maroon #4a0520 (moderate saturate — avoids blood-red on mobile) */
   [data-theme="light"] .logo-img {
-    filter: brightness(0) saturate(100%) invert(13%) sepia(46%) saturate(3644%) hue-rotate(307deg) brightness(93%) contrast(101%);
+    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(90%) contrast(102%);
   }
   [data-theme="light"] .header-left:hover .logo-img {
-    filter: brightness(0) saturate(100%) invert(13%) sepia(46%) saturate(3644%) hue-rotate(307deg) brightness(104%) contrast(101%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.48));
+    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(98%) contrast(102%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.42));
   }
   [data-theme="light"] .btn-resume {
     color: #14040c;
@@ -648,6 +648,13 @@
     border: 1px solid rgba(249,168,212,0.2);
   }
   [data-theme="light"] .research-tags span { background: rgba(74,5,32,0.08); color: #4a0520; border-color: rgba(74,5,32,0.2); }
+  [data-theme="light"] .research-status {
+    color: #4a0520;
+  }
+  [data-theme="light"] .research-status::before {
+    background: #4a0520;
+    box-shadow: 0 0 8px rgba(74, 5, 32, 0.5);
+  }
 
   /* CERTIFICATIONS */
   #certifications { align-items: flex-start; padding: 80px 48px; }
@@ -2546,12 +2553,12 @@
   .wave-emoji { font-size: 64px; }
   .sticker-main { width: 140px; }
 
-  /* Light theme logo — maroon #4a0520 (mobile Safari can wash out desktop filter) */
+  /* Light theme logo — maroon #4a0520 on phone (same tuned filter as desktop) */
   [data-theme="light"] .logo-img {
-    filter: brightness(0) saturate(100%) invert(13%) sepia(46%) saturate(3644%) hue-rotate(307deg) brightness(93%) contrast(101%) !important;
+    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(90%) contrast(102%) !important;
   }
   [data-theme="light"] .header-left:hover .logo-img {
-    filter: brightness(0) saturate(100%) invert(13%) sepia(46%) saturate(3644%) hue-rotate(307deg) brightness(104%) contrast(101%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.48)) !important;
+    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(98%) contrast(102%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.42)) !important;
   }
 
   /* Carousel card sizes — mobile: fit track between arrows (no +2cm overflow) */
@@ -2694,7 +2701,7 @@
     <span class="header-name">aayusha hadke</span>
   </a>
   <div class="header-right">
-    <a href="#" class="btn-resume hoverable">Resume</a>
+    <a href="https://drive.google.com/drive/folders/1qmBTKeEuFF8iw8AXRMWLACPgqOxTF0Rr?usp=drive_link" class="btn-resume hoverable" target="_blank" rel="noopener noreferrer">Resume</a>
     <a href="https://www.linkedin.com/in/aayusha-hadke/" target="_blank" rel="noopener noreferrer" class="icon-link icon-link--linkedin hoverable" aria-label="LinkedIn profile">
       <svg viewBox="0 0 24 24" width="22" height="22"><path class="linkedin-svg" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle class="linkedin-svg" cx="4" cy="4" r="2"/></svg>
     </a>
@@ -2775,7 +2782,7 @@
             <span>Located in San Francisco, California</span>
           </div>
           <div class="home-card hoverable">
-            <p class="home-card-bio">I'm a Computer Science graduate student at UC Davis passionate about AI and machine learning. My research focuses on deep learning, computer vision, CNNs, and transformer-based architectures. On the applied side, I build LLM-powered applications, RAG systems, and AI agents — designing intelligent workflows that work in production. I'm also expanding into data science, and across all my work I focus on building AI that is practical, scalable, and built for real-world impact.</p>
+            <p class="home-card-bio">I'm a Computer Science graduate student at Univeristy of California, Davis passionate about AI and machine learning. My research focuses on deep learning, computer vision, CNNs, and transformer-based architectures. On the applied side, I build LLM-powered applications, RAG systems, and AI agents — designing intelligent workflows that work in production. I'm also expanding into data science, and across all my work I focus on building AI that is practical, scalable, and built for real-world impact.</p>
           </div>
         </div>
       </div>
