@@ -96,7 +96,6 @@
     font-family: 'Nunito', sans-serif;
     background: var(--bg-1);
     color: var(--text-primary);
-    cursor: none;
     transition: background 0.4s ease, color 0.4s ease;
     overflow-x: hidden;
   }
@@ -116,51 +115,6 @@
   [data-theme="dark"] body { background: #000 !important; }
 
 
-
-  /* CURSOR */
-  #cursor-dot,
-  #cursor-ring {
-    opacity: 1;
-    transition: opacity 0.15s ease;
-  }
-  #cursor-dot {
-    width: 8px; height: 8px;
-    background: var(--accent-3);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, background 0.2s;
-  }
-  #cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid var(--accent-2);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    display: flex; align-items: center; justify-content: center;
-    transition: width 0.2s ease, height 0.2s ease, border-color 0.2s, background 0.2s;
-  }
-  #cursor-ring.hovering {
-    width: 36px; height: 36px;
-    border-color: var(--accent-2);
-    background: none;
-  }
-  [data-theme="dark"] #cursor-dot {
-    background: #f9a8d4;
-  }
-  [data-theme="dark"] #cursor-ring,
-  [data-theme="dark"] #cursor-ring.hovering {
-    border-color: rgba(249, 168, 212, 0.92);
-  }
-  [data-theme="dark"] #cursor-ring svg {
-    stroke: #f9a8d4 !important;
-  }
-  #cursor-ring .mag-icon { display: none; }
-  #cursor-ring.hovering .mag-icon { display: none; }
 
   /* HEADER */
   header {
@@ -214,7 +168,7 @@
     background: rgba(249, 168, 212, 0.1);
     border: 1.5px solid rgba(236, 72, 153, 0.65);
     border-radius: 999px;
-    padding: 8px 22px; cursor: none;
+    padding: 8px 22px; cursor: pointer;
     text-decoration: none;
     transition: box-shadow 0.3s, transform 0.2s, background 0.3s, border-color 0.3s, color 0.3s;
   }
@@ -228,7 +182,7 @@
   .icon-link {
     color: var(--text-muted);
     display: flex; align-items: center;
-    text-decoration: none; cursor: none;
+    text-decoration: none; cursor: pointer;
     transition: color 0.3s, filter 0.3s;
   }
   .icon-link:hover { color: var(--accent-2); filter: drop-shadow(0 0 6px var(--accent-2)); }
@@ -243,7 +197,7 @@
     border: 1px solid rgba(255,255,255,0.14);
     border-radius: 999px;
     position: relative;
-    cursor: none;
+    cursor: pointer;
     display: flex; align-items: center;
     padding: 0 6px;
     justify-content: space-between;
@@ -366,7 +320,7 @@
     display: flex; align-items: center; justify-content: center;
     border-radius: 10px;
     color: rgba(200, 200, 200, 0.75);
-    text-decoration: none; cursor: none;
+    text-decoration: none; cursor: pointer;
     transition: color 0.25s cubic-bezier(0.34,1.56,0.64,1),
                 background 0.25s cubic-bezier(0.34,1.56,0.64,1);
   }
@@ -1071,13 +1025,14 @@
     border-radius: 999px;
     padding: 12px 28px;
     color: #f9a8d4; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 15px;
-    cursor: none; display: flex; align-items: center; gap: 8px;
+    cursor: pointer; display: flex; align-items: center; gap: 8px;
     transition: box-shadow 0.3s, transform 0.2s, background 0.4s, color 0.3s;
     white-space: nowrap;
   }
   .btn-send:hover:not(:disabled) { background: rgba(249,168,212,0.3); box-shadow: 0 0 20px rgba(249,168,212,0.4); transform: scale(1.03); color: #fff; }
   .btn-send.sent { background: rgba(30,200,100,0.15); border-color: rgba(30,200,100,0.4); color: #4ade80; }
   .btn-send:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+  .btn-send.sent:disabled { opacity: 1; }
   [data-theme="light"] .btn-send {
     background: var(--glass-bg-light);
     border-color: rgba(0, 0, 0, 0.55);
@@ -1429,13 +1384,8 @@
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
   }
   #projects { align-items: flex-start; padding: 80px 48px; }
-  /* Hide system cursor on cards only; custom dot/ring still visible elsewhere in #projects */
   #projects .proj-card,
   #projects .proj-card * {
-    cursor: none !important;
-  }
-  #projects .proj-arrow,
-  #projects .proj-filter {
     cursor: none !important;
   }
   .projects-wrap { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 32px; }
@@ -1450,7 +1400,7 @@
   .proj-filters { display: flex; gap: 10px; flex-wrap: wrap; }
   .proj-filter {
     font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
-    padding: 8px 20px; border-radius: 999px; cursor: none;
+    padding: 8px 20px; border-radius: 999px; cursor: pointer;
     border: none; position: relative;
     background: transparent; color: #000;
     transition: all 0.25s ease;
@@ -1477,7 +1427,7 @@
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(10px);
     border: 1.5px solid rgba(178,79,255,0.4);
-    color: var(--accent-2); font-size: 22px; cursor: none;
+    color: var(--accent-2); font-size: 22px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.25s, box-shadow 0.25s, color 0.25s;
     z-index: 10;
@@ -1601,12 +1551,13 @@
     border: 1px solid rgba(255,255,255,0.2);
   }
 
-  /* CARD BOTTOM — title, description, tags, then hackathon + link row */
+  /* CARD BOTTOM — title, description, hackathon note, tags + link row */
   .proj-info {
-    padding: 11px 40px 38px 16px;
-    display: flex; flex-direction: column; gap: 4px;
+    padding: 11px 16px 11px 16px;
+    display: flex; flex-direction: column; gap: 2px;
     position: relative; flex: 1; min-height: 0; overflow: hidden;
     background: transparent;
+    line-height: 1.35;
   }
   .proj-card-footer {
     margin-top: auto;
@@ -1614,31 +1565,36 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-end;
-    gap: 4px;
+    gap: 2px;
     flex-shrink: 0;
     padding-top: 0;
   }
-  .proj-card-footer .proj-tags {
+  .proj-card-footer:has(.proj-card-note:not(:empty)) {
+    gap: 10px;
+  }
+  .proj-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
     width: 100%;
+    min-height: 26px;
+  }
+  .proj-card-actions .proj-tags {
+    flex: 1;
     min-width: 0;
-  }
-  .proj-card-bottom {
-    width: 100%;
-    min-height: 0;
-    overflow: visible;
-    padding-right: 4px;
-  }
-  /* No note row — still expose link for absolute bottom-right positioning */
-  .proj-card-bottom:not(:has(.proj-card-note)) {
-    display: contents;
+    align-content: center;
   }
   /* Browsers clamp tiny font-size; inner span + scale(0.5) halves rendered size */
   .proj-card-note {
-    margin: 0;
+    margin: 0 0 6px;
     flex: 0 0 auto;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
     align-self: stretch;
+  }
+  .proj-card-footer:has(.proj-card-note:not(:empty)) .proj-card-actions {
+    margin-top: 2px;
   }
   .proj-card-note-text {
     display: block;
@@ -1647,7 +1603,7 @@
     font-size: calc(7px + 10pt);
     font-weight: 600;
     color: var(--text-muted);
-    line-height: 1.15;
+    line-height: 1.05;
     letter-spacing: 0.02em;
     text-align: left;
     white-space: normal;
@@ -1666,14 +1622,15 @@
   }
   .proj-title {
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: calc(13px + 3pt);
-    line-height: 1.18;
+    line-height: 1.1;
     color: var(--accent-2);
     text-align: left;
   }
-  /* Override section p { text-align: center; max-width: 400px } */
+  /* Override section p { text-align: center; max-width: 400px; line-height: 1.6 } */
   #projects .proj-info .proj-desc {
     font-family: 'Nunito', sans-serif;
     color: var(--text-muted);
+    line-height: 1.35;
     max-width: none;
     width: 100%;
     margin: 0;
@@ -1692,16 +1649,13 @@
   .proj-tags { display: flex; gap: 5px 6px; flex-wrap: wrap; }
   .proj-tags span {
     font-family: 'Nunito', sans-serif; font-size: 8px; font-weight: 700;
-    padding: 3px 8px; border-radius: 999px;
+    padding: 2px 8px; border-radius: 999px;
     background: rgba(178,79,255,0.12); color: var(--accent-2);
     border: 1px solid rgba(178,79,255,0.25);
-    line-height: 1.15;
+    line-height: 1;
   }
   .proj-github {
-    position: absolute;
-    right: 16px;
-    bottom: 11px;
-    z-index: 4;
+    position: static;
     flex-shrink: 0;
     width: 26px; height: 26px;
     display: flex; align-items: center; justify-content: center;
@@ -2244,19 +2198,6 @@
   }
 /*    RESPONSIVE — TABLET (≤900px) & MOBILE (≤600px) */
 
-/* Disable custom cursor on touch devices */
-@media (hover: none) and (pointer: coarse) {
-  body { cursor: auto !important; }
-  #cursor-dot, #cursor-ring { display: none !important; }
-  a, button, [role="button"], .sidebar-item,
-  .btn-resume, .btn-send, .proj-filter,
-  .cert-arrow, .proj-arrow, .theme-toggle { cursor: pointer !important; }
-  #projects .proj-card,
-  #projects .proj-card * {
-    cursor: none !important;
-  }
-}
-
 /* ── TABLET (≤900px) ────────────────────────── */
 @media (max-width: 900px) {
 
@@ -2582,23 +2523,11 @@
     box-sizing: border-box;
     min-height: calc(var(--proj-img-h) + 220px);
   }
-  .proj-card-footer {
-    gap: 3px;
-    justify-content: flex-end;
+  .proj-card-footer:has(.proj-card-note:not(:empty)) {
+    gap: 12px;
   }
-  .proj-card-footer:not(:has(.proj-card-note)) .proj-tags {
-    margin-top: 0;
-  }
-  .proj-card-footer:has(.proj-card-note) .proj-tags {
-    margin-bottom: 0;
-  }
-  .proj-card-bottom:has(.proj-card-note) {
-    display: block;
-    margin-top: 0;
-    padding-top: 0;
-  }
-  .proj-card-note {
-    padding-bottom: 2px;
+  .proj-card-note:not(:empty) {
+    margin-bottom: 8px;
   }
 
   /* Research card: image on top, all text below */
@@ -2686,14 +2615,7 @@
 </head>
 <body>
 
-<!-- CURSOR -->
 <canvas id="liquid-bg"></canvas>
-<div id="cursor-dot"></div>
-<div id="cursor-ring">
-  <svg class="mag-icon" viewBox="0 0 24 24" width="14" height="14" stroke="var(--accent-3)" stroke-width="2" fill="none">
-    <circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/>
-  </svg>
-</div>
 
 <!-- FLASH OVERLAY -->
 <div id="flash-overlay"></div>
@@ -2992,9 +2914,9 @@
               <h4 class="proj-title">BeyondMaps</h4>
               <p class="proj-desc">An offline-first Android travel assistant that runs entirely on-device, with no internet and no cloud. Uses LiteRT for on-device LLM chat and translation, ML Kit for real-time OCR, and a local vector RAG system over a knowledge pack to answer contextual travel questions anywhere in the world.</p>
               <div class="proj-card-footer">
+                <p class="proj-card-note"><span class="proj-card-note-text">Selected from 450+ applicants at the Google X Qualcomm LiteRT Hackathon 2026 and built in 24 hours.</span></p>
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>LiteRT</span><span>ML Kit</span><span>Vector RAG</span><span>Android</span><span>On-device AI</span><span>OCR</span></div>
-                <div class="proj-card-bottom">
-                  <p class="proj-card-note"><span class="proj-card-note-text">Selected from 450+ applicants at the Google X Qualcomm LiteRT Hackathon 2026 and built in 24 hours.</span></p>
                   <a href="https://github.com/Ahadke/BeyondMaps" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
@@ -3010,9 +2932,9 @@
               <h4 class="proj-title">AlertU</h4>
               <p class="proj-desc">An offline-first disaster communication platform designed to maintain critical connectivity during network outages and emergency scenarios. It enables peer-to-peer messaging, local resource sharing, and decentralized SOS coordination without stable internet, with resilient synchronization once connectivity is restored.</p>
               <div class="proj-card-footer">
+                <p class="proj-card-note"><span class="proj-card-note-text">Built in 24 hours at HackDavis 2026</span></p>
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>Python</span><span>Flutter</span><span>Node.js</span><span>Flask</span><span>Geospatial Mapping</span><span>REST APIs</span><span>Bootstrap</span></div>
-                <div class="proj-card-bottom">
-                  <p class="proj-card-note"><span class="proj-card-note-text">Built in 24 hours at HackDavis 2026</span></p>
                   <a href="https://github.com/celinejp/ReliefNet" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
@@ -3026,11 +2948,11 @@
             </div>
             <div class="proj-info">
               <h4 class="proj-title">Mantle AI</h4>
-              <p class="proj-desc">An agentic materials copilot built to accelerate critical mineral discovery. Takes mission-level language, converts it into search constraints, and queries the Materials Project with resilient retrieval. A planner/judge loop scores and filters candidates iteratively until it delivers ranked material portfolios with uncertainty estimates and lab test queues, all streamed live in the UI.</p>
+              <p class="proj-desc">An agentic materials copilot built to accelerate critical mineral discovery. Takes mission-level language, converts it into search constraints, and queries the Materials Project with resilient retrieval. A planner loop scores and filters candidates iteratively and delivers ranked material portfolios with uncertainty estimates and lab test queues, all streamed live.</p>
               <div class="proj-card-footer">
+                <p class="proj-card-note"><span class="proj-card-note-text">Built in under 30 hours at SCSP National Security Hackathon 2026</span></p>
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>Python</span><span>FastAPI</span><span>Agentic AI</span><span>RAG</span><span>LLM</span><span>Streaming UI</span></div>
-                <div class="proj-card-bottom">
-                  <p class="proj-card-note"><span class="proj-card-note-text">Built in under 30 hours at SCSP National Security Hackathon 2026</span></p>
                   <a href="https://github.com/Bismanpal-Singh/SCSP---Mantle-AI" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
@@ -3046,9 +2968,9 @@
               <h4 class="proj-title">Rooming</h4>
               <p class="proj-desc">A shared household management app that replaces the mess of group chats and spreadsheets. Supports Google sign-in, house onboarding, and admin/member roles, with a unified dashboard for expenses, chores, shopping lists, announcements, and a shared calendar, all synced in real time across housemates.</p>
               <div class="proj-card-footer">
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>React</span><span>TypeScript</span><span>Firebase</span><span>Firestore</span><span>Google Auth</span><span>Real-time Sync</span><span>Role-based Access</span></div>
-                <div class="proj-card-bottom">
-<a href="https://github.com/celinejp/Rooming" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                  <a href="https://github.com/celinejp/Rooming" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
@@ -3063,9 +2985,9 @@
               <h4 class="proj-title">GraphQ-LLM</h4>
               <p class="proj-desc">An AI-powered query tutor for ResilientDB&apos;s GraphQL API. Ingests GraphQL documentation into a RAG pipeline so users can ask natural language questions, get structured explanations, complexity estimates, and efficiency tips without digging through docs, served through a clean Nexus UI with Dockerized backend services.</p>
               <div class="proj-card-footer">
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>TypeScript</span><span>GraphQL</span><span>RAG</span><span>Vector Search</span><span>Docker</span><span>ResilientDB</span><span>NL Query</span></div>
-                <div class="proj-card-bottom">
-<a href="https://github.com/sophiequynn/graphq-llm" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                  <a href="https://github.com/sophiequynn/graphq-llm" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
@@ -3080,9 +3002,9 @@
               <h4 class="proj-title">Demand Forecasting &amp; Revenue Optimization</h4>
               <p class="proj-desc">An end-to-end revenue pipeline built on hotel booking data. Uses Prophet for demand forecasting, de-trended elasticity curves to model price sensitivity, constrained nonlinear optimization for pricing decisions, and multi-period dynamic programming to maximize revenue across booking windows, validated with A/B-style simulation.</p>
               <div class="proj-card-footer">
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>Python</span><span>Prophet</span><span>SciPy</span><span>Time Series</span><span>Price Optimization</span><span>Dynamic Programming</span><span>Elasticity Modeling</span><span>A/B Simulation</span></div>
-                <div class="proj-card-bottom">
-<a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                  <a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
@@ -3097,9 +3019,9 @@
               <h4 class="proj-title">Enterprise Causal Demand Forecasting</h4>
               <p class="proj-desc">A production-grade retail forecasting system that goes beyond naive baselines. Engineers causal features from promotions, pricing, and calendar effects, fits probabilistic quantile models for uncertainty-aware predictions, reconciles forecasts hierarchically across SKU, store, and geography, and monitors for distribution drift to stay reliable in production.</p>
               <div class="proj-card-footer">
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>Quantile Regression</span><span>Causal Features</span><span>Hierarchical Forecasting</span><span>Drift Monitoring</span><span>Inventory Optimization</span></div>
-                <div class="proj-card-bottom">
-<a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                  <a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
@@ -3114,9 +3036,9 @@
               <h4 class="proj-title">RFM Segmentation &amp; Retention Modeling</h4>
               <p class="proj-desc">A customer analytics pipeline that segments users by recency, frequency, and monetary value to identify high-value cohorts and churn-risk clusters. Predictive retention models then target each segment with tailored interventions, replacing one-size-fits-all campaigns with ROI-driven retention strategy built directly from transactional history.</p>
               <div class="proj-card-footer">
+                <div class="proj-card-actions">
                 <div class="proj-tags"><span>Python</span><span>RFM Analysis</span><span>scikit-learn</span><span>K-Means Clustering</span><span>Churn Prediction</span><span>Customer Segmentation</span><span>Predictive Modeling</span><span>CLV</span></div>
-                <div class="proj-card-bottom">
-<a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                  <a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
@@ -3298,9 +3220,9 @@
             <label class="form-label" for="fmsg">Message</label>
             <textarea class="form-input hoverable" id="fmsg" name="message" rows="4" placeholder="What's on your mind?"></textarea>
           </div>
-          <button class="form-btn btn-send hoverable" type="submit" id="sendBtn">
+          <button class="form-btn btn-send hoverable" type="submit" id="sendBtn" aria-live="polite">
             <span id="sendLabel">Send Message</span>
-            <svg id="sendPlane" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <svg id="sendPlane" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </form>
       </div>
@@ -3344,60 +3266,6 @@
 
   // Hero portrait: images/portrait.png (rebuild: python scripts/rebuild-home-portrait.py
   // — checker tiles → transparent only; layout/CSS unchanged).
-
-  // CURSOR — initialize at viewport center so nothing sits at (0,0) before first mousemove
-  const dot = document.getElementById('cursor-dot');
-  const ring = document.getElementById('cursor-ring');
-  let mx = window.innerWidth / 2;
-  let my = window.innerHeight / 2;
-  let rx = mx;
-  let ry = my;
-
-  function setCustomCursorVisible(visible) {
-    if (!dot || !ring) return;
-    const v = visible ? '1' : '0';
-    dot.style.opacity = v;
-    ring.style.opacity = v;
-    if (!visible) ring.classList.remove('hovering');
-  }
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    setCustomCursorVisible(true);
-  });
-
-  setCustomCursorVisible(true);
-
-  function animateCursor() {
-    if (!dot || !ring) return;
-    rx += (mx - rx) * 0.1;
-    ry += (my - ry) * 0.1;
-    dot.style.left = mx + 'px';
-    dot.style.top = my + 'px';
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-
-  document.querySelectorAll('.hoverable, a, button').forEach(el => {
-    if (el.closest('.proj-card')) return;
-    const isHeaderOrSidebar = el.closest('header') || el.closest('#sidebar');
-    el.addEventListener('mouseenter', () => { if (!isHeaderOrSidebar) ring.classList.add('hovering'); });
-    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
-  });
-
-  document.addEventListener('mousedown', () => {
-    if (!dot || !ring) return;
-    dot.style.transform = 'translate(-50%,-50%) scale(0.5)';
-    ring.style.transform = 'translate(-50%,-50%) scale(0.9)';
-  });
-  document.addEventListener('mouseup', () => {
-    if (!dot || !ring) return;
-    dot.style.transform = 'translate(-50%,-50%) scale(1)';
-    ring.style.transform = 'translate(-50%,-50%) scale(1)';
-  });
 
   // THEME TOGGLE
   const html = document.documentElement;
@@ -3565,6 +3433,28 @@
   const formStatus = document.getElementById('formStatus');
   const sendLabel = document.getElementById('sendLabel');
   const sendPlane = document.getElementById('sendPlane');
+  const SENT_RESET_MS = 8000;
+  function setSendButtonState(state) {
+    sendBtn.classList.remove('sent');
+    if (sendPlane) sendPlane.style.display = 'none';
+    if (sendLabel) sendLabel.style.display = 'inline';
+    switch (state) {
+      case 'sending':
+        if (sendLabel) sendLabel.textContent = 'Sending...';
+        sendBtn.disabled = true;
+        break;
+      case 'sent':
+        sendBtn.classList.add('sent');
+        if (sendLabel) sendLabel.textContent = 'Sent!';
+        sendBtn.disabled = true;
+        break;
+      case 'idle':
+      default:
+        if (sendLabel) sendLabel.textContent = 'Send Message';
+        sendBtn.disabled = false;
+        break;
+    }
+  }
   if (contactForm && sendBtn) {
     contactForm.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -3585,9 +3475,7 @@
         }
         return;
       }
-      sendBtn.disabled = true;
-      if (sendLabel) sendLabel.style.display = 'none';
-      if (sendPlane) sendPlane.style.display = 'inline';
+      setSendButtonState('sending');
       try {
         const r = await fetch('/api/contact', {
           method: 'POST',
@@ -3601,30 +3489,25 @@
         if (!r.ok || !data.ok) {
           throw new Error(data.error || 'Could not send. Try email or LinkedIn.');
         }
-        sendBtn.classList.add('sent');
-        if (sendLabel) {
-          sendLabel.textContent = 'Sent!';
-          sendLabel.style.display = 'inline';
-        }
-        if (sendPlane) sendPlane.style.display = 'none';
+        setSendButtonState('sent');
         if (formStatus) {
           formStatus.textContent = 'Thanks — your message was sent.';
           formStatus.className = 'form-status success';
         }
         contactForm.reset();
         setTimeout(() => {
-          sendBtn.classList.remove('sent');
-          if (sendLabel) sendLabel.textContent = 'Send Message';
-        }, 3200);
+          setSendButtonState('idle');
+          if (formStatus) {
+            formStatus.textContent = '';
+            formStatus.className = 'form-status';
+          }
+        }, SENT_RESET_MS);
       } catch (err) {
+        setSendButtonState('idle');
         if (formStatus) {
           formStatus.textContent = err.message || 'Something went wrong.';
           formStatus.className = 'form-status error';
         }
-        if (sendLabel) sendLabel.style.display = 'inline';
-        if (sendPlane) sendPlane.style.display = 'none';
-      } finally {
-        sendBtn.disabled = false;
       }
     });
   }
