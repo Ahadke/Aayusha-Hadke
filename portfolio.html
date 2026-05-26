@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>aayushahadke</title>
-<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon.png?v=5" type="image/png" sizes="64x64">
+<link rel="icon" href="images/favicon-32.png?v=5" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/favicon.png?v=5">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Syne:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Pinyon+Script&family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500;1,700&family=Noto+Serif+Display:ital,wght@0,900;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800;900&family=Syne:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400&family=Pinyon+Script&family=Ballet&family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500;1,700&family=Noto+Serif+Display:ital,wght@0,900;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg-1: #050505;
@@ -18,9 +20,25 @@
     --text-primary: #e8e8e8;
     --text-muted: #888888;
     --sidebar-w: 56px;
-    --logo-w: 76px;
-    --logo-crop-left: 10px;
+    --logo-w: 96px;
+    --logo-h: var(--header-h);
+    --logo-shift-left: 14px;
+    --logo-crop-left: 0px;
+    --home-title-pad-x: 4px;
     --header-h: calc(76px - 1cm + 0.7cm);
+  /* Carousel cards — center + side widths sized to fit 3-across with arrows */
+    --proj-card-w: calc(340px + 2cm);
+    --proj-card-w-side: calc(272px + 2cm);
+    --proj-card-h: 500px;
+    --proj-img-h: 192px;
+    --cert-card-w: calc(520px - 3cm);
+    --cert-card-w-side: calc(300px - 3cm);
+    --cert-card-h: 420px;
+    --proj-card-bg: rgba(0, 0, 0, 0.35);
+    --proj-card-bg-center: rgba(0, 0, 0, 0.35);
+    --proj-card-bg-light: rgba(255, 255, 255, 0.38);
+    --proj-card-bg-center-light: rgba(255, 255, 255, 0.38);
+    --proj-card-border-inset: 3px;
   }
   [data-theme="light"] {
     --bg-1: #ffffff;
@@ -100,6 +118,11 @@
 
 
   /* CURSOR */
+  #cursor-dot,
+  #cursor-ring {
+    opacity: 1;
+    transition: opacity 0.15s ease;
+  }
   #cursor-dot {
     width: 8px; height: 8px;
     background: var(--accent-3);
@@ -149,39 +172,39 @@
     border-bottom: 1px solid rgba(255,255,255,0.06);
     z-index: 1000;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px 0 max(2px, calc(var(--sidebar-w) + 4px - 56px));
+    padding: 0 32px 0 0;
     transition: background 0.4s ease;
     position: fixed;
   }
   .header-left { position: relative; display: flex; align-items: center; gap: 2px; text-decoration: none; }
   .logo-img {
     flex-shrink: 0;
+    display: block;
+    object-fit: contain;
     filter: brightness(0) saturate(100%) invert(78%) sepia(30%) saturate(600%) hue-rotate(295deg) brightness(105%);
     transition: filter 0.3s;
     position: absolute;
-    left: 0;
+    left: calc(-1 * var(--logo-shift-left));
     top: 50%;
     transform: translate(calc(-1 * var(--logo-crop-left)), -50%);
-    width: auto;
-    max-width: var(--logo-w);
-    height: calc(var(--header-h) - 6px);
-    max-height: calc(var(--header-h) - 6px);
-    object-fit: contain;
-    padding: 2px;
-    clip-path: inset(0 0 0 var(--logo-crop-left));
+    width: var(--logo-w);
+    height: var(--logo-h);
+    max-height: var(--logo-h);
+    padding: 0;
   }
   .header-left:hover .logo-img {
     filter: brightness(0) saturate(100%) invert(78%) sepia(30%) saturate(600%) hue-rotate(295deg) brightness(115%) drop-shadow(0 0 8px rgba(249,168,212,0.8));
   }
   .header-name {
     font-family: 'Nunito', sans-serif;
-    font-weight: 600; font-size: 13px;
+    font-weight: 600; font-size: 15px;
     color: #e8e8e8;
     white-space: nowrap;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     display: block;
-    padding-left: calc(var(--logo-w) - var(--logo-crop-left) + 2px);
+    padding-left: calc(var(--logo-w) - var(--logo-shift-left) - var(--logo-crop-left) - 18px);
+    text-align: left;
   }
   .header-right { display: flex; align-items: center; gap: 16px; }
   .btn-resume {
@@ -443,7 +466,7 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  section p {
+  section p:not(.home-card-bio) {
     font-size: 16px; color: var(--text-muted);
     max-width: 400px; text-align: center; line-height: 1.6;
   }
@@ -497,13 +520,22 @@
   }
   .research-card .research-card-thumb {
     float: left;
-    width: min(280px, 38vw);
+    width: min(280px, 36vw);
     max-width: 280px;
-    margin: 0 28px 14px 0;
+    margin: 0 24px 12px 0;
+    shape-outside: margin-box;
   }
   .research-card .research-name {
-    margin: 0 0 12px;
-    overflow: hidden;
+    margin: 0 0 10px;
+    overflow: visible;
+  }
+  /* Let each paragraph wrap beside the photo, then use full width below it */
+  .research-desc {
+    display: contents;
+  }
+  .research-desc p {
+    position: relative;
+    z-index: 1;
   }
   .research-card .research-tags {
     clear: both;
@@ -551,17 +583,29 @@
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: 20px;
     color: var(--text-primary); line-height: 1.3;
   }
-  .research-desc {
-    font-family: 'Nunito', sans-serif; font-size: 13px; line-height: 1.8;
-    color: var(--text-muted);
-  }
-  .research-desc p {
-    margin: 0 0 1.1em;
-    text-align: left;
-    max-width: 100%;
-  }
   .research-desc p:last-child {
     margin-bottom: 0;
+  }
+  /* Override global section p (max-width 400px + centered) for research copy */
+  #research .research-card p {
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-muted);
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+    font-size: 13px;
+    line-height: 1.8;
+    margin: 0 0 1.1em;
+  }
+  #research .research-name {
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  #research .research-meta-label,
+  #research .research-meta-value {
+    text-align: justify;
+    text-justify: inter-word;
   }
   .research-card-thumb {
     border-radius: 12px;
@@ -587,10 +631,14 @@
   .research-meta-label {
     font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800;
     letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted);
+    text-align: justify;
+    text-justify: inter-word;
   }
   .research-meta-value {
     font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 600;
     color: var(--text-primary);
+    text-align: justify;
+    text-justify: inter-word;
   }
   .research-tags { display: flex; gap: 8px; flex-wrap: wrap; }
   .research-tags span {
@@ -610,13 +658,14 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
   .cert-carousel-wrap {
-    display: flex; align-items: center; gap: 16px; width: 100%; min-height: 380px;
+    display: flex; align-items: center; gap: 16px; width: 100%;
+    min-height: var(--cert-card-h);
   }
   .cert-arrow {
     flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%;
     background: rgba(255,255,255,0.06); backdrop-filter: blur(10px);
     border: 1.5px solid rgba(139,92,246,0.4);
-    color: var(--accent-2); font-size: 22px; cursor: none !important;
+    color: var(--accent-2); font-size: 22px;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.25s, box-shadow 0.25s;
   }
@@ -629,18 +678,29 @@
 
   .cert-track {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    gap: 20px; overflow: hidden; padding: 24px 0;
+    gap: 16px; overflow: hidden; padding: 20px 0;
+    min-height: var(--cert-card-h);
   }
   /* CERT CARD - same as timeline-block */
   .cert-card {
-    flex-shrink: 0; width: 300px;
-    border-radius: 20px; padding: 28px;
+    flex-shrink: 0;
+    display: none;
+    width: var(--cert-card-w);
+    height: var(--cert-card-h);
+    max-height: var(--cert-card-h);
+    box-sizing: border-box;
+    border-radius: 20px; padding: 24px;
     background: rgba(0,0,0,0.35);
-    display: flex; flex-direction: column; gap: 14px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: justify;
+    text-justify: inter-word;
     position: relative;
-    transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1),
-                opacity 0.3s, filter 0.3s;
-    opacity: 0.5; filter: blur(1.5px); transform: scale(0.88);
+    transition: box-shadow 0.35s ease, opacity 0.3s ease;
+    opacity: 1;
+    filter: none;
+    transform-origin: center center;
   }
   .cert-card::before {
     content: '';
@@ -651,7 +711,7 @@
     z-index: 0; pointer-events: none;
   }
   .cert-card.center {
-    width: 360px; opacity: 1; filter: none; transform: scale(1);
+    display: flex;
     box-shadow: none;
     z-index: 5;
   }
@@ -670,23 +730,62 @@
   .cert-issuer {
     font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800;
     letter-spacing: 2px; text-transform: uppercase; color: var(--accent-2);
+    width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
   }
   .cert-name {
     font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
-    color: var(--text-primary); line-height: 1.3;
+    color: var(--accent-2); line-height: 1.3;
+    width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
   }
   .cert-date {
     font-family: 'Nunito', sans-serif; font-size: 11px; color: var(--text-muted);
-    display: flex; align-items: center; gap: 6px;
+    display: block;
+    width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
   }
   .cert-learned {
-    font-family: 'Nunito', sans-serif; font-size: 12px; line-height: 1.7;
+    font-family: 'Nunito', sans-serif; font-size: 12px; line-height: 1.65;
     color: var(--text-muted);
-    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;
+    width: 100%;
+    text-align: justify;
+    text-justify: inter-word;
+    border-top: none;
+    padding-top: 12px;
+    flex: 1; min-height: 0; overflow-y: auto;
+    scrollbar-width: thin;
   }
-  [data-theme="light"] .cert-learned { border-top-color: rgba(0,0,0,0.08); }
-  .cert-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 8px; }
-  .cert-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cert-learned::before {
+    content: '';
+    display: block;
+    width: min(72%, 14rem);
+    height: 1px;
+    margin: 0 auto 12px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  [data-theme="light"] .cert-learned::before {
+    background: rgba(0, 0, 0, 0.08);
+  }
+  .cert-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+  .cert-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   .cert-tags span {
     font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700;
     padding: 3px 10px; border-radius: 999px;
@@ -825,9 +924,21 @@
     color: var(--text-primary);
     letter-spacing: 0.2px;
   }
-  .contact-signoff span { color: #f9a8d4; }
+  .signoff-heart {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: -0.12em;
+    margin: 0 0.12em;
+    color: #f9a8d4;
+  }
+  .signoff-heart svg {
+    width: 0.92em;
+    height: 0.92em;
+    display: block;
+    fill: currentColor;
+  }
   [data-theme="light"] .contact-signoff { color: #111; }
-  [data-theme="light"] .contact-signoff span { color: #4a0520; }
+  [data-theme="light"] .signoff-heart { color: #4a0520; }
   .contact-left { flex: 1.3; display: flex; flex-direction: column; gap: 32px; }
   .contact-right { flex: 0.7; display: flex; flex-direction: column; gap: 32px; }
   .wave-emoji {
@@ -1067,22 +1178,22 @@
   .home-name-rail {
     position: relative;
     z-index: 2;
+    width: 100%;
     max-width: 100%;
-    overflow-x: auto;
-    overflow-y: visible;
-    padding: 0.35rem 0 1.75rem;
-    margin-top: -14px;
+    container-type: inline-size;
+    overflow: hidden;
+    padding: 6px var(--home-title-pad-x) 1.75rem;
+    margin-top: 0;
     display: flex;
     justify-content: center;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    align-items: center;
     pointer-events: auto;
+    box-sizing: border-box;
   }
-  .home-name-rail::-webkit-scrollbar { display: none; }
   .home-portrait-wrap {
     align-self: flex-start;
     width: min(446px, 68.4vw);
-    margin-top: calc(0.25rem - 3cm);
+    margin-top: calc(0.25rem - 3.2cm);
     margin-left: 1in;
     flex-shrink: 0;
     position: relative;
@@ -1120,22 +1231,24 @@
     font-family: 'Bodoni Moda', 'Noto Serif Display', Georgia, serif;
     font-weight: 400;
     font-style: normal;
-    font-size: clamp(34px, 10.5vw, 136px);
+    font-size: clamp(44px, 15cqi, 188px);
     line-height: 1.05;
     color: #6a2220;
     -webkit-text-fill-color: #6a2220 !important;
-    letter-spacing: 0.018em;
+    letter-spacing: 0.012em;
     text-transform: uppercase;
     white-space: nowrap;
-    width: max-content;
-    max-width: none;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     padding: 0.1em 0;
-    transform: scaleX(0.76) scaleY(1.28);
+    text-align: center;
+    transform: scaleY(1.24);
     transform-origin: center center;
     font-feature-settings: "kern" 1, "liga" 1;
     -webkit-font-smoothing: antialiased;
     pointer-events: auto;
+    box-sizing: border-box;
   }
   [data-theme="dark"] .home-name,
   [data-theme="dark"] .home-name em,
@@ -1194,6 +1307,12 @@
   .home-card-bio {
     font-family: 'Nunito', sans-serif; font-size: 14px; line-height: 1.8;
     color: var(--text-primary);
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
   }
   .home-location {
     display: flex;
@@ -1236,25 +1355,27 @@
 
   /* TECH STACK */
   #techstack { align-items: flex-start; padding: 80px 48px; }
-  .skills-wrap { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 32px; }
+  .skills-wrap { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 28px; }
   .skills-title {
     font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px;
-    background: #8b5cf6;
+    background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   .skills-grid {
-    display: flex; flex-wrap: wrap; gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 14px;
   }
   .skill-bubble {
-    padding: 12px 26px;
+    padding: 10px 18px;
     border-radius: 999px;
     background: rgba(0,0,0,0.35);
     border: none; position: relative;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     font-family: 'Nunito', sans-serif;
-    font-size: 14px; font-weight: 600;
+    font-size: 13px; font-weight: 700;
     color: var(--text-primary);
     cursor: default;
     transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s, background 0.3s;
@@ -1292,6 +1413,15 @@
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
   }
   #projects { align-items: flex-start; padding: 80px 48px; }
+  /* Hide system cursor on cards only; custom dot/ring still visible elsewhere in #projects */
+  #projects .proj-card,
+  #projects .proj-card * {
+    cursor: none !important;
+  }
+  #projects .proj-arrow,
+  #projects .proj-filter {
+    cursor: none !important;
+  }
   .projects-wrap { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 32px; }
   .projects-title {
     font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px;
@@ -1319,7 +1449,12 @@
   /* CAROUSEL */
   .proj-carousel-wrap {
     position: relative; display: flex; align-items: center; justify-content: center;
-    width: 100%; min-height: calc(620px - 4cm); gap: 16px;
+    width: 100%; min-height: var(--proj-card-h); gap: 16px;
+    z-index: 0;
+  }
+  #projects .projects-wrap {
+    position: relative;
+    z-index: 1;
   }
   .proj-arrow {
     flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%;
@@ -1335,67 +1470,97 @@
 
   .proj-ring-track {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    gap: 24px; overflow: hidden; padding: 32px 0; position: relative;
-    isolation: isolate;
+    gap: 16px; overflow: hidden; padding: 20px 0; position: relative;
+    z-index: 1;
+    min-height: var(--proj-card-h);
   }
 
-  /* GLASSMORPHISM CARD - fixed size + ratio (all cards identical); height reduced by 4cm total */
+  /* Project cards — side previews blurred behind center card */
   .proj-card {
-    flex-shrink: 0; width: 360px;
-    height: calc(640px - 4cm);
-    max-height: calc(640px - 4cm);
-    box-sizing: border-box; border-radius: 24px; overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+    width: var(--proj-card-w-side);
+    height: var(--proj-card-h);
+    max-height: var(--proj-card-h);
+    box-sizing: border-box; border-radius: 20px; overflow: hidden;
     position: relative;
     z-index: 2;
-    background: #0d0d0d;
+    background: transparent;
     border: none;
-    text-decoration: none; display: flex; flex-direction: column;
-    transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1),
-                box-shadow 0.3s, border-color 0.3s, opacity 0.3s, filter 0.3s;
-    opacity: 0.55; filter: blur(1.5px);
-    cursor: none;
+    text-decoration: none; flex-direction: column;
+    transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.3s ease, filter 0.3s ease, width 0.35s ease;
+    opacity: 0.45;
+    filter: blur(2px);
+    transform: scale(0.92);
+    transform-origin: center center;
+    isolation: isolate;
+    pointer-events: none;
+  }
+  .proj-card::after {
+    content: '';
+    position: absolute;
+    inset: var(--proj-card-border-inset);
+    border-radius: calc(20px - var(--proj-card-border-inset));
+    background: var(--proj-card-bg);
+    z-index: 0;
+    pointer-events: none;
   }
   .proj-card.center {
-    width: 360px;
-    height: calc(640px - 4cm);
-    max-height: calc(640px - 4cm);
-    opacity: 1; filter: none;
+    display: flex;
+    width: var(--proj-card-w);
+    height: var(--proj-card-h);
+    max-height: var(--proj-card-h);
     border: none;
-    background: #111111;
-    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+    box-shadow: none;
     z-index: 3;
+    opacity: 1;
+    filter: none;
+    transform: scale(1);
+    pointer-events: auto;
   }
-  .proj-card.center::before {
-    background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9) !important;
-    animation: border-flow 4s linear infinite !important;
+  .proj-card.center::after {
+    background: var(--proj-card-bg-center);
   }
   .proj-card::before {
     content: '';
     position: absolute; inset: 0;
-    border-radius: 24px; padding: 3px;
+    border-radius: 20px; padding: var(--proj-card-border-inset);
     background: #111111;
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    z-index: 0; pointer-events: none;
+    z-index: 1; pointer-events: none;
   }
-  .proj-card > * { position: relative; z-index: 1; }
+  .proj-card > * { position: relative; z-index: 2; }
+  .proj-card:not(.center) .proj-img-blur::after {
+    background: rgba(0, 0, 0, 0.52);
+  }
+  .proj-card:not(.center) .proj-img-link,
+  .proj-card:not(.center) .proj-github {
+    pointer-events: none;
+  }
   .proj-card:hover::before { background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9); animation: border-flow 4s linear infinite; }
   .proj-card:hover { box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15); }
   [data-theme="light"] .proj-card::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
+    background-size: 300% 300%;
   }
-  [data-theme="light"] .proj-card {
-    background: #f5f5f5;
+  [data-theme="light"] .proj-card::after {
+    background: var(--proj-card-bg-light);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  [data-theme="light"] .proj-card.center::after {
+    background: var(--proj-card-bg-center-light);
   }
   .proj-card.hidden { display: none; }
   [data-theme="light"] .proj-card.center {
-    background: #ffffff;
     border-color: rgba(0, 0, 0, 0.35);
   }
 
-  /* CARD IMAGE - fixed strip (~260/640 of card height), scales with shorter cards */
+  /* CARD IMAGE — fixed strip aligned to card height */
   .proj-img {
-    height: calc((640px - 4cm) * 260 / 640);
+    height: var(--proj-img-h);
     flex-shrink: 0; position: relative; overflow: hidden;
     display: flex; align-items: flex-end; justify-content: space-between;
     padding: 12px;
@@ -1435,10 +1600,11 @@
     border: 1px solid rgba(255,255,255,0.2);
   }
 
-  /* CARD BOTTOM — footer stack: tags, then GitHub pinned to card bottom */
+  /* CARD BOTTOM — title, description, tags, then hackathon + link row */
   .proj-info {
-    padding: 16px 18px 14px; display: flex; flex-direction: column; gap: 6px;
+    padding: 11px 16px 11px; display: flex; flex-direction: column; gap: 4px;
     position: relative; flex: 1; min-height: 0; overflow: hidden;
+    background: transparent;
   }
   .proj-card-footer {
     margin-top: auto;
@@ -1449,75 +1615,168 @@
     flex-shrink: 0;
     padding-top: 0;
   }
+  /* No hackathon line: tags + link on one row at bottom — desc uses the freed space */
+  .proj-card-footer:not(:has(.proj-card-note)) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px 10px;
+  }
+  .proj-card-footer:not(:has(.proj-card-note)) .proj-tags {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    margin-top: 0;
+  }
+  .proj-card-footer:not(:has(.proj-card-note)) .proj-card-bottom {
+    flex: 0 0 auto;
+    min-height: 0;
+    width: auto;
+  }
   .proj-card-footer .proj-tags {
     width: 100%;
     min-width: 0;
   }
-  .proj-card-note {
-    font-family: 'Nunito', sans-serif;
-    font-size: 9px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin: 0;
-    flex: 1;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .proj-card-meta {
+  .proj-card-bottom {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-height: 12px;
+    overflow: visible;
   }
-  .proj-card-footer .proj-github {
+  /* Browsers clamp tiny font-size; inner span + scale(0.5) halves rendered size */
+  .proj-card-note {
+    margin: 0;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
     align-self: flex-end;
   }
-  .proj-title {
-    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
-    color: var(--text-primary);
+  .proj-card-note-text {
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    /* +5pt on rendered size (base +10pt before scale(0.5)) */
+    font-size: calc(7px + 10pt);
+    font-weight: 600;
+    color: var(--text-muted);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    opacity: 0.75;
+    box-sizing: border-box;
+    width: 200%;
+    max-width: 200%;
+    transform: scale(0.5);
+    transform-origin: left bottom;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
   }
-  .proj-desc {
-    font-family: 'Nunito', sans-serif; font-size: 13px;
-    color: var(--text-muted); line-height: 1.7;
+  .proj-card-note:empty {
+    display: none;
+  }
+  .proj-card-bottom:not(:has(.proj-card-note:not(:empty))) {
+    justify-content: flex-end;
+  }
+  .proj-title {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: calc(13px + 3pt);
+    line-height: 1.18;
+    color: var(--accent-2);
+    text-align: left;
+  }
+  /* Override section p { text-align: center; max-width: 400px } */
+  #projects .proj-info .proj-desc {
+    font-family: 'Nunito', sans-serif;
+    color: var(--text-muted);
+    max-width: none;
+    width: 100%;
+    margin: 0;
     text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
+    overflow-wrap: break-word;
+    word-break: normal;
+    scrollbar-width: thin;
   }
   .proj-tags { display: flex; gap: 5px 6px; flex-wrap: wrap; }
   .proj-tags span {
-    font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 700;
+    font-family: 'Nunito', sans-serif; font-size: 8px; font-weight: 700;
     padding: 3px 8px; border-radius: 999px;
     background: rgba(178,79,255,0.12); color: var(--accent-2);
     border: 1px solid rgba(178,79,255,0.25);
-    line-height: 1.25;
+    line-height: 1.15;
   }
   .proj-github {
     flex-shrink: 0;
-    width: 30px; height: 30px;
+    width: 26px; height: 26px;
     display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(178,79,255,0.3);
-    color: var(--text-muted); text-decoration: none;
+    color: var(--accent-2); text-decoration: none;
     transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+    margin-left: auto;
   }
-  .proj-github:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.2); box-shadow: 0 0 12px rgba(249,168,212,0.5); }
-  .proj-github svg { width: 14px; height: 14px; }
+  .proj-github:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 12px rgba(249,168,212,0.5); }
+  .proj-github svg { width: 12px; height: 12px; }
 
   /* JOURNEY / TIMELINE */
-  #experience { align-items: flex-start; padding: 80px 48px; }
-  .journey-wrap { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 32px; }
+  #experience { align-items: flex-start; padding: 80px 48px; min-height: auto; }
+  .journey-wrap { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 24px; }
   .journey-title {
     font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px;
-    background: #8b5cf6;
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    color: #f9a8d4;
+    -webkit-text-fill-color: currentColor;
   }
-  .journey-columns { display: flex; gap: 24px; align-items: stretch; }
-  .journey-left { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-  .journey-right { flex: 1; display: flex; flex-direction: column; }
+  .journey-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .journey-left {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .journey-right {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .journey-left .timeline-block,
+  .journey-right .timeline-block {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .journey-left .block-exp { flex: 1.35 1 0; }
+  .journey-left .block-lead { flex: 1 1 0; }
+  .journey-right .block-edu {
+    flex: 1 1 auto;
+    height: 100%;
+  }
+  .journey-left .timeline,
+  .journey-right .timeline {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
 
   /* BOXES */
   .timeline-block {
@@ -1560,9 +1819,6 @@
     box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
   }
   .timeline-block:hover::before { background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9); animation: border-flow 4s linear infinite; }
-  .block-exp { flex: 1.5; }
-  .block-lead { flex: 1; }
-  .block-edu { flex: 1; height: 100%; }
 
   .timeline-heading {
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px;
@@ -1570,6 +1826,7 @@
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 4px;
+    flex-shrink: 0;
   }
   .tl-icon { display: flex; align-items: center; }
 
@@ -1596,15 +1853,18 @@
     position: relative;
     display: flex; align-items: center;
     padding-bottom: 28px;
+    flex-shrink: 0;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
   .tl-entry.visible { opacity: 1; transform: translateY(0); }
+  .journey-columns .tl-entry { padding-bottom: 20px; }
+  .journey-columns .tl-entry:last-child { padding-bottom: 0; }
 
-  /* Alternating: odd = year left, card right. even = card left, year right */
-  .tl-entry:nth-child(odd) { flex-direction: row; }
-  .tl-entry:nth-child(even) { flex-direction: row-reverse; }
+  /* Alternating: skip .tl-line — year left / card right, then reverse */
+  .timeline > .tl-entry:nth-of-type(2n) { flex-direction: row; }
+  .timeline > .tl-entry:nth-of-type(2n+1) { flex-direction: row-reverse; }
 
   .tl-dot {
     position: absolute; left: 50%; top: 6px;
@@ -1626,7 +1886,7 @@
     padding: 0 18px 0 0;
     justify-content: flex-end;
   }
-  .tl-entry:nth-child(even) .tl-year-pill {
+  .timeline > .tl-entry:nth-of-type(2n+1) .tl-year-pill {
     padding: 0 0 0 18px;
     justify-content: flex-start;
   }
@@ -1658,51 +1918,61 @@
 
   .tl-card {
     flex: 1;
+    min-width: 0;
     padding: 0 0 0 18px;
     display: flex; flex-direction: column; gap: 2px;
     transition: transform 0.3s;
   }
-  .tl-entry:nth-child(even) .tl-card {
+  .timeline > .tl-entry:nth-of-type(2n) .tl-card {
+    padding: 0 0 0 18px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .timeline > .tl-entry:nth-of-type(2n+1) .tl-card {
     padding: 0 18px 0 0;
-    text-align: right;
+    text-align: justify;
+    text-justify: inter-word;
   }
   .tl-entry:hover .tl-card { transform: translateX(4px); }
-  .tl-entry:nth-child(even):hover .tl-card { transform: translateX(-4px); }
+  .timeline > .tl-entry:nth-of-type(2n+1):hover .tl-card { transform: translateX(-4px); }
 
   .tl-role {
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
     color: var(--text-primary);
+    text-align: justify;
+    text-justify: inter-word;
   }
   .tl-org {
     font-family: 'Nunito', sans-serif; font-size: 12px;
     color: var(--text-muted); font-weight: 500;
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   @media (max-width: 768px) {
     .research-card .research-card-thumb {
       float: none;
       width: 100%;
-      max-width: min(280px, 100%);
+      max-width: min(300px, 100%);
       margin: 0 auto 16px;
+      shape-outside: none;
+    }
+    .research-desc {
+      display: block;
+      width: 100%;
     }
     .research-card .research-name { overflow: visible; }
     .journey-columns { flex-direction: column; }
+    .journey-left .block-exp,
+    .journey-left .block-lead,
+    .journey-right .block-edu { flex: 1 1 auto; }
     .contact-wrap { flex-direction: column; gap: 48px; }
     .contact-title { font-size: 36px; }
     .contact-right { padding-top: 0; }
-    .proj-card,
-    .proj-card.center {
-      width: min(92vw, 360px);
-      height: auto;
-      min-height: calc(580px - 4cm);
-      max-height: none;
-      aspect-ratio: 360 / calc(640px - 4cm);
-    }
     #sidebar { display: none; }
     main { margin-left: 0; }
     footer { margin-left: 0; }
     header { padding: 0 20px 0 max(2px, 4px); }
-    .header-name { display: none; }
     .icon-link { display: none; }
     .icon-link--linkedin { display: flex !important; }
   }
@@ -1719,6 +1989,8 @@
   .journey-title,
   section:not(#home) h2 {
     background: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
     -webkit-text-fill-color: #000 !important;
     color: #000 !important;
   }
@@ -1740,6 +2012,11 @@
     color: #f9a8d4 !important;
     -webkit-text-fill-color: #f9a8d4 !important;
   }
+  [data-theme="dark"] .proj-title,
+  [data-theme="dark"] .cert-name {
+    color: #f9a8d4;
+    -webkit-text-fill-color: #f9a8d4;
+  }
   [data-theme="light"] .skills-title,
   [data-theme="light"] .projects-title,
   [data-theme="light"] .cert-title,
@@ -1754,6 +2031,11 @@
   [data-theme="light"] .timeline-heading {
     color: #4a0520 !important;
     -webkit-text-fill-color: #4a0520 !important;
+  }
+  [data-theme="light"] .proj-title,
+  [data-theme="light"] .cert-name {
+    color: #4a0520;
+    -webkit-text-fill-color: #4a0520;
   }
   .section-tag { color: #000 !important; }
   [data-theme="dark"] .section-tag { color: #ffffff !important; }
@@ -1847,13 +2129,10 @@
     animation: border-flow 4s linear infinite;
   }
   [data-theme="light"] .proj-card.center {
-    box-shadow:
-      0 0 26px rgba(255, 255, 255, 0.55),
-      0 12px 40px rgba(0, 0, 0, 0.07);
+    box-shadow: none;
   }
   [data-theme="light"] .proj-card.center::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a) !important;
-    animation: border-flow 4s linear infinite !important;
   }
   [data-theme="light"] .proj-card.center:hover::before {
     background: linear-gradient(135deg, #ffffff, #e4e6ec, #ffffff, #cfd2dc) !important;
@@ -1921,10 +2200,10 @@
     animation: border-flow 4s linear infinite;
   }
   [data-theme="dark"] .proj-card.center {
-    box-shadow: 0 0 30px rgba(255,255,255,0.28), 0 0 55px rgba(255,255,255,0.1);
+    box-shadow: none;
   }
   [data-theme="dark"] .proj-card.center::before {
-    background: linear-gradient(135deg, #ffffff, #cfd0d8, #ffffff, #a8aab4) !important;
+    background: #111111 !important;
   }
   [data-theme="dark"] .cert-arrow:hover {
     background: rgba(255,255,255,0.1);
@@ -1986,6 +2265,10 @@
   a, button, [role="button"], .sidebar-item,
   .btn-resume, .btn-send, .proj-filter,
   .cert-arrow, .proj-arrow, .theme-toggle { cursor: pointer !important; }
+  #projects .proj-card,
+  #projects .proj-card * {
+    cursor: none !important;
+  }
 }
 
 /* ── TABLET (≤900px) ────────────────────────── */
@@ -1995,9 +2278,33 @@
   #sidebar { display: none; }
   main, footer { margin-left: 0; }
 
-  /* Header: use full width */
+  /* Header: full-size logo; keep name visible */
   header {
-    padding: 0 20px;
+    padding: 0 20px 0 max(2px, 4px);
+    overflow: visible;
+  }
+  .header-left {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    justify-content: flex-start;
+    overflow: visible;
+  }
+  .logo-img {
+    object-fit: contain;
+    object-position: center center;
+  }
+  .header-name {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 0.7px;
+    text-align: left;
+    margin: 0;
+    max-width: none;
+  }
+  .header-right {
+    flex-shrink: 0;
+    gap: 12px;
   }
 
   /* Sections: reduce padding */
@@ -2012,12 +2319,79 @@
   .skills-title, .projects-title, .cert-title,
   .research-title, .about-title, .contact-title { font-size: 36px !important; }
 
-  /* Hero */
-  .home-card { width: 100%; max-width: 100%; }
-  .home-right { width: 100%; flex-shrink: 1; margin-right: 0; }
+  /* Hero — stacked, no overlap */
+  #home {
+    align-items: stretch;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .home-wrap {
+    align-items: stretch;
+    gap: 24px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .home-bottom {
+    align-items: stretch;
+  }
+  .home-left {
+    align-items: center;
+    width: 100%;
+  }
+  .home-name-rail {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 6px var(--home-title-pad-x) 10px;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .home-name {
+    font-size: clamp(44px, 15cqi, 188px);
+    transform: scaleY(1.24);
+  }
   .home-portrait-wrap {
-    width: min(360px, 70vw);
-    margin-left: clamp(8px, 5vw, 48px);
+    width: 100%;
+    max-width: min(360px, 100%);
+    margin: 0 auto;
+    margin-top: -12px;
+    margin-left: 0;
+    align-self: center;
+  }
+  .home-bottom {
+    flex-direction: column;
+    margin-top: 0;
+    width: 100%;
+    gap: 14px;
+  }
+  .home-spacer { display: none; }
+  .home-right {
+    width: 100%;
+    max-width: none;
+    margin-right: 0;
+    align-self: stretch;
+  }
+  .home-card {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 0;
+    padding: clamp(14px, 3.5vw, 18px);
+    align-self: stretch;
+  }
+  .home-card-bio {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    line-height: 1.65;
+    font-size: clamp(12px, 3.2vw, 14px);
+    text-align: justify;
+    text-justify: inter-word;
   }
 
   /* Contact: stack columns */
@@ -2025,17 +2399,15 @@
   .contact-right { padding-top: 0; }
   .social-list { padding-top: 0; }
 
-  /* Cert carousel card sizes */
-  .cert-card { width: 260px; }
-  .cert-card.center { width: 300px; }
-
-  /* Project carousel */
-  .proj-card { width: 300px; }
-  .proj-card.center { width: 300px; }
-
-  /* Research card thumb */
-  .research-card .research-card-thumb {
-    width: min(220px, 42vw);
+  /* Carousel card sizes — tablet */
+  :root {
+    --proj-card-w: calc(300px + 2cm);
+    --proj-card-w-side: calc(252px + 2cm);
+    --proj-card-h: 460px;
+    --proj-img-h: 172px;
+    --cert-card-w: calc(460px - 3cm);
+    --cert-card-w-side: calc(280px - 3cm);
+    --cert-card-h: 400px;
   }
 
   /* Masonry grid */
@@ -2048,12 +2420,10 @@
   /* CSS variables override */
   :root {
     --sidebar-w: 0px;
-    --header-h: 52px;
   }
 
-  /* Header: tighter, hide theme toggle label space */
-  header { padding: 0 14px; }
-  .header-name { font-size: 11px; letter-spacing: 0.8px; }
+  header { padding: 0 14px 0 max(2px, 4px); }
+  .header-name { font-size: 12px; letter-spacing: 0.55px; }
   .theme-toggle { width: 60px; height: 30px; }
   .toggle-thumb { width: 22px; height: 22px; }
   [data-theme="light"] .toggle-thumb { left: calc(60px - 22px - 4px); }
@@ -2073,18 +2443,101 @@
   .skills-title, .projects-title, .cert-title,
   .research-title, .about-title, .contact-title { font-size: 30px !important; }
 
-  /* Hero name */
-  .home-name { font-size: clamp(28px, 9vw, 60px) !important; }
+  /* Hero — phone: title → photo → location → intro */
+  #home {
+    padding: 20px 12px 40px;
+    align-items: stretch;
+  }
+  .home-wrap {
+    align-items: stretch;
+    gap: 18px;
+    width: 100%;
+    max-width: 100%;
+  }
+  .home-bottom {
+    align-items: stretch;
+    align-self: stretch;
+  }
+  .home-left {
+    width: 100%;
+    align-items: center;
+  }
+  .home-name-rail {
+    margin-top: 0;
+    margin-left: 0;
+    padding: 6px var(--home-title-pad-x) 8px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .home-name {
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    text-align: center;
+    transform: scaleY(1.22);
+    transform-origin: center center;
+  }
   .home-portrait-wrap {
-    width: min(280px, 78vw);
-    margin-left: clamp(4px, 3vw, 20px);
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    margin-top: -14px;
+    margin-left: 0;
+    align-self: stretch;
+  }
+  .home-portrait {
+    width: 100%;
+    max-height: min(48vh, 380px);
+    object-fit: contain;
+    object-position: center top;
+    margin: 0 auto;
+  }
+  .home-bottom {
+    flex-direction: column;
+    margin-top: 0;
+    width: 100%;
+    gap: 12px;
+  }
+  .home-spacer { display: none; }
+  .home-right {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    box-sizing: border-box;
+    align-self: stretch;
+  }
+  .home-location {
+    margin: 0 0 6px;
+    font-size: 15px;
+    width: 100%;
+    align-self: stretch;
   }
   .home-card {
-    width: 100%; height: auto; min-height: 200px;
-    padding: 20px;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: unset;
+    padding: 14px;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 0;
+    align-self: stretch;
   }
-  .home-right { width: 100%; }
-  .home-bottom { margin-top: clamp(-220px, -28vw, -120px); }
+  .home-card-bio {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    font-size: clamp(12px, 3.6vw, 14px);
+    line-height: 1.6;
+    text-align: justify;
+    text-justify: inter-word;
+    text-wrap: pretty;
+    hyphens: auto;
+  }
 
   /* Contact */
   .contact-wrap { flex-direction: column; gap: 32px; }
@@ -2093,36 +2546,41 @@
   .wave-emoji { font-size: 64px; }
   .sticker-main { width: 140px; }
 
+  /* Carousel card sizes — mobile (single card, full width) */
+  :root {
+    --proj-card-w: min(calc(88vw + 2cm), calc(320px + 2cm));
+    --proj-card-w-side: min(calc(88vw + 2cm), calc(320px + 2cm));
+    --proj-card-h: auto;
+    --proj-img-h: 168px;
+    --cert-card-w: min(calc(92vw - 3cm), calc(400px - 3cm));
+    --cert-card-w-side: min(calc(92vw - 3cm), calc(400px - 3cm));
+    --cert-card-h: min(72vh, 440px);
+  }
+
   /* Cert carousel */
   .cert-arrow { width: 36px; height: 36px; font-size: 16px; }
-  .cert-card { width: 85vw; max-width: 320px; }
-  .cert-card.center { width: 85vw; max-width: 320px; }
-  .cert-carousel-wrap { gap: 8px; min-height: 320px; }
+  .cert-carousel-wrap { gap: 8px; }
 
   /* Project carousel */
   .proj-arrow { width: 36px; height: 36px; font-size: 16px; }
-  .proj-card {
-    width: 82vw !important;
-    max-width: 340px !important;
-    height: auto !important;
-    max-height: none !important;
-  }
+  .proj-card,
   .proj-card.center {
-    width: 82vw !important;
-    max-width: 340px !important;
+    min-height: calc(var(--proj-img-h) + 220px);
   }
-  .proj-img {
-    height: 180px !important;
-  }
-  .proj-carousel-wrap { min-height: auto; gap: 8px; }
-  .proj-ring-track { gap: 12px; padding: 16px 0; }
+  .proj-carousel-wrap { min-height: 0; gap: 8px; }
+  .proj-ring-track { gap: 12px; padding: 16px 0; min-height: 0; }
 
-  /* Research card: stack image above text */
+  /* Research card: image on top, all text below */
   .research-card .research-card-thumb {
     float: none !important;
     width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 0 16px 0 !important;
+    max-width: min(320px, 100%) !important;
+    margin: 0 auto 16px !important;
+    shape-outside: none !important;
+  }
+  .research-desc {
+    display: block !important;
+    width: 100%;
   }
   .research-name { font-size: 17px; }
 
@@ -2161,7 +2619,7 @@
 <!-- HEADER -->
 <header>
   <a href="#home" class="header-left hoverable">
-    <img src="images/logo.svg" class="logo-img" alt="AH Logo">
+    <img src="images/logo-mark.png" class="logo-img" alt="Logo">
     <span class="header-name">aayusha hadke</span>
   </a>
   <div class="header-right">
@@ -2257,14 +2715,12 @@
   <section id="experience">
     <div class="journey-wrap">
       <span class="section-tag">My Journey</span>
-      <h2 class="journey-title" id="expTitle"></h2>
+      <h2 class="journey-title" id="expTitle">Where I've Been</h2>
 
       <div class="journey-columns">
 
-        <!-- LEFT COLUMN: Experience + Leadership -->
         <div class="journey-left">
 
-          <!-- EXPERIENCE BOX -->
           <div class="timeline-block block-exp">
             <h3 class="timeline-heading"><span class="tl-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/><path d="M2 12h20"/></svg></span> Experience</h3>
             <div class="timeline">
@@ -2309,7 +2765,6 @@
             </div>
           </div>
 
-          <!-- LEADERSHIP BOX -->
           <div class="timeline-block block-lead">
             <h3 class="timeline-heading"><span class="tl-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> Leadership</h3>
             <div class="timeline">
@@ -2338,8 +2793,8 @@
 
         </div>
 
-        <!-- RIGHT COLUMN: Education -->
         <div class="journey-right">
+
           <div class="timeline-block block-edu">
             <h3 class="timeline-heading"><span class="tl-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span> Education</h3>
             <div class="timeline">
@@ -2392,6 +2847,7 @@
 
             </div>
           </div>
+
         </div>
 
       </div>
@@ -2400,48 +2856,40 @@
 
   <section id="techstack">
     <div class="skills-wrap">
-            <h2 class="skills-title" id="techTitle"></h2>
+      <h2 class="skills-title" id="techTitle"></h2>
       <div class="skills-grid">
         <div class="skill-bubble hoverable">Python</div>
+        <div class="skill-bubble hoverable">TypeScript</div>
         <div class="skill-bubble hoverable">Java</div>
         <div class="skill-bubble hoverable">C++</div>
-        <div class="skill-bubble hoverable">HTML</div>
-        <div class="skill-bubble hoverable">CSS</div>
-        <div class="skill-bubble hoverable">JavaScript</div>
-        <div class="skill-bubble hoverable">PyTorch</div>
+        <div class="skill-bubble hoverable">Kotlin</div>
+        <div class="skill-bubble hoverable">React</div>
+        <div class="skill-bubble hoverable">Pandas</div>
+        <div class="skill-bubble hoverable">NumPy</div>
         <div class="skill-bubble hoverable">Scikit-learn</div>
-        <div class="skill-bubble hoverable">XGBoost</div>
+        <div class="skill-bubble hoverable">SQL</div>
+        <div class="skill-bubble hoverable">PyTorch</div>
+        <div class="skill-bubble hoverable">TensorFlow</div>
         <div class="skill-bubble hoverable">Hugging Face</div>
         <div class="skill-bubble hoverable">LLMs</div>
         <div class="skill-bubble hoverable">RAG</div>
         <div class="skill-bubble hoverable">Agentic AI</div>
-        <div class="skill-bubble hoverable">GenAI</div>
         <div class="skill-bubble hoverable">Computer Vision</div>
-        <div class="skill-bubble hoverable">Causal Inference</div>
-        <div class="skill-bubble hoverable">Forecasting</div>
-        <div class="skill-bubble hoverable">Regression</div>
-        <div class="skill-bubble hoverable">Classification</div>
-        <div class="skill-bubble hoverable">Clustering</div>
-        <div class="skill-bubble hoverable">A/B Testing</div>
-        <div class="skill-bubble hoverable">Optimization</div>
-        <div class="skill-bubble hoverable">Pandas</div>
-        <div class="skill-bubble hoverable">NumPy</div>
-        <div class="skill-bubble hoverable">SciPy</div>
+        <div class="skill-bubble hoverable">OpenCV</div>
+        <div class="skill-bubble hoverable">YOLOv8</div>
+        <div class="skill-bubble hoverable">FAISS</div>
+        <div class="skill-bubble hoverable">Vision Transformers</div>
         <div class="skill-bubble hoverable">Statistical Analysis</div>
-        <div class="skill-bubble hoverable">Anomaly Detection</div>
-        <div class="skill-bubble hoverable">SQL</div>
-        <div class="skill-bubble hoverable">Spark</div>
+        <div class="skill-bubble hoverable">A/B Testing</div>
+        <div class="skill-bubble hoverable">Feature Engineering</div>
+        <div class="skill-bubble hoverable">FastAPI</div>
         <div class="skill-bubble hoverable">Docker</div>
         <div class="skill-bubble hoverable">Git</div>
-        <div class="skill-bubble hoverable">FastAPI</div>
         <div class="skill-bubble hoverable">AWS</div>
-        <div class="skill-bubble hoverable">Databricks</div>
+        <div class="skill-bubble hoverable">Apache Spark</div>
         <div class="skill-bubble hoverable">Airflow</div>
-        <div class="skill-bubble hoverable">Tableau</div>
-        <div class="skill-bubble hoverable">Plotly</div>
+        <div class="skill-bubble hoverable">Databricks</div>
         <div class="skill-bubble hoverable">Firebase</div>
-        <div class="skill-bubble hoverable">LiteRT</div>
-        <div class="skill-bubble hoverable">ML Kit</div>
       </div>
     </div>
   </section>
@@ -2450,115 +2898,150 @@
     <div class="projects-wrap">
             <h2 class="projects-title" id="projTitle"></h2>
 <div class="proj-carousel-wrap">
-        <button class="proj-arrow proj-arrow-left hoverable" id="projLeft">&#8249;</button>
+        <button class="proj-arrow proj-arrow-left" id="projLeft">&#8249;</button>
         <div class="proj-ring-track" id="projTrack">
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/Ahadke/BeyondMaps" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="BeyondMaps - GitHub repository"></a>
+              <a href="https://github.com/Ahadke/BeyondMaps" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="BeyondMaps - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/beyondmaps-card.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">BeyondMaps</h4>
               <p class="proj-desc">An offline-first Android travel assistant that runs entirely on-device, with no internet and no cloud. Uses LiteRT for on-device LLM chat and translation, ML Kit for real-time OCR, and a local vector RAG system over a knowledge pack to answer contextual travel questions anywhere in the world.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>LiteRT</span><span>ML Kit</span><span>Vector RAG</span><span>Android</span><span>On-device AI</span><span>OCR</span></div><div class="proj-card-meta"><p class="proj-card-note">Built in 24 hours at Google X Qualcomm LiteRT Hackathon 2026</p>
-              <a href="https://github.com/Ahadke/BeyondMaps" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>LiteRT</span><span>ML Kit</span><span>Vector RAG</span><span>Android</span><span>On-device AI</span><span>OCR</span></div>
+                <div class="proj-card-bottom">
+                  <p class="proj-card-note"><span class="proj-card-note-text">Selected from 450+ applicants at the Google X Qualcomm LiteRT Hackathon 2026 and built in 24 hours.</span></p>
+                  <a href="https://github.com/Ahadke/BeyondMaps" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/celinejp/ReliefNet" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="AlertU - GitHub repository"></a>
+              <a href="https://github.com/celinejp/ReliefNet" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="AlertU - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/alertu-card.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">AlertU</h4>
               <p class="proj-desc">An offline-first disaster communication platform designed to maintain critical connectivity during network outages and emergency scenarios. It enables peer-to-peer messaging, local resource sharing, and decentralized SOS coordination without stable internet, with resilient synchronization once connectivity is restored.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>Python</span><span>Flutter</span><span>Node.js</span><span>Flask</span><span>Geospatial Mapping</span><span>REST APIs</span><span>Bootstrap</span></div><div class="proj-card-meta"><p class="proj-card-note">Built in 24 hours at HackDavis 2026</p>
-              <a href="https://github.com/celinejp/ReliefNet" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>Python</span><span>Flutter</span><span>Node.js</span><span>Flask</span><span>Geospatial Mapping</span><span>REST APIs</span><span>Bootstrap</span></div>
+                <div class="proj-card-bottom">
+                  <p class="proj-card-note"><span class="proj-card-note-text">Built in 24 hours at HackDavis 2026</span></p>
+                  <a href="https://github.com/celinejp/ReliefNet" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/Bismanpal-Singh/SCSP---Mantle-AI" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="Mantle AI - GitHub repository"></a>
+              <a href="https://github.com/Bismanpal-Singh/SCSP---Mantle-AI" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Mantle AI - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/mantle-ai.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">Mantle AI</h4>
               <p class="proj-desc">An agentic materials copilot built to accelerate critical mineral discovery. Takes mission-level language, converts it into search constraints, and queries the Materials Project with resilient retrieval. A planner/judge loop scores and filters candidates iteratively until it delivers ranked material portfolios with uncertainty estimates and lab test queues, all streamed live in the UI.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>Python</span><span>FastAPI</span><span>Agentic AI</span><span>RAG</span><span>Materials Project API</span><span>LLM Planning</span><span>Streaming UI</span></div><div class="proj-card-meta"><p class="proj-card-note">Built in under 30 hours at SCSP National Security Hackathon 2026</p>
-              <a href="https://github.com/Bismanpal-Singh/SCSP---Mantle-AI" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>Python</span><span>FastAPI</span><span>Agentic AI</span><span>RAG</span><span>LLM</span><span>Streaming UI</span></div>
+                <div class="proj-card-bottom">
+                  <p class="proj-card-note"><span class="proj-card-note-text">Built in under 30 hours at SCSP National Security Hackathon 2026</span></p>
+                  <a href="https://github.com/Bismanpal-Singh/SCSP---Mantle-AI" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/celinejp/Rooming" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="Rooming - GitHub repository"></a>
+              <a href="https://github.com/celinejp/Rooming" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Rooming - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/rooming.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">Rooming</h4>
               <p class="proj-desc">A shared household management app that replaces the mess of group chats and spreadsheets. Supports Google sign-in, house onboarding, and admin/member roles, with a unified dashboard for expenses, chores, shopping lists, announcements, and a shared calendar, all synced in real time across housemates.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>React</span><span>TypeScript</span><span>Firebase</span><span>Firestore</span><span>Google Auth</span><span>Real-time Sync</span><span>Role-based Access</span></div>
-              <a href="https://github.com/celinejp/Rooming" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>React</span><span>TypeScript</span><span>Firebase</span><span>Firestore</span><span>Google Auth</span><span>Real-time Sync</span><span>Role-based Access</span></div>
+                <div class="proj-card-bottom">
+<a href="https://github.com/celinejp/Rooming" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/sophiequynn/graphq-llm" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="GraphQ-LLM - GitHub repository"></a>
+              <a href="https://github.com/sophiequynn/graphq-llm" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="GraphQ-LLM - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/graphq-llm.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">GraphQ-LLM</h4>
               <p class="proj-desc">An AI-powered query tutor for ResilientDB&apos;s GraphQL API. Ingests GraphQL documentation into a RAG pipeline so users can ask natural language questions, get structured explanations, complexity estimates, and efficiency tips without digging through docs, served through a clean Nexus UI with Dockerized backend services.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>TypeScript</span><span>GraphQL</span><span>RAG</span><span>Vector Search</span><span>Docker</span><span>ResilientDB</span><span>NL Query</span></div>
-              <a href="https://github.com/sophiequynn/graphq-llm" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>TypeScript</span><span>GraphQL</span><span>RAG</span><span>Vector Search</span><span>Docker</span><span>ResilientDB</span><span>NL Query</span></div>
+                <div class="proj-card-bottom">
+<a href="https://github.com/sophiequynn/graphq-llm" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="Demand forecasting pipeline - GitHub repository"></a>
+              <a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Demand forecasting pipeline - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/demand-forecasting.png'); background-position: center 62%;"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">Demand Forecasting &amp; Revenue Optimization</h4>
               <p class="proj-desc">An end-to-end revenue pipeline built on hotel booking data. Uses Prophet for demand forecasting, de-trended elasticity curves to model price sensitivity, constrained nonlinear optimization for pricing decisions, and multi-period dynamic programming to maximize revenue across booking windows, validated with A/B-style simulation.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>Python</span><span>Prophet</span><span>SciPy</span><span>Time Series</span><span>Price Optimization</span><span>Dynamic Programming</span><span>Elasticity Modeling</span><span>A/B Simulation</span></div>
-              <a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>Python</span><span>Prophet</span><span>SciPy</span><span>Time Series</span><span>Price Optimization</span><span>Dynamic Programming</span><span>Elasticity Modeling</span><span>A/B Simulation</span></div>
+                <div class="proj-card-bottom">
+<a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="Enterprise demand forecasting - GitHub repository"></a>
+              <a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Enterprise demand forecasting - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/enterprise-forecasting.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">Enterprise Causal Demand Forecasting</h4>
               <p class="proj-desc">A production-grade retail forecasting system that goes beyond naive baselines. Engineers causal features from promotions, pricing, and calendar effects, fits probabilistic quantile models for uncertainty-aware predictions, reconciles forecasts hierarchically across SKU, store, and geography, and monitors for distribution drift to stay reliable in production.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>Quantile Regression</span><span>Causal Features</span><span>Hierarchical Forecasting</span><span>Drift Monitoring</span><span>Inventory Optimization</span></div>
-              <a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>Quantile Regression</span><span>Causal Features</span><span>Hierarchical Forecasting</span><span>Drift Monitoring</span><span>Inventory Optimization</span></div>
+                <div class="proj-card-bottom">
+<a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="proj-card hoverable">
+          <div class="proj-card">
             <div class="proj-img">
-              <a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" class="proj-img-link hoverable" target="_blank" rel="noopener noreferrer" aria-label="RFM segmentation - GitHub repository"></a>
+              <a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="RFM segmentation - GitHub repository"></a>
               <div class="proj-img-blur" style="background-image: url('images/rfm-retention.png')"></div>
             </div>
             <div class="proj-info">
               <h4 class="proj-title">RFM Segmentation &amp; Retention Modeling</h4>
               <p class="proj-desc">A customer analytics pipeline that segments users by recency, frequency, and monetary value to identify high-value cohorts and churn-risk clusters. Predictive retention models then target each segment with tailored interventions, replacing one-size-fits-all campaigns with ROI-driven retention strategy built directly from transactional history.</p>
-              <div class="proj-card-footer"><div class="proj-tags"><span>Python</span><span>RFM Analysis</span><span>scikit-learn</span><span>K-Means Clustering</span><span>Churn Prediction</span><span>Customer Segmentation</span><span>Predictive Modeling</span><span>CLV</span></div>
-              <a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" target="_blank" rel="noopener noreferrer" class="proj-github hoverable" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a></div>
+              <div class="proj-card-footer">
+                <div class="proj-tags"><span>Python</span><span>RFM Analysis</span><span>scikit-learn</span><span>K-Means Clustering</span><span>Churn Prediction</span><span>Customer Segmentation</span><span>Predictive Modeling</span><span>CLV</span></div>
+                <div class="proj-card-bottom">
+<a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                </div>
+              </div>
             </div>
           </div>
 
         </div>
-        <button class="proj-arrow proj-arrow-right hoverable" id="projRight">&#8250;</button>
+        <button class="proj-arrow proj-arrow-right" id="projRight">&#8250;</button>
       </div>
 
     </div>
@@ -2573,14 +3056,19 @@
           <img src="images/research-sealid.png" alt="Harbor seal with an identification tag on its head in turquoise water, eating a small fish" width="769" height="1024" decoding="async" loading="lazy" style="border: 1.5px solid #c8c8c8; border-radius: 6px;">
         </div>
         <h3 class="research-name">Seal ID for Pandemic Insights</h3>
-        <div class="research-desc" style="width: 100%; max-width: 100%; box-sizing: border-box;">
+        <div class="research-desc">
           <p>The National Science Foundation's Predictive Intelligence for Pandemic Prevention (PIPP) initiative and the Center for Pandemic Insight (<a href="https://www.pandemicinsights.org/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">CPI</a>), in partnership with the <a href="https://www.cphslab.com/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">CHPS Lab</a>, are building the early warning infrastructure the world needs to get ahead of the next pandemic — before it reaches human populations.</p>
+
           <p>Highly Pathogenic Avian Influenza (HPAI) is no longer a contained wildlife problem. Recent outbreaks have demonstrated sustained transmission from migratory birds to marine mammals, and every cross-species jump brings us closer to a strain capable of spreading between humans. Harbor seals sit at exactly this interface, they are one of our most valuable sentinel species for detecting the early signals of a zoonotic spillover event. The challenge is that meaningful surveillance requires identifying and tracking individual animals across time and space at a scale that manual field methods simply cannot reach.</p>
-          <p>SealID is a computer vision system built to solve that problem. By automating individual seal identification from drone footage, it enables non-invasive, continuous, large-scale wildlife surveillance that feeds directly into <a href="https://www.pandemicinsights.org/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">CPI</a>'s pandemic early warning pipeline. Rather than waiting for a die-off to be reported, the system tracks population-level changes in behavior, body condition, and mortality in real time — turning wildlife monitoring from a reactive process into a predictive one.</p>
-          <p>Within the team, the focus has been on building and refining the computer vision core that makes automated seal identification reliable at scale. This spans cleaning and standardizing seal image annotations to improve data quality, implementing face chipping for consistent and repeatable feature extraction, and strengthening recognition accuracy through correct rank ordering and confidence scoring. The team also developed a GUI that allows researchers to visually inspect probe images against ranked matches with confidence levels, making model outputs interpretable and actionable in the field. The broader goal is a system robust enough to handle real-world drone footage conditions — varying altitude, angle, lighting, and motion — so that pandemic surveillance can run continuously, without human bottlenecks slowing it down.</p>
-        </div>
+          
+          <p>SealID is a computer vision system built to solve that problem. By automating individual seal identification from drone footage and field photographs, it enables non-invasive, continuous, large-scale wildlife surveillance that feeds directly into <a href="https://www.pandemicinsights.org/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">CPI</a>'s pandemic early warning pipeline. Rather than waiting for a die-off to be reported, the system tracks population-level changes in behavior, body condition, and mortality in real time, turning wildlife monitoring from a reactive process into a predictive one.</p>
+          
+          <p>Leading the computer vision development on this project, the focus has been on a full architectural upgrade of the identification pipeline. The previous system relied on a CNN-based model with manual face chipping, feature annotation, and per-seal retraining, steps that created significant bottlenecks at every stage. The rebuilt system replaces all of that. Face detection and pose-aligned chipping are now handled automatically by YOLOv8-Pose, and identity matching is performed by MegaDescriptor, a Vision Transformer, which encodes each seal face into a 2048-dimensional embedding and matches it against a FAISS vector database of 130+ individually catalogued harbour seals with 300 to 400 reference images per individual. The system achieves 96% face detection accuracy and 73% individual identification accuracy on unseen field data, and extends reliable recognition to side profiles, partial faces, and multi-individual frames that the previous system could not handle. Adding a new individual to the database no longer requires retraining, it requires dropping photos into a folder and running a single script.</p>
+          
+          <p>A desktop GUI allows researchers to upload any photograph and immediately receive ranked identity matches with confidence scores, making model outputs interpretable and actionable without requiring any technical background. The broader goal is a system robust enough to handle real-world drone footage conditions, varying altitude, angle, lighting, and motion, so that pandemic surveillance can run continuously without human bottlenecks slowing it down. By enabling consistent longitudinal tracking of individual animals, SealID provides the behavioral and mortality data needed to detect anomalies before a spillover event reaches human populations.</p>
+          </div>
         <div class="research-tags">
-          <span>Python</span><span>C++</span><span>PyTorch</span><span>TensorFlow</span><span>OpenCV</span><span>CNNs</span><span>Object Detection</span><span>YOLO</span><span>Image Segmentation</span><span>Feature Extraction</span>
+          <span>Python</span><span>C++</span><span>PyTorch</span><span>TensorFlow</span><span>OpenCV</span><span>CNNs</span><span>Object Detection</span><span>YOLOv8</span><span>Image Segmentation</span><span>Feature Extraction</span><span>Deep Learning</span><span>Vision Transformers (ViT)</span><span>FAISS</span>
         </div>
         <div class="research-meta">
           <div class="research-meta-item">
@@ -2607,22 +3095,33 @@
       <h2 class="cert-title" id="certTitle"></h2>
 
       <div class="cert-carousel-wrap">
-        <button class="cert-arrow hoverable" id="certLeft">&#8249;</button>
+        <button class="cert-arrow" id="certLeft">&#8249;</button>
         <div class="cert-track" id="certTrack">
 
-          <div class="cert-card hoverable">
+          <div class="cert-card">
             <span class="cert-issuer">Harvard Business School</span>
             <h4 class="cert-name">Data Science for Business</h4>
             <span class="cert-date">Credential ID · 2537OYDRAFEK</span>
             <p class="cert-learned">Covers the full analytics workflow: framing business problems as data problems, selecting and evaluating models, and translating findings into executive-level strategy. Bridges technical data science with real-world business impact.</p>
             <div class="cert-footer">
               <div class="cert-tags"><span>Business Analytics</span><span>Predictive Modeling</span><span>Statistical Analysis</span><span>Data-Driven Strategy</span><span>Machine Learning</span><span>A/B Testing</span></div>
-              <a href="https://cecredential-validation.tlt.harvard.edu/" target="_blank" rel="noopener noreferrer" class="cert-link hoverable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="https://cecredential-validation.tlt.harvard.edu/" target="_blank" rel="noopener noreferrer" class="cert-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </div>
+
+          <div class="cert-card">
+            <span class="cert-issuer">Udemy</span>
+            <h4 class="cert-name">The Complete SQL Bootcamp: Go from Zero to Hero</h4>
+            <span class="cert-date">Certificate · UC-72f531d9-b861-40b8-8ccd-843d8fd64c7b</span>
+            <p class="cert-learned">End-to-end SQL training from core querying through joins, aggregations, subqueries, and analytical workflows. Built practical database skills for extracting, transforming, and analyzing data with hands-on exercises.</p>
+            <div class="cert-footer">
+              <div class="cert-tags"><span>SQL</span><span>PostgreSQL</span><span>JOINs</span><span>Aggregations</span><span>Subqueries</span><span>Data Analysis</span></div>
+              <a href="https://www.udemy.com/certificate/UC-72f531d9-b861-40b8-8ccd-843d8fd64c7b/" target="_blank" rel="noopener noreferrer" class="cert-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
             </div>
           </div>
 
         </div>
-        <button class="cert-arrow hoverable" id="certRight">&#8250;</button>
+        <button class="cert-arrow" id="certRight">&#8250;</button>
       </div>
     </div>
   </section>
@@ -2753,7 +3252,7 @@
       </div>
 
     </div>
-    <p class="contact-signoff">Crafted by Aayusha Hadke with <span>♥</span> in 2026</p>
+    <p class="contact-signoff">Crafted by Aayusha Hadke with <span class="signoff-heart" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span> in 2026</p>
   </section>
 </main>
 
@@ -2772,9 +3271,24 @@
   let rx = mx;
   let ry = my;
 
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function setCustomCursorVisible(visible) {
+    if (!dot || !ring) return;
+    const v = visible ? '1' : '0';
+    dot.style.opacity = v;
+    ring.style.opacity = v;
+    if (!visible) ring.classList.remove('hovering');
+  }
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    setCustomCursorVisible(true);
+  });
+
+  setCustomCursorVisible(true);
 
   function animateCursor() {
+    if (!dot || !ring) return;
     rx += (mx - rx) * 0.1;
     ry += (my - ry) * 0.1;
     dot.style.left = mx + 'px';
@@ -2786,13 +3300,22 @@
   animateCursor();
 
   document.querySelectorAll('.hoverable, a, button').forEach(el => {
+    if (el.closest('.proj-card')) return;
     const isHeaderOrSidebar = el.closest('header') || el.closest('#sidebar');
     el.addEventListener('mouseenter', () => { if (!isHeaderOrSidebar) ring.classList.add('hovering'); });
     el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
   });
 
-  document.addEventListener('mousedown', () => { dot.style.transform = 'translate(-50%,-50%) scale(0.5)'; ring.style.transform = 'translate(-50%,-50%) scale(0.9)'; });
-  document.addEventListener('mouseup', () => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.transform = 'translate(-50%,-50%) scale(1)'; });
+  document.addEventListener('mousedown', () => {
+    if (!dot || !ring) return;
+    dot.style.transform = 'translate(-50%,-50%) scale(0.5)';
+    ring.style.transform = 'translate(-50%,-50%) scale(0.9)';
+  });
+  document.addEventListener('mouseup', () => {
+    if (!dot || !ring) return;
+    dot.style.transform = 'translate(-50%,-50%) scale(1)';
+    ring.style.transform = 'translate(-50%,-50%) scale(1)';
+  });
 
   // THEME TOGGLE
   const html = document.documentElement;
@@ -2897,10 +3420,45 @@
   tlBlocks.forEach(b => { if (b) tlObserver.observe(b); });
 
   // Section headings - static copy (no typewriter)
+  function fitHomeName() {
+    const rail = document.querySelector('.home-name-rail');
+    const el = document.getElementById('homeTitle');
+    if (!rail || !el) return;
+    const cs = getComputedStyle(rail);
+    const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+    const maxW = rail.clientWidth - padX;
+    if (maxW < 1) return;
+    let lo = 28;
+    let hi = 260;
+    let best = lo;
+    el.style.width = 'max-content';
+    el.style.maxWidth = '100%';
+    el.style.margin = '0 auto';
+    el.style.display = 'block';
+    el.style.textAlign = 'center';
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      el.style.fontSize = mid + 'px';
+      if (el.scrollWidth <= maxW) {
+        best = mid;
+        lo = mid + 1;
+      } else {
+        hi = mid - 1;
+      }
+    }
+    el.style.fontSize = best + 'px';
+  }
+
   (function initHeadings() {
     const homeTitle = document.getElementById('homeTitle');
     if (homeTitle) {
       homeTitle.innerHTML = 'HI, <em class="home-name-im">I&rsquo;m</em> AAYUSHA';
+      const runFit = () => fitHomeName();
+      runFit();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(runFit);
+      }
+      window.addEventListener('resize', runFit);
     }
     const map = [
       ['expTitle', "Where I've Been"],
@@ -3249,23 +3807,21 @@
       return ((i % n) + n) % n;
     }
 
+    const certLeft = document.getElementById('certLeft');
+    const certRight = document.getElementById('certRight');
+
     function update() {
       if (n === 0) return;
       ci = mod(ci);
-      const l = mod(ci - 1);
-      const r = mod(ci + 1);
-      cards.forEach((c) => {
-        c.classList.remove('center');
-        c.style.display = 'none';
-        c.style.order = '';
+      cards.forEach((c, i) => {
+        const active = i === ci;
+        c.classList.toggle('center', active);
+        if (active) c.style.removeProperty('display');
+        else c.style.display = 'none';
       });
-      cards[l].style.display = 'flex';
-      cards[l].style.order = '0';
-      cards[ci].style.display = 'flex';
-      cards[ci].style.order = '1';
-      cards[ci].classList.add('center');
-      cards[r].style.display = 'flex';
-      cards[r].style.order = '2';
+      const showArrows = n > 1;
+      if (certLeft) certLeft.style.visibility = showArrows ? 'visible' : 'hidden';
+      if (certRight) certRight.style.visibility = showArrows ? 'visible' : 'hidden';
     }
 
     function go(delta) {
