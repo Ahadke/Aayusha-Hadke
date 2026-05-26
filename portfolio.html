@@ -2546,10 +2546,18 @@
   .wave-emoji { font-size: 64px; }
   .sticker-main { width: 140px; }
 
-  /* Carousel card sizes — mobile (single card, full width) */
+  /* Light theme logo — maroon #4a0520 (mobile Safari can wash out desktop filter) */
+  [data-theme="light"] .logo-img {
+    filter: brightness(0) saturate(100%) invert(13%) sepia(46%) saturate(3644%) hue-rotate(307deg) brightness(93%) contrast(101%) !important;
+  }
+  [data-theme="light"] .header-left:hover .logo-img {
+    filter: brightness(0) saturate(100%) invert(13%) sepia(46%) saturate(3644%) hue-rotate(307deg) brightness(104%) contrast(101%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.48)) !important;
+  }
+
+  /* Carousel card sizes — mobile: fit track between arrows (no +2cm overflow) */
   :root {
-    --proj-card-w: min(calc(88vw + 2cm), calc(320px + 2cm));
-    --proj-card-w-side: min(calc(88vw + 2cm), calc(320px + 2cm));
+    --proj-card-w: calc(100vw - 36px - 88px - 1cm);
+    --proj-card-w-side: calc(100vw - 36px - 88px - 1cm);
     --proj-card-h: auto;
     --proj-img-h: 168px;
     --cert-card-w: min(calc(92vw - 3cm), calc(400px - 3cm));
@@ -2563,12 +2571,21 @@
 
   /* Project carousel */
   .proj-arrow { width: 36px; height: 36px; font-size: 16px; }
+  .proj-carousel-wrap { min-height: 0; gap: 6px; }
+  .proj-ring-track {
+    gap: 0;
+    padding: 12px 0;
+    min-height: 0;
+    min-width: 0;
+    flex: 1;
+  }
   .proj-card,
   .proj-card.center {
+    width: var(--proj-card-w) !important;
+    max-width: 100%;
+    box-sizing: border-box;
     min-height: calc(var(--proj-img-h) + 220px);
   }
-  .proj-carousel-wrap { min-height: 0; gap: 8px; }
-  .proj-ring-track { gap: 12px; padding: 16px 0; min-height: 0; }
 
   /* Research card: image on top, all text below */
   .research-card .research-card-thumb {
@@ -2589,6 +2606,60 @@
 
   /* About masonry */
   #about .about-masonry-grid { columns: 2; }
+
+  /* Where I've Been — single-side timeline (no alternate left/right) */
+  #experience .tl-line {
+    left: 12px;
+    transform: none;
+  }
+  #experience .timeline > .tl-entry {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding-left: 32px;
+    padding-bottom: 22px;
+  }
+  #experience .tl-dot {
+    left: 12px;
+    top: 8px;
+    transform: translateX(-50%);
+  }
+  #experience .tl-entry:hover .tl-dot {
+    transform: translateX(-50%) scale(1.35);
+  }
+  #experience .tl-year-pill,
+  #experience .timeline > .tl-entry:nth-of-type(2n+1) .tl-year-pill {
+    flex: none;
+    width: 100%;
+    padding: 0 0 8px 0 !important;
+    justify-content: flex-start !important;
+  }
+  #experience .tl-card,
+  #experience .timeline > .tl-entry:nth-of-type(2n) .tl-card,
+  #experience .timeline > .tl-entry:nth-of-type(2n+1) .tl-card {
+    flex: none;
+    width: 100%;
+    padding: 0 !important;
+    text-align: left;
+    text-justify: auto;
+  }
+  #experience .tl-entry:hover .tl-card,
+  #experience .timeline > .tl-entry:nth-of-type(2n+1):hover .tl-card {
+    transform: none;
+  }
+  #experience .tl-year-badge {
+    white-space: normal;
+    text-align: left;
+    line-height: 1.35;
+    max-width: 100%;
+  }
+  #experience .tl-role {
+    text-align: left;
+    text-justify: auto;
+  }
+  #experience .tl-org {
+    text-align: left;
+    text-justify: auto;
+  }
 
   /* Footer */
   footer { margin-left: 0; font-size: 13px; }
@@ -3320,8 +3391,10 @@
   // THEME TOGGLE
   const html = document.documentElement;
   const toggle = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('theme') || 'dark';
-  html.setAttribute('data-theme', saved);
+  const saved = localStorage.getItem('theme');
+  const theme = saved === 'light' ? 'light' : 'dark';
+  html.setAttribute('data-theme', theme);
+  if (!saved) localStorage.setItem('theme', 'dark');
 
   toggle.addEventListener('click', () => {
     const current = html.getAttribute('data-theme');
