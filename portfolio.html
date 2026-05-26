@@ -780,18 +780,19 @@
   .cert-footer {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
     gap: 12px;
     width: 100%;
     margin-top: auto;
     padding-top: 8px;
+    padding-right: 40px;
+    box-sizing: border-box;
   }
   .cert-tags {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
   }
   .cert-tags span {
     font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700;
@@ -801,11 +802,16 @@
   }
   [data-theme="light"] .cert-tags span { background: rgba(74,5,32,0.08); color: #4a0520; border-color: rgba(74,5,32,0.2); }
   .cert-link {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2;
     width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     background: rgba(255,255,255,0.07); border: 1px solid rgba(139,92,246,0.3);
     color: var(--accent-2); text-decoration: none;
     transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    margin: 0;
   }
   .cert-link:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 16px rgba(249,168,212,0.5); }
   .cert-link svg { width: 14px; height: 14px; }
@@ -1609,7 +1615,8 @@
 
   /* CARD BOTTOM — title, description, tags, then hackathon + link row */
   .proj-info {
-    padding: 11px 16px 11px; display: flex; flex-direction: column; gap: 4px;
+    padding: 11px 40px 38px 16px;
+    display: flex; flex-direction: column; gap: 4px;
     position: relative; flex: 1; min-height: 0; overflow: hidden;
     background: transparent;
   }
@@ -1622,37 +1629,19 @@
     flex-shrink: 0;
     padding-top: 0;
   }
-  /* No hackathon line: tags + link on one row at bottom — desc uses the freed space */
-  .proj-card-footer:not(:has(.proj-card-note)) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 8px 10px;
-  }
-  .proj-card-footer:not(:has(.proj-card-note)) .proj-tags {
-    flex: 1 1 auto;
-    min-width: 0;
-    width: auto;
-    margin-top: 0;
-  }
-  .proj-card-footer:not(:has(.proj-card-note)) .proj-card-bottom {
-    flex: 0 0 auto;
-    min-height: 0;
-    width: auto;
-  }
   .proj-card-footer .proj-tags {
     width: 100%;
     min-width: 0;
   }
   .proj-card-bottom {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 8px;
     width: 100%;
-    min-height: 12px;
+    min-height: 0;
     overflow: visible;
+    padding-right: 4px;
+  }
+  /* No note row — still expose link for absolute bottom-right positioning */
+  .proj-card-bottom:not(:has(.proj-card-note)) {
+    display: contents;
   }
   /* Browsers clamp tiny font-size; inner span + scale(0.5) halves rendered size */
   .proj-card-note {
@@ -1685,9 +1674,6 @@
   }
   .proj-card-note:empty {
     display: none;
-  }
-  .proj-card-bottom:not(:has(.proj-card-note:not(:empty))) {
-    justify-content: flex-end;
   }
   .proj-title {
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: calc(13px + 3pt);
@@ -1723,6 +1709,10 @@
     line-height: 1.15;
   }
   .proj-github {
+    position: absolute;
+    right: 16px;
+    bottom: 11px;
+    z-index: 4;
     flex-shrink: 0;
     width: 26px; height: 26px;
     display: flex; align-items: center; justify-content: center;
@@ -1731,7 +1721,7 @@
     border: 1px solid rgba(178,79,255,0.3);
     color: var(--accent-2); text-decoration: none;
     transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-    margin-left: auto;
+    margin: 0;
   }
   .proj-github:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 12px rgba(249,168,212,0.5); }
   .proj-github svg { width: 12px; height: 12px; }
