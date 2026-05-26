@@ -1977,7 +1977,168 @@
     box-shadow: 0 0 22px rgba(255,255,255,0.35);
     color: #ffffff;
   }
+/*    RESPONSIVE — TABLET (≤900px) & MOBILE (≤600px) */
 
+/* Disable custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto !important; }
+  #cursor-dot, #cursor-ring { display: none !important; }
+  a, button, [role="button"], .sidebar-item,
+  .btn-resume, .btn-send, .proj-filter,
+  .cert-arrow, .proj-arrow, .theme-toggle { cursor: pointer !important; }
+}
+
+/* ── TABLET (≤900px) ────────────────────────── */
+@media (max-width: 900px) {
+
+  /* Hide sidebar, shift layout left */
+  #sidebar { display: none; }
+  main, footer { margin-left: 0; }
+
+  /* Header: use full width */
+  header {
+    padding: 0 20px;
+  }
+
+  /* Sections: reduce padding */
+  section { padding: 60px 28px; }
+  #research, #certifications, #about,
+  #contact, #techstack, #projects, #home {
+    padding: 60px 28px;
+  }
+
+  /* Section headings */
+  section h2,
+  .skills-title, .projects-title, .cert-title,
+  .research-title, .about-title, .contact-title { font-size: 36px !important; }
+
+  /* Hero */
+  .home-card { width: 100%; max-width: 100%; }
+  .home-right { width: 100%; flex-shrink: 1; margin-right: 0; }
+  .home-portrait-wrap {
+    width: min(360px, 70vw);
+    margin-left: clamp(8px, 5vw, 48px);
+  }
+
+  /* Contact: stack columns */
+  .contact-wrap { flex-direction: column; gap: 40px; }
+  .contact-right { padding-top: 0; }
+  .social-list { padding-top: 0; }
+
+  /* Cert carousel card sizes */
+  .cert-card { width: 260px; }
+  .cert-card.center { width: 300px; }
+
+  /* Project carousel */
+  .proj-card { width: 300px; }
+  .proj-card.center { width: 300px; }
+
+  /* Research card thumb */
+  .research-card .research-card-thumb {
+    width: min(220px, 42vw);
+  }
+
+  /* Masonry grid */
+  #about .about-masonry-grid { columns: 3; }
+}
+
+/* ── MOBILE (≤600px) ────────────────────────── */
+@media (max-width: 600px) {
+
+  /* CSS variables override */
+  :root {
+    --sidebar-w: 0px;
+    --header-h: 52px;
+  }
+
+  /* Header: tighter, hide theme toggle label space */
+  header { padding: 0 14px; }
+  .header-name { font-size: 11px; letter-spacing: 0.8px; }
+  .theme-toggle { width: 60px; height: 30px; }
+  .toggle-thumb { width: 22px; height: 22px; }
+  [data-theme="light"] .toggle-thumb { left: calc(60px - 22px - 4px); }
+  .btn-resume { font-size: 12px; padding: 6px 14px; }
+  .header-right { gap: 10px; }
+  .icon-link svg { width: 18px; height: 18px; }
+
+  /* Sections */
+  section { padding: 48px 18px; min-height: auto; }
+  #research, #certifications, #about,
+  #contact, #techstack, #projects, #home {
+    padding: 48px 18px;
+  }
+
+  /* Section headings */
+  section h2,
+  .skills-title, .projects-title, .cert-title,
+  .research-title, .about-title, .contact-title { font-size: 30px !important; }
+
+  /* Hero name */
+  .home-name { font-size: clamp(28px, 9vw, 60px) !important; }
+  .home-portrait-wrap {
+    width: min(280px, 78vw);
+    margin-left: clamp(4px, 3vw, 20px);
+  }
+  .home-card {
+    width: 100%; height: auto; min-height: 200px;
+    padding: 20px;
+  }
+  .home-right { width: 100%; }
+  .home-bottom { margin-top: clamp(-220px, -28vw, -120px); }
+
+  /* Contact */
+  .contact-wrap { flex-direction: column; gap: 32px; }
+  .social-list { padding-top: 0; }
+  .contact-title { font-size: 28px !important; }
+  .wave-emoji { font-size: 64px; }
+  .sticker-main { width: 140px; }
+
+  /* Cert carousel */
+  .cert-arrow { width: 36px; height: 36px; font-size: 16px; }
+  .cert-card { width: 85vw; max-width: 320px; }
+  .cert-card.center { width: 85vw; max-width: 320px; }
+  .cert-carousel-wrap { gap: 8px; min-height: 320px; }
+
+  /* Project carousel */
+  .proj-arrow { width: 36px; height: 36px; font-size: 16px; }
+  .proj-card {
+    width: 82vw !important;
+    max-width: 340px !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+  .proj-card.center {
+    width: 82vw !important;
+    max-width: 340px !important;
+  }
+  .proj-img {
+    height: 180px !important;
+  }
+  .proj-carousel-wrap { min-height: auto; gap: 8px; }
+  .proj-ring-track { gap: 12px; padding: 16px 0; }
+
+  /* Research card: stack image above text */
+  .research-card .research-card-thumb {
+    float: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 16px 0 !important;
+  }
+  .research-name { font-size: 17px; }
+
+  /* Tech stack bubbles: slightly smaller */
+  .skill-bubble { padding: 10px 18px; font-size: 13px; }
+
+  /* About masonry */
+  #about .about-masonry-grid { columns: 2; }
+
+  /* Footer */
+  footer { margin-left: 0; font-size: 13px; }
+
+  /* Form */
+  .contact-form { gap: 14px; }
+  textarea.form-input { min-height: 120px; }
+}
 </style>
 </head>
 <body>
