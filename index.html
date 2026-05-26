@@ -3557,7 +3557,6 @@
       try {
         await deliverContactMessage({ name, email, message });
         setSendButtonState('sent');
-        showFormStatus('Thanks — your message was sent.', 'success');
         contactForm.reset();
         setTimeout(function() {
           setSendButtonState('idle');
