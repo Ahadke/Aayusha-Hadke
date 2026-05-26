@@ -1,0 +1,7 @@
+node_modules
+dist
+.env
+__pycache__/
+*.pyc
+Downloads/
+yet-another-fork-of-cheapnoise-inception-anydayshaders-24-6/
