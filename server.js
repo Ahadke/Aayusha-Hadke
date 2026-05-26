@@ -44,10 +44,10 @@ app.post('/api/contact', async (req, res) => {
   const pass = process.env.SMTP_PASS;
 
   if (!host || !user || !pass) {
-    console.error('Missing SMTP_HOST, SMTP_USER, or SMTP_PASS in .env');
+    console.error('Missing SMTP_HOST, SMTP_USER, or SMTP_PASS in .env (copy .env.example → .env)');
     return res.status(503).json({
       ok: false,
-      error: 'Mail is not configured on the server. Set SMTP_* in .env.',
+      error: 'Mail server is not configured. The site will try an alternate delivery method.',
     });
   }
 
@@ -83,7 +83,15 @@ app.get('/', (_req, res) => {
 
 app.use(express.static(root, { index: false }));
 
+const smtpReady = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+
 app.listen(PORT, () => {
   console.log(`Portfolio server http://localhost:${PORT}`);
-  console.log(`Contact → ${CONTACT_TO} (configure SMTP in .env)`);
+  console.log(`Contact inbox: ${CONTACT_TO}`);
+  if (smtpReady) {
+    console.log('SMTP: configured (.env)');
+  } else {
+    console.warn('SMTP: NOT configured — copy .env.example to .env and set SMTP_* (Gmail App Password).');
+    console.warn('     Live static sites use FormSubmit fallback until SMTP is set on a Node host.');
+  }
 });

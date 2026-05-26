@@ -1008,9 +1008,12 @@
     font-family: 'Nunito', sans-serif;
     font-size: 14px;
     line-height: 1.5;
-    min-height: 1.4em;
-    margin: 0;
+    min-height: 0;
+    margin: 6px 0 0;
     color: var(--text-muted);
+  }
+  .form-status:not(:empty) {
+    min-height: 1.4em;
   }
   .form-status.success { color: #4ade80; }
   .form-status.error { color: #f87171; }
@@ -1030,7 +1033,18 @@
     white-space: nowrap;
   }
   .btn-send:hover:not(:disabled) { background: rgba(249,168,212,0.3); box-shadow: 0 0 20px rgba(249,168,212,0.4); transform: scale(1.03); color: #fff; }
-  .btn-send.sent { background: rgba(30,200,100,0.15); border-color: rgba(30,200,100,0.4); color: #4ade80; }
+  .btn-send.sent {
+    background: rgba(249,168,212,0.28);
+    border-color: rgba(236,72,153,0.65);
+    color: #f9a8d4;
+    box-shadow: 0 0 18px rgba(249,168,212,0.35);
+  }
+  [data-theme="light"] .btn-send.sent {
+    background: rgba(249,168,212,0.22);
+    border-color: rgba(74,5,32,0.45);
+    color: #4a0520;
+    box-shadow: 0 0 14px rgba(74,5,32,0.12);
+  }
   .btn-send:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
   .btn-send.sent:disabled { opacity: 1; }
   [data-theme="light"] .btn-send {
@@ -3224,6 +3238,7 @@
             <span id="sendLabel">Send Message</span>
             <svg id="sendPlane" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
+          <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
 
@@ -3427,14 +3442,17 @@
     });
   })();
 
-  // CONTACT FORM → POST /api/contact (run `npm start` + configure .env SMTP)
+  // CONTACT FORM — server SMTP (npm start + .env) or FormSubmit fallback (GitHub Pages)
   const contactForm = document.getElementById('contactForm');
   const sendBtn = document.getElementById('sendBtn');
   const formStatus = document.getElementById('formStatus');
   const sendLabel = document.getElementById('sendLabel');
   const sendPlane = document.getElementById('sendPlane');
+  const CONTACT_INBOX = 'ahadke26@gmail.com';
   const SENT_RESET_MS = 8000;
+
   function setSendButtonState(state) {
+    if (!sendBtn) return;
     sendBtn.classList.remove('sent');
     if (sendPlane) sendPlane.style.display = 'none';
     if (sendLabel) sendLabel.style.display = 'inline';
@@ -3455,13 +3473,72 @@
         break;
     }
   }
+
+  function showFormStatus(text, type) {
+    if (!formStatus) return;
+    formStatus.textContent = text || '';
+    formStatus.className = 'form-status' + (type ? ' ' + type : '');
+  }
+
+  async function sendViaServer(payload) {
+    const r = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    let data = {};
+    try {
+      data = await r.json();
+    } catch (_) {}
+    if (r.ok && data.ok) return;
+    const err = new Error(data.error || 'Could not send via server.');
+    err.status = r.status;
+    throw err;
+  }
+
+  async function sendViaFormSubmit(payload) {
+    const r = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(CONTACT_INBOX), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        name: payload.name,
+        email: payload.email,
+        message: payload.message,
+        _subject: 'Portfolio contact from ' + payload.name,
+        _replyto: payload.email,
+        _captcha: 'false',
+        _template: 'table',
+      }),
+    });
+    let data = {};
+    try {
+      data = await r.json();
+    } catch (_) {}
+    if (data.success || data.ok) return;
+    throw new Error(data.message || 'Could not send. Try emailing ' + CONTACT_INBOX + ' directly.');
+  }
+
+  async function deliverContactMessage(payload) {
+    try {
+      await sendViaServer(payload);
+      return 'server';
+    } catch (serverErr) {
+      const useFallback =
+        !serverErr.status ||
+        serverErr.status === 404 ||
+        serverErr.status === 503 ||
+        serverErr.message === 'Failed to fetch' ||
+        /fetch|network/i.test(serverErr.message || '');
+      if (!useFallback) throw serverErr;
+      await sendViaFormSubmit(payload);
+      return 'formsubmit';
+    }
+  }
+
   if (contactForm && sendBtn) {
     contactForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      if (formStatus) {
-        formStatus.textContent = '';
-        formStatus.className = 'form-status';
-      }
+      showFormStatus('', '');
       const fname = document.getElementById('fname');
       const femail = document.getElementById('femail');
       const fmsg = document.getElementById('fmsg');
@@ -3469,45 +3546,26 @@
       const email = femail ? femail.value.trim() : '';
       const message = fmsg ? fmsg.value.trim() : '';
       if (!name || !email || !message) {
-        if (formStatus) {
-          formStatus.textContent = 'Please fill in all fields.';
-          formStatus.className = 'form-status error';
-        }
+        showFormStatus('Please fill in all fields.', 'error');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showFormStatus('Please enter a valid email address.', 'error');
         return;
       }
       setSendButtonState('sending');
       try {
-        const r = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ name, email, message }),
-        });
-        let data = {};
-        try {
-          data = await r.json();
-        } catch (_) {}
-        if (!r.ok || !data.ok) {
-          throw new Error(data.error || 'Could not send. Try email or LinkedIn.');
-        }
+        await deliverContactMessage({ name, email, message });
         setSendButtonState('sent');
-        if (formStatus) {
-          formStatus.textContent = 'Thanks — your message was sent.';
-          formStatus.className = 'form-status success';
-        }
+        showFormStatus('Thanks — your message was sent.', 'success');
         contactForm.reset();
-        setTimeout(() => {
+        setTimeout(function() {
           setSendButtonState('idle');
-          if (formStatus) {
-            formStatus.textContent = '';
-            formStatus.className = 'form-status';
-          }
+          showFormStatus('', '');
         }, SENT_RESET_MS);
       } catch (err) {
         setSendButtonState('idle');
-        if (formStatus) {
-          formStatus.textContent = err.message || 'Something went wrong.';
-          formStatus.className = 'form-status error';
-        }
+        showFormStatus(err.message || 'Something went wrong. Try ' + CONTACT_INBOX + ' directly.', 'error');
       }
     });
   }
