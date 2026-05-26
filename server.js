@@ -1,5 +1,5 @@
 /**
- * Local/production server: serves portfolio.html + POST /api/contact (SMTP via Nodemailer).
+ * Local/production server: serves index.html + POST /api/contact (SMTP via Nodemailer).
  * Copy .env.example → .env and set SMTP_* (Gmail: use an App Password).
  */
 require('dotenv').config();
@@ -78,7 +78,7 @@ app.post('/api/contact', async (req, res) => {
 
 const root = __dirname;
 app.get('/', (_req, res) => {
-  res.sendFile(path.join(root, 'portfolio.html'));
+  res.sendFile(path.join(root, 'index.html'));
 });
 
 app.use(express.static(root, { index: false }));

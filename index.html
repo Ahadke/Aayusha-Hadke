@@ -31,13 +31,13 @@
     --proj-card-w-side: calc(272px + 2cm);
     --proj-card-h: 500px;
     --proj-img-h: 192px;
-    --cert-card-w: calc(520px - 3cm);
-    --cert-card-w-side: calc(300px - 3cm);
-    --cert-card-h: 420px;
-    --proj-card-bg: rgba(0, 0, 0, 0.35);
-    --proj-card-bg-center: rgba(0, 0, 0, 0.35);
-    --proj-card-bg-light: rgba(255, 255, 255, 0.38);
-    --proj-card-bg-center-light: rgba(255, 255, 255, 0.38);
+    --cert-card-w: var(--proj-card-w);
+    --cert-card-w-side: var(--proj-card-w-side);
+    --cert-card-h: var(--proj-card-h);
+    /* Glass surfaces — same level as .timeline-block (Where I've Been) */
+    --glass-bg: rgba(0, 0, 0, 0.35);
+    --glass-bg-light: rgba(255, 255, 255, 0.38);
+    --glass-blur: blur(14px);
     --proj-card-border-inset: 3px;
   }
   [data-theme="light"] {
@@ -509,7 +509,7 @@
   }
   .research-card {
     border-radius: 20px; padding: 32px;
-    background: rgba(0,0,0,0.35);
+    background: var(--glass-bg);
     display: flow-root;
     position: relative;
     transition: box-shadow 0.35s ease;
@@ -556,9 +556,9 @@
   .research-card:hover { box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15); }
   .research-card:hover::before { background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9); animation: border-flow 4s linear infinite; }
   [data-theme="light"] .research-card {
-    background: rgba(255, 255, 255, 0.38);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   [data-theme="light"] .research-card::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
@@ -696,14 +696,16 @@
     height: var(--cert-card-h);
     max-height: var(--cert-card-h);
     box-sizing: border-box;
-    border-radius: 20px; padding: 24px;
-    background: rgba(0,0,0,0.35);
+    border-radius: 20px;
+    padding: 11px 40px 38px 16px;
+    background: var(--glass-bg);
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    align-items: stretch;
+    gap: 8px;
     text-align: justify;
     text-justify: inter-word;
     position: relative;
+    overflow: hidden;
     transition: box-shadow 0.35s ease, opacity 0.3s ease;
     opacity: 1;
     filter: none;
@@ -724,10 +726,11 @@
   }
   .cert-card.hidden { display: none; }
   .cert-card > * { position: relative; z-index: 1; }
+  .cert-card > .cert-footer { position: static; z-index: 1; }
   [data-theme="light"] .cert-card {
-    background: rgba(255, 255, 255, 0.38);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   [data-theme="light"] .cert-card::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
@@ -781,12 +784,13 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    justify-content: flex-end;
+    gap: 4px;
     width: 100%;
     margin-top: auto;
-    padding-top: 8px;
-    padding-right: 40px;
+    padding-top: 0;
     box-sizing: border-box;
+    flex-shrink: 0;
   }
   .cert-tags {
     display: flex;
@@ -803,18 +807,18 @@
   [data-theme="light"] .cert-tags span { background: rgba(74,5,32,0.08); color: #4a0520; border-color: rgba(74,5,32,0.2); }
   .cert-link {
     position: absolute;
-    right: 24px;
-    bottom: 24px;
-    z-index: 2;
-    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    right: 16px;
+    bottom: 11px;
+    z-index: 5;
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(139,92,246,0.3);
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(178,79,255,0.3);
     color: var(--accent-2); text-decoration: none;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
     margin: 0;
   }
-  .cert-link:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 16px rgba(249,168,212,0.5); }
-  .cert-link svg { width: 14px; height: 14px; }
+  .cert-link:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 12px rgba(249,168,212,0.5); }
+  .cert-link svg { width: 12px; height: 12px; }
 
   /* ABOUT — CSS column masonry (per-image aspect ratios, object-fit: fill) */
   #about { align-items: flex-start; padding: 80px 48px; }
@@ -1006,7 +1010,7 @@
     color: #ffffff;
   }
   .form-input {
-    background: rgba(0,0,0,0.35);
+    background: var(--glass-bg);
     border: 1.5px solid rgba(249,168,212,0.25);
     border-radius: 12px;
     padding: 14px 16px;
@@ -1016,11 +1020,11 @@
     transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
   }
   [data-theme="light"] .form-input {
-    background: rgba(255, 255, 255, 0.38);
+    background: var(--glass-bg-light);
     border-color: rgba(0, 0, 0, 0.55);
     color: var(--text-primary);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   [data-theme="light"] .form-input:hover {
     border-color: rgba(0, 0, 0, 0.65);
@@ -1075,11 +1079,11 @@
   .btn-send.sent { background: rgba(30,200,100,0.15); border-color: rgba(30,200,100,0.4); color: #4ade80; }
   .btn-send:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
   [data-theme="light"] .btn-send {
-    background: rgba(255, 255, 255, 0.38);
+    background: var(--glass-bg-light);
     border-color: rgba(0, 0, 0, 0.55);
     color: #111111;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   .btn-plane { font-size: 18px; }
 
@@ -1115,18 +1119,17 @@
   }
   .social-icon-box {
     width: 52px; height: 52px; flex-shrink: 0;
-    background: rgba(0,0,0,0.35);
+    background: var(--glass-bg);
     border: none; position: relative;
     border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
     color: var(--text-muted);
     transition: border-color 0.3s, box-shadow 0.3s, color 0.3s, transform 0.3s;
-    backdrop-filter: blur(12px);
   }
   [data-theme="light"] .social-icon-box {
-    background: rgba(255, 255, 255, 0.38);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   .social-icon-box::before {
     content: '';
@@ -1287,7 +1290,7 @@
   .home-right { width: 460px; flex-shrink: 0; margin-right: clamp(8px, 1.5vw, 20px); }
   .home-card {
     border-radius: 20px; padding: 32px;
-    background: rgba(0,0,0,0.35);
+    background: var(--glass-bg);
     display: flex; flex-direction: column; gap: 20px;
     position: relative;
     transition: box-shadow 0.35s ease;
@@ -1305,9 +1308,9 @@
   .home-card:hover { box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15); }
   .home-card:hover::before { background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9); animation: border-flow 4s linear infinite; }
   [data-theme="light"] .home-card {
-    background: rgba(255, 255, 255, 0.38);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   [data-theme="light"] .home-card::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
@@ -1383,7 +1386,7 @@
   .skill-bubble {
     padding: 10px 18px;
     border-radius: 999px;
-    background: rgba(0,0,0,0.35);
+    background: var(--glass-bg);
     border: none; position: relative;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -1411,9 +1414,9 @@
   }
   .skill-bubble > * { position: relative; z-index: 1; }
   [data-theme="light"] .skill-bubble {
-    background: rgba(255, 255, 255, 0.38);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-color: transparent;
     color: var(--text-primary);
   }
@@ -1498,7 +1501,7 @@
     box-sizing: border-box; border-radius: 20px; overflow: hidden;
     position: relative;
     z-index: 2;
-    background: transparent;
+    background: var(--glass-bg);
     border: none;
     text-decoration: none; flex-direction: column;
     transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -1508,15 +1511,6 @@
     transform: scale(0.92);
     transform-origin: center center;
     isolation: isolate;
-    pointer-events: none;
-  }
-  .proj-card::after {
-    content: '';
-    position: absolute;
-    inset: var(--proj-card-border-inset);
-    border-radius: calc(20px - var(--proj-card-border-inset));
-    background: var(--proj-card-bg);
-    z-index: 0;
     pointer-events: none;
   }
   .proj-card.center {
@@ -1532,9 +1526,6 @@
     transform: scale(1);
     pointer-events: auto;
   }
-  .proj-card.center::after {
-    background: var(--proj-card-bg-center);
-  }
   .proj-card::before {
     content: '';
     position: absolute; inset: 0;
@@ -1546,7 +1537,7 @@
   }
   .proj-card > * { position: relative; z-index: 2; }
   .proj-card:not(.center) .proj-img-blur::after {
-    background: rgba(0, 0, 0, 0.52);
+    background: rgba(0, 0, 0, 0.28);
   }
   .proj-card:not(.center) .proj-img-link,
   .proj-card:not(.center) .proj-github {
@@ -1558,13 +1549,10 @@
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
     background-size: 300% 300%;
   }
-  [data-theme="light"] .proj-card::after {
-    background: var(--proj-card-bg-light);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-  }
-  [data-theme="light"] .proj-card.center::after {
-    background: var(--proj-card-bg-center-light);
+  [data-theme="light"] .proj-card {
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   .proj-card.hidden { display: none; }
   [data-theme="light"] .proj-card.center {
@@ -1589,7 +1577,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.38);
+    background: rgba(0, 0, 0, 0.22);
     pointer-events: none;
   }
   .proj-card.center .proj-img-blur { transform: scale(1); }
@@ -1625,7 +1613,8 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 6px;
+    justify-content: flex-end;
+    gap: 4px;
     flex-shrink: 0;
     padding-top: 0;
   }
@@ -1646,10 +1635,10 @@
   /* Browsers clamp tiny font-size; inner span + scale(0.5) halves rendered size */
   .proj-card-note {
     margin: 0;
-    flex: 1 1 0;
+    flex: 0 0 auto;
     min-width: 0;
     overflow: hidden;
-    align-self: flex-end;
+    align-self: stretch;
   }
   .proj-card-note-text {
     display: block;
@@ -1781,7 +1770,7 @@
     border-radius: 20px;
     padding: 28px 28px 16px;
     display: flex; flex-direction: column; gap: 12px;
-    background: rgba(0,0,0,0.35);
+    background: var(--glass-bg);
     transition: box-shadow 0.35s ease;
     /* Gradient border via pseudo-element */
   }
@@ -1804,9 +1793,9 @@
     100% { background-position: 0% 50%; }
   }
   [data-theme="light"] .timeline-block {
-    background: rgba(255, 255, 255, 0.38);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   [data-theme="light"] .timeline-block::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
@@ -2402,9 +2391,6 @@
     --proj-card-w-side: calc(252px + 2cm);
     --proj-card-h: 460px;
     --proj-img-h: 172px;
-    --cert-card-w: calc(460px - 3cm);
-    --cert-card-w-side: calc(280px - 3cm);
-    --cert-card-h: 400px;
   }
 
   /* Masonry grid */
@@ -2551,20 +2537,33 @@
     filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(98%) contrast(102%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.42)) !important;
   }
 
-  /* Carousel card sizes — mobile: fit track between arrows (no +2cm overflow) */
+  /* Carousel card sizes — mobile: +0.5cm each side vs prior width */
   :root {
-    --proj-card-w: calc(100vw - 36px - 88px - 1cm);
-    --proj-card-w-side: calc(100vw - 36px - 88px - 1cm);
+    --proj-card-w: calc(100vw - 36px - 88px);
+    --proj-card-w-side: calc(100vw - 36px - 88px);
     --proj-card-h: auto;
     --proj-img-h: 168px;
-    --cert-card-w: min(calc(92vw - 3cm), calc(400px - 3cm));
-    --cert-card-w-side: min(calc(92vw - 3cm), calc(400px - 3cm));
-    --cert-card-h: min(72vh, 440px);
   }
 
-  /* Cert carousel */
+  /* Cert carousel — same footprint as project cards */
   .cert-arrow { width: 36px; height: 36px; font-size: 16px; }
-  .cert-carousel-wrap { gap: 8px; }
+  .cert-carousel-wrap { min-height: 0; gap: 6px; }
+  .cert-track {
+    gap: 0;
+    padding: 12px 0;
+    min-height: 0;
+    min-width: 0;
+    flex: 1;
+  }
+  .cert-card,
+  .cert-card.center {
+    width: var(--cert-card-w) !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: auto;
+    max-height: none;
+    min-height: calc(var(--proj-img-h) + 220px);
+  }
 
   /* Project carousel */
   .proj-arrow { width: 36px; height: 36px; font-size: 16px; }
@@ -2582,6 +2581,24 @@
     max-width: 100%;
     box-sizing: border-box;
     min-height: calc(var(--proj-img-h) + 220px);
+  }
+  .proj-card-footer {
+    gap: 3px;
+    justify-content: flex-end;
+  }
+  .proj-card-footer:not(:has(.proj-card-note)) .proj-tags {
+    margin-top: 0;
+  }
+  .proj-card-footer:has(.proj-card-note) .proj-tags {
+    margin-bottom: 0;
+  }
+  .proj-card-bottom:has(.proj-card-note) {
+    display: block;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .proj-card-note {
+    padding-bottom: 2px;
   }
 
   /* Research card: image on top, all text below */
@@ -2772,7 +2789,7 @@
             <span>Located in San Francisco, California</span>
           </div>
           <div class="home-card hoverable">
-            <p class="home-card-bio">I'm a Computer Science graduate student at Univeristy of California, Davis passionate about AI and machine learning. My research focuses on deep learning, computer vision, CNNs, and transformer-based architectures. On the applied side, I build LLM-powered applications, RAG systems, and AI agents — designing intelligent workflows that work in production. I'm also expanding into data science, and across all my work I focus on building AI that is practical, scalable, and built for real-world impact.</p>
+            <p class="home-card-bio">I'm a Computer Science graduate student at Univeristy of California, Davis passionate about AI and Machine learning. My research focuses on deep learning, computer vision, CNNs, and transformer-based architectures. On the applied side, I build LLM-powered applications, RAG systems, and AI agents — designing intelligent workflows that work in production. I'm also expanding into data science, and across all my work I focus on building AI that is practical, scalable, and built for real-world impact.</p>
           </div>
         </div>
       </div>
@@ -2930,7 +2947,6 @@
         <div class="skill-bubble hoverable">TypeScript</div>
         <div class="skill-bubble hoverable">Java</div>
         <div class="skill-bubble hoverable">C++</div>
-        <div class="skill-bubble hoverable">Kotlin</div>
         <div class="skill-bubble hoverable">React</div>
         <div class="skill-bubble hoverable">Pandas</div>
         <div class="skill-bubble hoverable">NumPy</div>
@@ -2944,8 +2960,6 @@
         <div class="skill-bubble hoverable">Agentic AI</div>
         <div class="skill-bubble hoverable">Computer Vision</div>
         <div class="skill-bubble hoverable">OpenCV</div>
-        <div class="skill-bubble hoverable">YOLOv8</div>
-        <div class="skill-bubble hoverable">FAISS</div>
         <div class="skill-bubble hoverable">Vision Transformers</div>
         <div class="skill-bubble hoverable">Statistical Analysis</div>
         <div class="skill-bubble hoverable">A/B Testing</div>
@@ -3201,7 +3215,7 @@
       <div class="about-masonry-grid" aria-label="Photo gallery">
 
         <div class="masonry-item masonry-item--quote">
-          <p class="masonry-quote-inner">I genuinely cannot stop taking pictures of the sky. It&rsquo;s a problem. I&rsquo;m not fixing it.</p>
+          <p class="masonry-quote-inner">Outside of work, you'll usually find me by the ocean with a camera, chasing skies that never look the same.</p>
         </div>
 
         <div class="masonry-item hoverable">
