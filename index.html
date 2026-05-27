@@ -1347,6 +1347,20 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .skills-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .skills-group-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    margin: 0 0 10px;
+  }
   .skills-grid {
     display: flex;
     flex-wrap: wrap;
@@ -2725,7 +2739,7 @@
             <span>Located in San Francisco, California</span>
           </div>
           <div class="home-card hoverable">
-            <p class="home-card-bio">I'm a Computer Science graduate student at Univeristy of California, Davis passionate about AI and Machine learning. My research focuses on deep learning, computer vision, CNNs, and transformer-based architectures. On the applied side, I build LLM-powered applications, RAG systems, and AI agents — designing intelligent workflows that work in production. I'm also expanding into data science, and across all my work I focus on building AI that is practical, scalable, and built for real-world impact.</p>
+            <p class="home-card-bio">I'm a Computer Science graduate student at Univeristy of California, Davis passionate about AI and Machine learning. My research focuses on deep learning, computer vision, CNNs, and transformer-based architectures. On the applied side, I build LLM-powered applications, RAG systems, and AI agents; designing intelligent workflows that work in production. I'm also expanding into data science, and across all my work I focus on building AI that is practical, scalable, and built for real-world impact.</p>
           </div>
         </div>
       </div>
@@ -2775,7 +2789,7 @@
               </div>
 
               <div class="tl-entry">
-                <div class="tl-year-pill"><span class="tl-year-badge">Jan 2023 - Aug 2024</span></div>
+                <div class="tl-year-pill"><span class="tl-year-badge">Nov 2023 - Aug 2024</span></div>
                 <div class="tl-dot"></div>
                 <div class="tl-card">
                   <h4 class="tl-role">Data Analyst Intern</h4>
@@ -2878,36 +2892,66 @@
   <section id="techstack">
     <div class="skills-wrap">
       <h2 class="skills-title" id="techTitle"></h2>
-      <div class="skills-grid">
-        <div class="skill-bubble hoverable">Python</div>
-        <div class="skill-bubble hoverable">TypeScript</div>
-        <div class="skill-bubble hoverable">Java</div>
-        <div class="skill-bubble hoverable">C++</div>
-        <div class="skill-bubble hoverable">React</div>
-        <div class="skill-bubble hoverable">Pandas</div>
-        <div class="skill-bubble hoverable">NumPy</div>
-        <div class="skill-bubble hoverable">Scikit-learn</div>
-        <div class="skill-bubble hoverable">SQL</div>
-        <div class="skill-bubble hoverable">PyTorch</div>
-        <div class="skill-bubble hoverable">TensorFlow</div>
-        <div class="skill-bubble hoverable">Hugging Face</div>
-        <div class="skill-bubble hoverable">LLMs</div>
-        <div class="skill-bubble hoverable">RAG</div>
-        <div class="skill-bubble hoverable">Agentic AI</div>
-        <div class="skill-bubble hoverable">Computer Vision</div>
-        <div class="skill-bubble hoverable">OpenCV</div>
-        <div class="skill-bubble hoverable">Vision Transformers</div>
-        <div class="skill-bubble hoverable">Statistical Analysis</div>
-        <div class="skill-bubble hoverable">A/B Testing</div>
-        <div class="skill-bubble hoverable">Feature Engineering</div>
-        <div class="skill-bubble hoverable">FastAPI</div>
-        <div class="skill-bubble hoverable">Docker</div>
-        <div class="skill-bubble hoverable">Git</div>
-        <div class="skill-bubble hoverable">AWS</div>
-        <div class="skill-bubble hoverable">Apache Spark</div>
-        <div class="skill-bubble hoverable">Airflow</div>
-        <div class="skill-bubble hoverable">Databricks</div>
-        <div class="skill-bubble hoverable">Firebase</div>
+      <div class="skills-categories">
+        <div class="skills-group">
+          <h3 class="skills-group-label">Languages</h3>
+          <div class="skills-grid">
+            <div class="skill-bubble hoverable">Python</div>
+            <div class="skill-bubble hoverable">Java</div>
+            <div class="skill-bubble hoverable">JavaScript/TypeScript</div>
+            <div class="skill-bubble hoverable">SQL</div>
+            <div class="skill-bubble hoverable">C++</div>
+            <div class="skill-bubble hoverable">R</div>
+          </div>
+        </div>
+        <div class="skills-group">
+          <h3 class="skills-group-label">AI / LLMs</h3>
+          <div class="skills-grid">
+            <div class="skill-bubble hoverable">LLMs</div>
+            <div class="skill-bubble hoverable">RAG</div>
+            <div class="skill-bubble hoverable">AI Agents</div>
+            <div class="skill-bubble hoverable">NLP</div>
+            <div class="skill-bubble hoverable">Computer Vision</div>
+            <div class="skill-bubble hoverable">Vector Embeddings</div>
+            <div class="skill-bubble hoverable">Vector Databases</div>
+            <div class="skill-bubble hoverable">FAISS</div>
+            <div class="skill-bubble hoverable">Model Context Protocol (MCP)</div>
+            <div class="skill-bubble hoverable">Transformers</div>
+            <div class="skill-bubble hoverable">Few-Shot Prompting</div>
+          </div>
+        </div>
+        <div class="skills-group">
+          <h3 class="skills-group-label">Frameworks</h3>
+          <div class="skills-grid">
+            <div class="skill-bubble hoverable">PyTorch</div>
+            <div class="skill-bubble hoverable">TensorFlow</div>
+            <div class="skill-bubble hoverable">Scikit-learn (sklearn)</div>
+            <div class="skill-bubble hoverable">React</div>
+            <div class="skill-bubble hoverable">Node.js</div>
+            <div class="skill-bubble hoverable">FastAPI</div>
+            <div class="skill-bubble hoverable">Express</div>
+            <div class="skill-bubble hoverable">Flutter</div>
+            <div class="skill-bubble hoverable">LangChain</div>
+            <div class="skill-bubble hoverable">LangGraph</div>
+          </div>
+        </div>
+        <div class="skills-group">
+          <h3 class="skills-group-label">Cloud / Systems</h3>
+          <div class="skills-grid">
+            <div class="skill-bubble hoverable">AWS</div>
+            <div class="skill-bubble hoverable">Docker</div>
+            <div class="skill-bubble hoverable">Kubernetes</div>
+            <div class="skill-bubble hoverable">PostgreSQL</div>
+            <div class="skill-bubble hoverable">MongoDB</div>
+            <div class="skill-bubble hoverable">Redis</div>
+            <div class="skill-bubble hoverable">GraphQL</div>
+            <div class="skill-bubble hoverable">REST APIs</div>
+            <div class="skill-bubble hoverable">CI/CD</div>
+            <div class="skill-bubble hoverable">Distributed Systems</div>
+            <div class="skill-bubble hoverable">Git</div>
+            <div class="skill-bubble hoverable">Linux</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
