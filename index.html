@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>aayushahadke</title>
+<meta name="description" content="Portfolio of Aayusha Hadke, Computer Science graduate student at UC Davis specializing in AI, machine learning, computer vision, LLM applications, and data science.">
+<title>Aayusha Hadke | Portfolio</title>
 <link rel="icon" href="images/favicon.png?v=5" type="image/png" sizes="64x64">
 <link rel="icon" href="images/favicon-32.png?v=5" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="images/favicon.png?v=5">
@@ -20,6 +21,7 @@
     --text-primary: #e8e8e8;
     --text-muted: #888888;
     --sidebar-w: 56px;
+    --nav-edge-size: 56px;
     --logo-w: 96px;
     --logo-h: var(--header-h);
     --logo-shift-left: 14px;
@@ -28,27 +30,40 @@
     --header-h: calc(76px - 1cm + 0.7cm);
   /* Carousel cards — center + side widths sized to fit 3-across with arrows */
     --proj-card-w: calc(340px + 2cm);
-    --proj-card-w-side: calc(272px + 2cm);
-    --proj-card-h: 500px;
+    --proj-card-w-side: var(--proj-card-w);
+    --proj-card-h: calc(500px - 1cm + 1.5cm);
     --proj-img-h: 192px;
     --cert-card-w: var(--proj-card-w);
     --cert-card-w-side: var(--proj-card-w-side);
-    --cert-card-h: var(--proj-card-h);
-    /* Glass surfaces — same level as .timeline-block (Where I've Been) */
-    --glass-bg: rgba(0, 0, 0, 0.35);
-    --glass-bg-light: rgba(255, 255, 255, 0.38);
+    --cert-card-h: calc(380px + 1cm);
+    /* Glass surfaces — cards, timeline blocks, etc. */
+    --glass-bg: rgba(0, 0, 0, 0.90);
+    --glass-bg-light: rgba(255, 255, 255, 0.90);
     --glass-blur: blur(14px);
     --proj-card-border-inset: 3px;
+    --focus-ring-color: #f9a8d4;
+    --focus-ring-glow: rgba(249, 168, 212, 0.45);
+    --focus-ring-width: 2px;
+    --focus-ring-offset: 2px;
   }
   [data-theme="light"] {
     --bg-1: #ffffff;
-    --bg-2: #f8fbff;
-    --bg-3: #f3f7fd;
-    --accent-1: #4a0520;
-    --accent-2: #4a0520;
-    --accent-3: #6b0a30;
-    --text-primary: #4a0520;
+    --bg-2: #fafcff;
+    --bg-3: #f6f8fb;
+    --glass-bg-light: rgba(255, 255, 255, 0.92);
+    --accent-1: #590424;
+    --accent-2: #590424;
+    --accent-3: #590424;
+    --text-primary: #590424;
     --text-muted: #444444;
+    --focus-ring-color: #590424;
+    --focus-ring-glow: rgba(89, 4, 36, 0.28);
+  }
+  [data-theme="light"] #flash-overlay {
+    background: rgba(89, 4, 36, 0.06);
+  }
+  [data-theme="light"] section {
+    border-bottom-color: rgba(89, 4, 36, 0.08);
   }
   /* Dark theme: research-tag pink (#f9a8d4) replaces purple accents */
   [data-theme="dark"] {
@@ -66,8 +81,9 @@
   [data-theme="dark"] .sidebar-tooltip {
     border-color: rgba(249,168,212,0.35);
   }
-  [data-theme="dark"] .cert-arrow {
-    border-color: rgba(249,168,212,0.4);
+  [data-theme="dark"] .cert-arrow::before,
+  [data-theme="dark"] .proj-arrow::before {
+    background: #111111;
   }
   [data-theme="dark"] .cert-tags span {
     background: rgba(249,168,212,0.1);
@@ -75,9 +91,6 @@
   }
   [data-theme="dark"] .cert-link {
     border-color: rgba(249,168,212,0.3);
-  }
-  [data-theme="dark"] .proj-arrow {
-    border-color: rgba(249,168,212,0.4);
   }
   [data-theme="dark"] .proj-tags span {
     background: rgba(249,168,212,0.12);
@@ -89,8 +102,23 @@
   [data-theme="dark"] .proj-filter:hover {
     background: rgba(249,168,212,0.2);
   }
+  [data-theme="dark"] .proj-card::before,
+  [data-theme="dark"] .cert-card::before,
+  [data-theme="dark"] .research-card::before,
+  [data-theme="dark"] .home-card::before,
+  [data-theme="dark"] .timeline-block::before,
+  [data-theme="dark"] .skill-bubble::before {
+    background: linear-gradient(135deg, #a8aab4, #c8cad2, #a8aab4, #b8bac4);
+  }
+  [data-theme="dark"] .proj-card.center::before {
+    background: linear-gradient(135deg, #a8aab4, #c8cad2, #a8aab4, #b8bac4) !important;
+  }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; scrollbar-width: none; }
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
   html::-webkit-scrollbar { display: none; }
   body {
     font-family: 'Nunito', sans-serif;
@@ -109,11 +137,46 @@
     mix-blend-mode: normal;
     filter: contrast(1.04);
   }
-  [data-theme="light"] #liquid-bg { background: #ffffff; filter: contrast(1.0) saturate(1); }
+  [data-theme="light"] #liquid-bg { background: #fff8fa; filter: contrast(1.0) saturate(1); }
   body { background: #000; }
   [data-theme="light"] body { background: #fff; }
   [data-theme="dark"] body { background: #000 !important; }
 
+  /* FOCUS SYSTEM — WCAG 2.2 AA keyboard focus (both themes) */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  [tabindex]:not([tabindex="-1"]):focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    box-shadow: 0 0 0 4px var(--focus-ring-glow);
+  }
+  /* Inset rings for elements inside overflow:hidden cards */
+  .proj-img-link:focus-visible,
+  .proj-github:focus-visible,
+  .cert-link:focus-visible {
+    outline: none;
+    box-shadow:
+      inset 0 0 0 2px var(--focus-ring-color),
+      inset 0 0 0 4px var(--focus-ring-glow);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
 
   /* HEADER */
@@ -129,14 +192,22 @@
     padding: 0 32px 0 0;
     transition: background 0.4s ease;
     position: fixed;
+    overflow: visible;
   }
   .header-left { position: relative; display: flex; align-items: center; gap: 2px; text-decoration: none; }
   .logo-img {
     flex-shrink: 0;
     display: block;
-    object-fit: contain;
-    filter: brightness(0) saturate(100%) invert(78%) sepia(30%) saturate(600%) hue-rotate(295deg) brightness(105%);
-    transition: filter 0.3s;
+    background-color: var(--accent-2);
+    -webkit-mask-image: url('images/logo-mark.png');
+    mask-image: url('images/logo-mark.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    transition: filter 0.3s, background-color 0.3s;
     position: absolute;
     left: calc(-1 * var(--logo-shift-left));
     top: 50%;
@@ -147,7 +218,7 @@
     padding: 0;
   }
   .header-left:hover .logo-img {
-    filter: brightness(0) saturate(100%) invert(78%) sepia(30%) saturate(600%) hue-rotate(295deg) brightness(115%) drop-shadow(0 0 8px rgba(249,168,212,0.8));
+    filter: drop-shadow(0 0 8px rgba(249,168,212,0.8));
   }
   .header-name {
     font-family: 'Nunito', sans-serif;
@@ -202,6 +273,10 @@
     padding: 0 6px;
     justify-content: space-between;
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    font: inherit;
+    color: inherit;
+    appearance: none;
+    -webkit-appearance: none;
   }
   .theme-toggle .toggle-icon { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; z-index: 1; }
   .theme-toggle .toggle-icon svg { width: 14px; height: 14px; stroke: rgba(200,200,200,0.8); transition: stroke 0.3s; }
@@ -232,33 +307,36 @@
   [data-theme="light"] .theme-toggle .toggle-icon:last-child svg { stroke: rgba(0, 0, 0, 0.94); }
   [data-theme="light"] .theme-toggle {
     background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(0, 0, 0, 0.12);
+    border-color: rgba(89, 4, 36, 0.55);
+    box-shadow: inset 0 0 0 1px rgba(89, 4, 36, 0.14);
   }
 
   /* Light theme: lighter glass chrome - darker controls for legibility */
   [data-theme="light"] header {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(245, 245, 247, 0.58);
     border-bottom-color: rgba(0, 0, 0, 0.08);
   }
   [data-theme="light"] .header-name {
     color: #0a0a0a;
   }
-  /* Logo tint = maroon #4a0520 (moderate saturate — avoids blood-red on mobile) */
+  /* Light theme: logo matches hero title (#590424) */
   [data-theme="light"] .logo-img {
-    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(90%) contrast(102%);
+    background-color: #590424;
+    filter: none;
   }
   [data-theme="light"] .header-left:hover .logo-img {
-    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(98%) contrast(102%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.42));
+    background-color: #590424;
+    filter: drop-shadow(0 0 10px rgba(89, 4, 36, 0.42));
   }
   [data-theme="light"] .btn-resume {
-    color: #14040c;
-    background: rgba(74, 5, 32, 0.07);
-    border-color: rgba(74, 5, 32, 0.48);
+    color: #590424;
+    background: rgba(89, 4, 36, 0.07);
+    border-color: rgba(89, 4, 36, 0.48);
   }
   [data-theme="light"] .btn-resume:hover {
-    color: #0d0307;
-    background: rgba(74, 5, 32, 0.14);
-    box-shadow: 0 0 18px rgba(74, 5, 32, 0.22);
+    color: #590424;
+    background: rgba(89, 4, 36, 0.14);
+    box-shadow: 0 0 18px rgba(89, 4, 36, 0.22);
   }
   [data-theme="light"] header .icon-link {
     color: #111111;
@@ -269,10 +347,10 @@
   }
   [data-theme="light"] header .icon-link:hover {
     color: var(--accent-2);
-    filter: drop-shadow(0 0 5px rgba(74, 5, 32, 0.38));
+    filter: drop-shadow(0 0 5px rgba(89, 4, 36, 0.38));
   }
 
-  /* SIDEBAR */
+  /* PRIMARY NAV — vertical rail (desktop); adapts to bottom dock ≤900px */
   #sidebar {
     position: fixed; left: 0; top: var(--header-h); bottom: 0;
     width: var(--sidebar-w);
@@ -282,14 +360,35 @@
     border-right: 1px solid rgba(255,255,255,0.06);
     border-radius: 0 16px 16px 0;
     z-index: 900;
-    display: flex; flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
     padding: 16px 0 24px 0;
     transition: background 0.4s;
+    overflow: visible;
+  }
+  .sidebar-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    gap: 2px;
+  }
+  .sidebar-list-item {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-shrink: 0;
   }
   [data-theme="light"] #sidebar {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(245, 245, 247, 0.58);
     border-right-color: rgba(0, 0, 0, 0.08);
   }
   [data-theme="light"] .sidebar-item {
@@ -300,7 +399,7 @@
   }
   [data-theme="light"] .sidebar-item.active {
     color: var(--accent-2);
-    filter: drop-shadow(0 0 8px rgba(74, 5, 32, 0.35)) drop-shadow(0 0 14px rgba(74, 5, 32, 0.2));
+    filter: drop-shadow(0 0 8px rgba(89, 4, 36, 0.35)) drop-shadow(0 0 14px rgba(89, 4, 36, 0.2));
   }
   [data-theme="light"] .sidebar-tooltip {
     background: #ffffff;
@@ -316,7 +415,8 @@
   }
   .sidebar-item {
     position: relative;
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
+    min-width: 44px; min-height: 44px;
     display: flex; align-items: center; justify-content: center;
     border-radius: 10px;
     color: rgba(200, 200, 200, 0.75);
@@ -330,6 +430,12 @@
     color: #f9a8d4;
     background: none;
     animation: icon-bounce 0.45s ease forwards;
+  }
+  .sidebar-item:focus-visible {
+    color: #f9a8d4;
+  }
+  [data-theme="light"] .sidebar-item:focus-visible {
+    color: var(--accent-2);
   }
   .sidebar-item.active {
     color: #f9a8d4;
@@ -355,7 +461,8 @@
     transition: opacity 0.2s ease, transform 0.2s ease;
     z-index: 1001;
   }
-  .sidebar-item:hover .sidebar-tooltip {
+  .sidebar-item:hover .sidebar-tooltip,
+  .sidebar-item:focus-visible .sidebar-tooltip {
     opacity: 1;
     transform: translateY(-50%) translateX(0);
   }
@@ -413,6 +520,16 @@
     transition: opacity 0.6s ease, transform 0.6s ease;
   }
   section.visible { opacity: 1; transform: translateY(0); }
+  #homeTitle,
+  #expTitle,
+  #techTitle,
+  #projTitle,
+  #resTitle,
+  #certTitle,
+  #aboutTitle,
+  #contactTitle {
+    scroll-margin-top: calc(var(--header-h) + 16px);
+  }
   section h2 {
     font-family: 'Syne', sans-serif;
     font-weight: 800; font-size: 48px;
@@ -442,7 +559,7 @@
   }
   footer span { color: #f9a8d4; }
   [data-theme="light"] footer { color: #111; }
-  [data-theme="light"] footer span { color: #4a0520; }
+  [data-theme="light"] footer span { color: #590424; }
 
   /* LINKEDIN / GITHUB SVG */
   .linkedin-svg { fill: var(--text-muted); transition: fill 0.3s, filter 0.3s; }
@@ -542,7 +659,7 @@
   }
   /* Override global section p (max-width 400px + centered) for research copy */
   #research .research-card p {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Syne', sans-serif;
     color: var(--text-muted);
     max-width: none;
     text-align: justify;
@@ -601,57 +718,90 @@
     background: rgba(249,168,212,0.08); color: #f9a8d4;
     border: 1px solid rgba(249,168,212,0.2);
   }
-  [data-theme="light"] .research-tags span { background: rgba(74,5,32,0.08); color: #4a0520; border-color: rgba(74,5,32,0.2); }
+  [data-theme="light"] .research-tags span { background: rgba(89,4,36,0.08); color: #590424; border-color: rgba(89,4,36,0.2); }
   [data-theme="light"] .research-status {
-    color: #4a0520;
+    color: #590424;
   }
   [data-theme="light"] .research-status::before {
-    background: #4a0520;
-    box-shadow: 0 0 8px rgba(74, 5, 32, 0.5);
+    background: #590424;
+    box-shadow: 0 0 8px rgba(89, 4, 36, 0.5);
   }
 
   /* CERTIFICATIONS */
   #certifications { align-items: flex-start; padding: 80px 48px; }
-  .cert-wrap { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 40px; }
+  .cert-wrap {
+    width: 100%; max-width: 1100px;
+    display: flex; flex-direction: column; gap: 40px;
+    position: relative;
+    z-index: 1;
+  }
   .cert-title {
     font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px;
     background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
   .cert-carousel-wrap {
+    position: relative;
     display: flex; align-items: center; gap: 16px; width: 100%;
     min-height: var(--cert-card-h);
+    z-index: 0;
   }
   .cert-arrow {
     flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%;
     background: rgba(255,255,255,0.06); backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(139,92,246,0.4);
-    color: var(--accent-2); font-size: 22px;
+    border: none; position: relative; isolation: isolate;
+    color: var(--accent-2); font-size: 22px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.25s, box-shadow 0.25s;
+    transition: background 0.25s, box-shadow 0.25s, color 0.25s;
+    z-index: 10;
   }
-  .cert-arrow:hover { background: rgba(249,168,212,0.15); color: #f9a8d4; box-shadow: 0 0 20px rgba(249,168,212,0.4); }
-  [data-theme="light"] .cert-arrow { border-color: rgba(0, 0, 0, 0.18); color: var(--text-primary); }
-  [data-theme="light"] .cert-arrow:hover {
-    background: rgba(255, 255, 255, 0.45);
+  .cert-arrow::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 50%;
+    padding: 2px;
+    background: #111111;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none; z-index: 0;
+    transition: background 0.3s;
+  }
+  .cert-arrow > * { position: relative; z-index: 1; }
+  .cert-arrow:hover {
+    background: rgba(249,168,212,0.15);
+    color: #f9a8d4;
+    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+  }
+  .cert-arrow:hover::before {
+    background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9);
+    animation: border-flow 4s linear infinite;
+  }
+  [data-theme="light"] .cert-arrow {
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
+  }
+  [data-theme="light"] .cert-arrow::before {
+    background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
   }
 
   .cert-track {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    gap: 16px; overflow: hidden; padding: 20px 0;
+    gap: 16px; overflow: hidden; padding: 20px 0; position: relative;
+    z-index: 1;
     min-height: var(--cert-card-h);
   }
-  /* CERT CARD - same as timeline-block */
+  /* Cert cards — side previews blurred behind center card (like projects) */
   .cert-card {
     flex-shrink: 0;
     display: none;
-    width: var(--cert-card-w);
+    width: var(--cert-card-w-side);
     height: var(--cert-card-h);
+    min-height: var(--cert-card-h);
     max-height: var(--cert-card-h);
     box-sizing: border-box;
     border-radius: 20px;
-    padding: 11px 40px 38px 16px;
+    padding: 11px 16px 11px 16px;
     background: var(--glass-bg);
     flex-direction: column;
     align-items: stretch;
@@ -659,28 +809,51 @@
     text-align: justify;
     text-justify: inter-word;
     position: relative;
+    z-index: 2;
     overflow: hidden;
-    transition: box-shadow 0.35s ease, opacity 0.3s ease;
-    opacity: 1;
-    filter: none;
+    transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.3s ease, filter 0.3s ease, width 0.35s ease;
+    opacity: 0.45;
+    filter: blur(2px);
+    transform: scale(0.92);
     transform-origin: center center;
+    isolation: isolate;
+    pointer-events: none;
   }
   .cert-card::before {
     content: '';
-    position: absolute; inset: 0; border-radius: 20px; padding: 3px;
+    position: absolute; inset: 0; border-radius: 20px; padding: var(--proj-card-border-inset);
     background: #111111;
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    z-index: 0; pointer-events: none;
+    z-index: 1; pointer-events: none;
   }
   .cert-card.center {
     display: flex;
+    width: var(--cert-card-w);
     box-shadow: none;
-    z-index: 5;
+    z-index: 3;
+    height: var(--cert-card-h);
+    min-height: var(--cert-card-h);
+    max-height: var(--cert-card-h);
+    opacity: 1;
+    filter: none;
+    transform: scale(1);
+    pointer-events: auto;
   }
   .cert-card.hidden { display: none; }
-  .cert-card > * { position: relative; z-index: 1; }
-  .cert-card > .cert-footer { position: static; z-index: 1; }
+  .cert-card > * { position: relative; z-index: 2; }
+  .cert-card > .cert-footer { position: static; z-index: 2; }
+  .cert-card:not(.center) .cert-link {
+    pointer-events: none;
+  }
+  .cert-card:hover::before {
+    background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9);
+    animation: border-flow 4s linear infinite;
+  }
+  .cert-card:hover {
+    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+  }
   [data-theme="light"] .cert-card {
     background: var(--glass-bg-light);
     backdrop-filter: var(--glass-blur);
@@ -713,15 +886,22 @@
     text-justify: inter-word;
   }
   .cert-learned {
-    font-family: 'Nunito', sans-serif; font-size: 12px; line-height: 1.65;
+    font-family: 'Syne', sans-serif; font-size: 12px; line-height: 1.5;
     color: var(--text-muted);
     width: 100%;
+    max-width: none;
+    margin: 0 0 2px;
     text-align: justify;
     text-justify: inter-word;
+    text-wrap: pretty;
+    hyphens: auto;
+    -webkit-hyphens: auto;
     border-top: none;
-    padding-top: 12px;
-    flex: 1; min-height: 0; overflow-y: auto;
-    scrollbar-width: thin;
+    padding-top: 10px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: visible;
+    overflow-wrap: break-word;
   }
   .cert-learned::before {
     content: '';
@@ -734,45 +914,75 @@
   [data-theme="light"] .cert-learned::before {
     background: rgba(0, 0, 0, 0.08);
   }
+  /* Override section p { text-align: center } for cert descriptions */
+  #certifications .cert-learned {
+    text-align: justify;
+    text-justify: inter-word;
+  }
   .cert-footer {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-    gap: 4px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
     width: 100%;
     margin-top: auto;
     padding-top: 0;
     box-sizing: border-box;
     flex-shrink: 0;
+    min-height: 40px;
   }
   .cert-tags {
     display: flex;
-    gap: 6px;
+    gap: 5px 6px;
     flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
     justify-content: flex-start;
   }
   .cert-tags span {
-    font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 700;
-    padding: 3px 10px; border-radius: 999px;
-    background: rgba(139,92,246,0.1); color: var(--accent-2);
+    font-family: 'Nunito', sans-serif;
+    font-size: calc(8px + 2pt);
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    line-height: 1.2;
+    background: rgba(139,92,246,0.1);
+    color: var(--accent-2);
     border: 1px solid rgba(139,92,246,0.25);
   }
-  [data-theme="light"] .cert-tags span { background: rgba(74,5,32,0.08); color: #4a0520; border-color: rgba(74,5,32,0.2); }
+  [data-theme="light"] .cert-tags span { background: rgba(89,4,36,0.08); color: #590424; border-color: rgba(89,4,36,0.2); }
+  [data-theme="light"] .proj-tags span { background: rgba(89,4,36,0.08); color: #590424; border-color: rgba(89,4,36,0.2); }
+  [data-theme="light"] .proj-github,
+  [data-theme="light"] .cert-link { border-color: rgba(89, 4, 36, 0.3); }
+  .proj-github,
   .cert-link {
-    position: absolute;
-    right: 16px;
-    bottom: 11px;
-    z-index: 5;
-    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(178,79,255,0.3);
-    color: var(--accent-2); text-decoration: none;
+    position: static;
+    flex-shrink: 0;
+    align-self: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(178,79,255,0.3);
+    color: var(--accent-2);
+    text-decoration: none;
     transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-    margin: 0;
+    margin: 0 0 0 auto;
   }
-  .cert-link:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 12px rgba(249,168,212,0.5); }
-  .cert-link svg { width: 12px; height: 12px; }
+  .proj-github:hover,
+  .cert-link:hover {
+    background: rgba(249,168,212,0.2);
+    color: #f9a8d4;
+    transform: scale(1.15);
+    box-shadow: 0 0 12px rgba(249,168,212,0.5);
+  }
+  .proj-github svg,
+  .cert-link svg { width: 18px; height: 18px; }
 
   /* ABOUT — CSS column masonry (per-image aspect ratios, object-fit: fill) */
   #about { align-items: flex-start; padding: 80px 48px; }
@@ -804,8 +1014,8 @@
     cursor: pointer;
   }
   [data-theme="light"] #about .masonry-item {
-    background: rgba(255, 255, 255, 0.55);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
   }
 
   #about .masonry-item:hover {
@@ -827,19 +1037,23 @@
   }
   [data-theme="dark"] #about .masonry-item--quote {
     border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(0, 0, 0, 0.62);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
   }
   [data-theme="light"] #about .masonry-item--quote {
     border-color: rgba(0, 0, 0, 0.1);
   }
   #about .masonry-quote-inner {
     margin: 0;
-    font-family: 'Bodoni Moda', 'Noto Serif Display', Georgia, serif;
+    font-family: 'Syne', sans-serif;
     font-size: calc(clamp(15px, 1.35vw, 18px) + 2px);
     font-style: italic;
     font-weight: 400;
     line-height: 1.55;
     color: #ffffff;
-    text-align: center;
+    text-align: justify;
+    text-justify: inter-word;
     letter-spacing: 0.02em;
   }
   [data-theme="light"] #about .masonry-quote-inner {
@@ -871,6 +1085,7 @@
   #about .ratio-7 { aspect-ratio: 3024 / 4032; }
   #about .ratio-8 { aspect-ratio: 3025 / 2452; }
   #about .ratio-9 { aspect-ratio: 3024 / 4032; }
+  #about .ratio-10 { aspect-ratio: 1024 / 768; }
 
   @media (max-width: 900px) {
     #about .about-masonry-grid { columns: 3; }
@@ -909,7 +1124,7 @@
     fill: currentColor;
   }
   [data-theme="light"] .contact-signoff { color: #111; }
-  [data-theme="light"] .signoff-heart { color: #4a0520; }
+  [data-theme="light"] .signoff-heart { color: #590424; }
   .contact-left { flex: 1.3; display: flex; flex-direction: column; gap: 32px; }
   .contact-right { flex: 0.7; display: flex; flex-direction: column; gap: 32px; }
   .wave-emoji {
@@ -950,7 +1165,12 @@
     60% { transform: rotate(-8deg); }
     80% { transform: rotate(8deg); }
   }
-  .contact-sub { font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 460px; }
+  .contact-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; color: var(--text-muted); line-height: 1.8; max-width: 460px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
 
   /* FORM */
   .contact-form { display: flex; flex-direction: column; gap: 18px; }
@@ -960,8 +1180,18 @@
     letter-spacing: 2px; text-transform: uppercase;
     color: var(--text-muted); transition: color 0.3s;
   }
+  .form-required {
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-left: 1px;
+  }
+  [data-theme="light"] .form-required {
+    color: var(--text-primary);
+    opacity: 0.6;
+  }
   [data-theme="light"] .form-label {
-    color: #ffffff;
+    color: var(--text-primary);
   }
   .form-input {
     background: var(--glass-bg);
@@ -983,7 +1213,7 @@
   [data-theme="light"] .form-input:hover {
     border-color: rgba(0, 0, 0, 0.65);
   }
-  [data-theme="light"] .form-input:focus {
+  [data-theme="light"] .form-input:focus-visible {
     border-color: rgba(0, 0, 0, 0.72);
     background: rgba(255, 255, 255, 0.48);
     animation: none;
@@ -992,17 +1222,51 @@
   .form-input:hover {
     border-color: rgba(249,168,212,0.5);
   }
-  .form-input:focus {
+  .form-input:focus-visible {
     border-color: #f9a8d4;
-    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+    box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
     background: rgba(255,255,255,0.06);
     animation: input-glow-pulse 1.8s ease-in-out infinite;
   }
   @keyframes input-glow-pulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(249,168,212,0.3), 0 0 40px rgba(249,168,212,0.1); }
-    50% { box-shadow: 0 0 30px rgba(249,168,212,0.5), 0 0 60px rgba(249,168,212,0.2); }
+    0%, 100% { box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 20px rgba(249,168,212,0.3), 0 0 40px rgba(249,168,212,0.1); }
+    50% { box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 30px rgba(249,168,212,0.5), 0 0 60px rgba(249,168,212,0.2); }
   }
   textarea.form-input { min-height: 160px; }
+  .form-input[aria-invalid="true"] {
+    border-color: rgba(248, 113, 113, 0.65);
+  }
+  .form-input[aria-invalid="true"]:hover {
+    border-color: rgba(248, 113, 113, 0.8);
+  }
+  [data-theme="light"] .form-input[aria-invalid="true"] {
+    border-color: rgba(185, 28, 28, 0.55);
+  }
+  [data-theme="light"] .form-input[aria-invalid="true"]:hover {
+    border-color: rgba(185, 28, 28, 0.72);
+  }
+  [data-theme="dark"] .form-input[aria-invalid="true"] {
+    border-color: rgba(248, 113, 113, 0.55);
+  }
+  [data-theme="dark"] .form-input[aria-invalid="true"]:hover {
+    border-color: rgba(248, 113, 113, 0.75);
+  }
+
+  .form-field-error {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    min-height: 0;
+    margin: 0;
+    color: #f87171;
+  }
+  .form-field-error:not(:empty) {
+    margin-top: 4px;
+    min-height: 1.4em;
+  }
+  [data-theme="light"] .form-field-error {
+    color: #b91c1c;
+  }
 
   .form-status {
     font-family: 'Nunito', sans-serif;
@@ -1040,13 +1304,18 @@
     box-shadow: 0 0 18px rgba(249,168,212,0.35);
   }
   [data-theme="light"] .btn-send.sent {
-    background: rgba(249,168,212,0.22);
-    border-color: rgba(74,5,32,0.45);
-    color: #4a0520;
-    box-shadow: 0 0 14px rgba(74,5,32,0.12);
+    background: rgba(89, 4, 36, 0.12);
+    border-color: rgba(89,4,36,0.45);
+    color: #590424;
+    box-shadow: 0 0 14px rgba(89,4,36,0.12);
   }
   .btn-send:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
   .btn-send.sent:disabled { opacity: 1; }
+  .btn-send:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    box-shadow: 0 0 0 4px var(--focus-ring-glow);
+  }
   [data-theme="light"] .btn-send {
     background: var(--glass-bg-light);
     border-color: rgba(0, 0, 0, 0.55);
@@ -1071,6 +1340,8 @@
     color: #f9a8d4;
   }
   .social-item:hover .social-label { color: #f9a8d4; }
+  [data-theme="light"] .social-item:hover .social-label { color: #590424; }
+  [data-theme="light"] .social-row:hover .social-handle { color: #590424; }
   .social-item .social-icon-box { animation: icon-bounce-soft 2.8s cubic-bezier(0.36,0.07,0.19,0.97) infinite; animation-delay: 0s; }
   .social-row {
     display: flex; align-items: center; gap: 18px;
@@ -1218,8 +1489,8 @@
     font-style: normal;
     font-size: clamp(44px, 15cqi, 188px);
     line-height: 1.05;
-    color: #6a2220;
-    -webkit-text-fill-color: #6a2220 !important;
+    color: #590424;
+    -webkit-text-fill-color: #590424 !important;
     letter-spacing: 0.012em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -1244,8 +1515,8 @@
   [data-theme="light"] .home-name,
   [data-theme="light"] .home-name em,
   [data-theme="light"] .home-name .home-name-im {
-    color: #4a0520 !important;
-    -webkit-text-fill-color: #4a0520 !important;
+    color: #590424 !important;
+    -webkit-text-fill-color: #590424 !important;
   }
   .home-name em,
   .home-name .home-name-im {
@@ -1290,7 +1561,7 @@
     letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted);
   }
   .home-card-bio {
-    font-family: 'Nunito', sans-serif; font-size: 14px; line-height: 1.8;
+    font-family: 'Syne', sans-serif; font-size: 14px; line-height: 1.8;
     color: var(--text-primary);
     margin: 0;
     width: 100%;
@@ -1316,7 +1587,7 @@
     stroke: var(--accent-2);
     flex-shrink: 0;
   }
-  [data-theme="light"] .home-location svg { stroke: #4a0520; }
+  [data-theme="light"] .home-location svg { stroke: #590424; }
   .home-card-divider {
     border: none; border-top: 1px solid rgba(255,255,255,0.08);
   }
@@ -1328,7 +1599,7 @@
     color: var(--text-muted);
   }
   .home-meta-row svg { width: 14px; height: 14px; flex-shrink: 0; stroke: var(--accent-2); }
-  [data-theme="light"] .home-meta-row svg { stroke: #4a0520; }
+  [data-theme="light"] .home-meta-row svg { stroke: #590424; }
   .home-tags { display: flex; gap: 8px; flex-wrap: wrap; }
   .home-tags span {
     font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 700;
@@ -1336,7 +1607,7 @@
     background: rgba(249,168,212,0.08); color: #f9a8d4;
     border: 1px solid rgba(249,168,212,0.2);
   }
-  [data-theme="light"] .home-tags span { background: rgba(74,5,32,0.08); color: #4a0520; border-color: rgba(74,5,32,0.2); }
+  [data-theme="light"] .home-tags span { background: rgba(89,4,36,0.08); color: #590424; border-color: rgba(89,4,36,0.2); }
 
   /* TECH STACK */
   #techstack { align-items: flex-start; padding: 80px 48px; }
@@ -1374,7 +1645,7 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     font-family: 'Nunito', sans-serif;
-    font-size: 13px; font-weight: 700;
+    font-size: calc(13px + 2pt); font-weight: 700;
     color: var(--text-primary);
     cursor: default;
     transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s, background 0.3s;
@@ -1412,10 +1683,6 @@
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
   }
   #projects { align-items: flex-start; padding: 80px 48px; }
-  #projects .proj-card,
-  #projects .proj-card * {
-    cursor: none !important;
-  }
   .projects-wrap { width: 100%; max-width: 1200px; display: flex; flex-direction: column; gap: 32px; }
   .projects-title {
     font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px;
@@ -1435,6 +1702,11 @@
   }
   [data-theme="dark"] .proj-filter { color: #e8e8e8; }
   .proj-filter:hover { border-color: var(--accent-2); color: #fff; background: rgba(178,79,255,0.2); }
+  [data-theme="light"] .proj-filter:hover {
+    border-color: var(--accent-2);
+    color: #590424;
+    background: rgba(89, 4, 36, 0.08);
+  }
   .proj-filter.active {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
     border-color: transparent; color: white;
@@ -1454,13 +1726,41 @@
     flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%;
     background: rgba(255,255,255,0.06);
     backdrop-filter: blur(10px);
-    border: 1.5px solid rgba(178,79,255,0.4);
+    border: none; position: relative; isolation: isolate;
     color: var(--accent-2); font-size: 22px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.25s, box-shadow 0.25s, color 0.25s;
     z-index: 10;
   }
-  .proj-arrow:hover { background: rgba(249,168,212,0.15); color: #f9a8d4; box-shadow: 0 0 20px rgba(249,168,212,0.4); }
+  .proj-arrow::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 50%;
+    padding: 2px;
+    background: #111111;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none; z-index: 0;
+    transition: background 0.3s;
+  }
+  .proj-arrow > * { position: relative; z-index: 1; }
+  .proj-arrow:hover {
+    background: rgba(249,168,212,0.15);
+    color: #f9a8d4;
+    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+  }
+  .proj-arrow:hover::before {
+    background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9);
+    animation: border-flow 4s linear infinite;
+  }
+  [data-theme="light"] .proj-arrow {
+    background: var(--glass-bg-light);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: var(--text-primary);
+  }
+  [data-theme="light"] .proj-arrow::before {
+    background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a);
+  }
 
   .proj-ring-track {
     flex: 1; display: flex; align-items: center; justify-content: center;
@@ -1475,6 +1775,7 @@
     display: none;
     width: var(--proj-card-w-side);
     height: var(--proj-card-h);
+    min-height: var(--proj-card-h);
     max-height: var(--proj-card-h);
     box-sizing: border-box; border-radius: 20px; overflow: hidden;
     position: relative;
@@ -1495,6 +1796,7 @@
     display: flex;
     width: var(--proj-card-w);
     height: var(--proj-card-h);
+    min-height: var(--proj-card-h);
     max-height: var(--proj-card-h);
     border: none;
     box-shadow: none;
@@ -1503,6 +1805,8 @@
     filter: none;
     transform: scale(1);
     pointer-events: auto;
+    transition: box-shadow 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.3s ease, filter 0.3s ease, width 0.35s ease;
   }
   .proj-card::before {
     content: '';
@@ -1565,10 +1869,6 @@
     display: block;
     z-index: 2;
     border-radius: 16px 16px 0 0;
-    outline: none;
-  }
-  .proj-img-link:focus-visible {
-    box-shadow: inset 0 0 0 2px rgba(249, 168, 212, 0.85);
   }
   .proj-cat-badge {
     font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 800;
@@ -1606,7 +1906,7 @@
     justify-content: flex-start;
     gap: 8px;
     width: 100%;
-    min-height: 26px;
+    min-height: 40px;
   }
   .proj-card-actions .proj-tags {
     flex: 1;
@@ -1626,14 +1926,15 @@
   }
   .proj-card-note-text {
     display: block;
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Syne', sans-serif;
     /* +5pt on rendered size (base +10pt before scale(0.5)) */
     font-size: calc(7px + 10pt);
     font-weight: 600;
     color: var(--text-muted);
     line-height: 1.05;
     letter-spacing: 0.02em;
-    text-align: left;
+    text-align: justify;
+    text-justify: inter-word;
     white-space: normal;
     overflow-wrap: anywhere;
     opacity: 0.75;
@@ -1653,15 +1954,26 @@
     line-height: 1.1;
     color: var(--accent-2);
     text-align: left;
+    margin: 0 0 8px;
+  }
+  #projects .proj-card,
+  #projects .proj-card * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  #projects .proj-card *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
   /* Override section p { text-align: center; max-width: 400px; line-height: 1.6 } */
   #projects .proj-info .proj-desc {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Syne', sans-serif;
     color: var(--text-muted);
     line-height: 1.35;
     max-width: none;
     width: 100%;
-    margin: 0;
+    margin: 0 0 1cm;
     text-align: justify;
     text-justify: inter-word;
     text-wrap: pretty;
@@ -1669,33 +1981,26 @@
     -webkit-hyphens: auto;
     flex: 1 1 auto;
     min-height: 0;
-    overflow-y: auto;
+    overflow: visible;
     overflow-wrap: break-word;
     word-break: normal;
-    scrollbar-width: thin;
   }
-  .proj-tags { display: flex; gap: 5px 6px; flex-wrap: wrap; }
+  #projects .proj-info .proj-card-footer {
+    margin-top: auto;
+    translate: 0 -0.3cm;
+  }
+  .proj-tags { display: flex; gap: 5px 6px; flex-wrap: wrap; align-items: center; }
   .proj-tags span {
-    font-family: 'Nunito', sans-serif; font-size: 8px; font-weight: 700;
-    padding: 2px 8px; border-radius: 999px;
-    background: rgba(178,79,255,0.12); color: var(--accent-2);
+    font-family: 'Nunito', sans-serif;
+    font-size: calc(8px + 2pt);
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(178,79,255,0.12);
+    color: var(--accent-2);
     border: 1px solid rgba(178,79,255,0.25);
-    line-height: 1;
+    line-height: 1.2;
   }
-  .proj-github {
-    position: static;
-    flex-shrink: 0;
-    width: 26px; height: 26px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(178,79,255,0.3);
-    color: var(--accent-2); text-decoration: none;
-    transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
-    margin: 0;
-  }
-  .proj-github:hover { background: rgba(249,168,212,0.2); color: #f9a8d4; transform: scale(1.15); box-shadow: 0 0 12px rgba(249,168,212,0.5); }
-  .proj-github svg { width: 12px; height: 12px; }
 
   /* JOURNEY / TIMELINE */
   #experience { align-items: flex-start; padding: 80px 48px; min-height: auto; }
@@ -1893,13 +2198,11 @@
   }
   .timeline > .tl-entry:nth-of-type(2n) .tl-card {
     padding: 0 0 0 18px;
-    text-align: justify;
-    text-justify: inter-word;
+    text-align: left;
   }
   .timeline > .tl-entry:nth-of-type(2n+1) .tl-card {
     padding: 0 18px 0 0;
-    text-align: justify;
-    text-justify: inter-word;
+    text-align: right;
   }
   .tl-entry:hover .tl-card { transform: translateX(4px); }
   .timeline > .tl-entry:nth-of-type(2n+1):hover .tl-card { transform: translateX(-4px); }
@@ -1907,14 +2210,24 @@
   .tl-role {
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
     color: var(--text-primary);
-    text-align: justify;
-    text-justify: inter-word;
+    text-align: inherit;
+    margin: 0;
   }
   .tl-org {
     font-family: 'Nunito', sans-serif; font-size: 12px;
     color: var(--text-muted); font-weight: 500;
-    text-align: justify;
-    text-justify: inter-word;
+    text-align: inherit;
+    max-width: none;
+    margin: 0;
+  }
+  /* Override section p { text-align: center } — align toward center timeline */
+  .timeline > .tl-entry:nth-of-type(2n) .tl-role,
+  .timeline > .tl-entry:nth-of-type(2n) .tl-org {
+    text-align: left;
+  }
+  .timeline > .tl-entry:nth-of-type(2n+1) .tl-role,
+  .timeline > .tl-entry:nth-of-type(2n+1) .tl-org {
+    text-align: right;
   }
 
   @media (max-width: 768px) {
@@ -1937,9 +2250,6 @@
     .contact-wrap { flex-direction: column; gap: 48px; }
     .contact-title { font-size: 36px; }
     .contact-right { padding-top: 0; }
-    #sidebar { display: none; }
-    main { margin-left: 0; }
-    footer { margin-left: 0; }
     header { padding: 0 20px 0 max(2px, 4px); }
     .icon-link { display: none; }
     .icon-link--linkedin { display: flex !important; }
@@ -1980,6 +2290,15 @@
     color: #f9a8d4 !important;
     -webkit-text-fill-color: #f9a8d4 !important;
   }
+  [data-theme="dark"] #experience .journey-title,
+  [data-theme="dark"] #experience .timeline-heading,
+  [data-theme="dark"] #experience .tl-role {
+    color: #f9a8d4 !important;
+    -webkit-text-fill-color: #f9a8d4 !important;
+  }
+  [data-theme="dark"] #experience .timeline-heading .tl-icon svg {
+    stroke: #f9a8d4;
+  }
   [data-theme="dark"] .proj-title,
   [data-theme="dark"] .cert-name {
     color: #f9a8d4;
@@ -1993,28 +2312,28 @@
   [data-theme="light"] .about-title,
   [data-theme="light"] .journey-title,
   [data-theme="light"] section:not(#home) h2 {
-    -webkit-text-fill-color: #4a0520 !important;
-    color: #4a0520 !important;
+    -webkit-text-fill-color: #590424 !important;
+    color: #590424 !important;
   }
   [data-theme="light"] .timeline-heading {
-    color: #4a0520 !important;
-    -webkit-text-fill-color: #4a0520 !important;
+    color: #590424 !important;
+    -webkit-text-fill-color: #590424 !important;
   }
   [data-theme="light"] .proj-title,
   [data-theme="light"] .cert-name {
-    color: #4a0520;
-    -webkit-text-fill-color: #4a0520;
+    color: #590424;
+    -webkit-text-fill-color: #590424;
   }
   .section-tag { color: #000 !important; }
   [data-theme="dark"] .section-tag { color: #ffffff !important; }
   [data-theme="light"] .section-tag {
-    color: #ffffff !important;
+    color: var(--text-primary) !important;
     background: none !important;
     padding: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
     display: inline !important;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    text-shadow: none;
   }
 
   /* Contact - glow headline over fluid bg (dark only); light theme uses section burgundy + defaults */
@@ -2036,6 +2355,10 @@
       0 0 36px rgba(255, 255, 255, 0.4),
       0 1px 16px rgba(0, 0, 0, 0.28);
   }
+  [data-theme="light"] #contact .contact-sub {
+    color: var(--text-muted) !important;
+    text-shadow: none;
+  }
 
 
   /* UNIVERSAL PINK GLOW ON HOVER */
@@ -2045,8 +2368,9 @@
   .research-card:hover,
   .home-card:hover,
   .timeline-block:hover,
-  .form-input:focus,
-  .social-icon-box:hover {
+  .social-icon-box:hover,
+  .proj-arrow:hover,
+  .cert-arrow:hover {
     box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
   }
   .skill-bubble:hover::before,
@@ -2055,7 +2379,9 @@
   .research-card:hover::before,
   .home-card:hover::before,
   .timeline-block:hover::before,
-  .social-icon-box:hover::before {
+  .social-icon-box:hover::before,
+  .proj-arrow:hover::before,
+  .cert-arrow:hover::before {
     background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9); animation: border-flow 4s linear infinite;
   }
 
@@ -2066,10 +2392,13 @@
   [data-theme="light"] .research-card:hover,
   [data-theme="light"] .home-card:hover,
   [data-theme="light"] .timeline-block:hover,
-  [data-theme="light"] .form-input:focus,
+  [data-theme="light"] .form-input:focus-visible,
   [data-theme="light"] .social-icon-box:hover,
-  [data-theme="light"] .social-item:hover .social-icon-box {
+  [data-theme="light"] .social-item:hover .social-icon-box,
+  [data-theme="light"] .proj-arrow:hover,
+  [data-theme="light"] .cert-arrow:hover {
     box-shadow:
+      0 0 0 4px var(--focus-ring-glow),
       0 0 22px rgba(255, 255, 255, 0.72),
       0 0 46px rgba(255, 255, 255, 0.42),
       0 12px 36px rgba(0, 0, 0, 0.06);
@@ -2081,9 +2410,16 @@
   [data-theme="light"] .home-card:hover::before,
   [data-theme="light"] .timeline-block:hover::before,
   [data-theme="light"] .social-icon-box:hover::before,
-  [data-theme="light"] .social-item:hover .social-icon-box::before {
+  [data-theme="light"] .social-item:hover .social-icon-box::before,
+  [data-theme="light"] .proj-arrow:hover::before,
+  [data-theme="light"] .cert-arrow:hover::before {
     background: linear-gradient(135deg, #ffffff, #e4e6ec, #ffffff, #cfd2dc);
     animation: border-flow 4s linear infinite;
+  }
+  [data-theme="light"] .proj-arrow:hover,
+  [data-theme="light"] .cert-arrow:hover {
+    background: var(--glass-bg-light);
+    color: var(--text-primary);
   }
   [data-theme="light"] .social-row:hover .social-icon-box {
     border-color: rgba(0, 0, 0, 0.35);
@@ -2096,29 +2432,22 @@
     background: linear-gradient(135deg, #ffffff, #e4e6ec, #ffffff, #cfd2dc);
     animation: border-flow 4s linear infinite;
   }
-  [data-theme="light"] .proj-card.center {
+  [data-theme="light"] .proj-card.center:not(:hover) {
     box-shadow: none;
   }
   [data-theme="light"] .proj-card.center::before {
     background: linear-gradient(135deg, #0a0a0a, #252525, #0a0a0a, #1a1a1a) !important;
   }
+  [data-theme="light"] .proj-card.center:hover {
+    box-shadow:
+      0 0 0 4px var(--focus-ring-glow),
+      0 0 22px rgba(255, 255, 255, 0.72),
+      0 0 46px rgba(255, 255, 255, 0.42),
+      0 12px 36px rgba(0, 0, 0, 0.06);
+  }
   [data-theme="light"] .proj-card.center:hover::before {
     background: linear-gradient(135deg, #ffffff, #e4e6ec, #ffffff, #cfd2dc) !important;
     animation: border-flow 4s linear infinite !important;
-  }
-  [data-theme="light"] .cert-arrow:hover {
-    background: rgba(255, 255, 255, 0.42);
-    box-shadow:
-      0 0 18px rgba(255, 255, 255, 0.55),
-      0 0 38px rgba(255, 255, 255, 0.28);
-    color: var(--text-primary);
-  }
-  [data-theme="light"] .proj-arrow:hover {
-    background: rgba(255, 255, 255, 0.38);
-    color: var(--text-primary);
-    box-shadow:
-      0 0 18px rgba(255, 255, 255, 0.55),
-      0 0 36px rgba(255, 255, 255, 0.28);
   }
   [data-theme="light"] .cert-link:hover {
     background: rgba(255, 255, 255, 0.42);
@@ -2144,16 +2473,22 @@
   [data-theme="dark"] .research-card:hover,
   [data-theme="dark"] .home-card:hover,
   [data-theme="dark"] .timeline-block:hover,
-  [data-theme="dark"] .form-input:focus,
-  [data-theme="dark"] .social-icon-box:hover {
-    box-shadow: 0 0 30px rgba(255,255,255,0.32), 0 0 55px rgba(255,255,255,0.12);
+  [data-theme="dark"] .form-input:focus-visible,
+  [data-theme="dark"] .social-icon-box:hover,
+  [data-theme="dark"] .proj-arrow:hover,
+  [data-theme="dark"] .cert-arrow:hover {
+    box-shadow:
+      0 0 0 4px var(--focus-ring-glow),
+      0 0 30px rgba(255,255,255,0.32), 0 0 55px rgba(255,255,255,0.12);
   }
   [data-theme="dark"] .proj-card:hover::before,
   [data-theme="dark"] .cert-card:hover::before,
   [data-theme="dark"] .research-card:hover::before,
   [data-theme="dark"] .home-card:hover::before,
   [data-theme="dark"] .timeline-block:hover::before,
-  [data-theme="dark"] .social-icon-box:hover::before {
+  [data-theme="dark"] .social-icon-box:hover::before,
+  [data-theme="dark"] .proj-arrow:hover::before,
+  [data-theme="dark"] .cert-arrow:hover::before {
     background: linear-gradient(135deg, #ffffff, #cfd0d8, #ffffff, #a8aab4);
     animation: border-flow 4s linear infinite;
   }
@@ -2167,21 +2502,22 @@
     background: linear-gradient(135deg, #f9a8d4, #fbcfe8, #f9a8d4, #ec4899);
     animation: border-flow 4s linear infinite;
   }
-  [data-theme="dark"] .proj-card.center {
+  [data-theme="dark"] .proj-card.center:not(:hover) {
     box-shadow: none;
   }
-  [data-theme="dark"] .proj-card.center::before {
-    background: #111111 !important;
+  [data-theme="dark"] .proj-card.center:hover {
+    box-shadow:
+      0 0 0 4px var(--focus-ring-glow),
+      0 0 30px rgba(255,255,255,0.32), 0 0 55px rgba(255,255,255,0.12);
   }
+  [data-theme="dark"] .proj-card.center:hover::before {
+    background: linear-gradient(135deg, #ffffff, #cfd0d8, #ffffff, #a8aab4) !important;
+    animation: border-flow 4s linear infinite !important;
+  }
+  [data-theme="dark"] .proj-arrow:hover,
   [data-theme="dark"] .cert-arrow:hover {
     background: rgba(255,255,255,0.1);
     color: #ffffff;
-    box-shadow: 0 0 22px rgba(255,255,255,0.35);
-  }
-  [data-theme="dark"] .proj-arrow:hover {
-    background: rgba(255,255,255,0.1);
-    color: #ffffff;
-    box-shadow: 0 0 22px rgba(255,255,255,0.35);
   }
   [data-theme="dark"] .cert-link:hover {
     background: rgba(255,255,255,0.12);
@@ -2211,27 +2547,275 @@
   [data-theme="dark"] .form-input:hover {
     border-color: rgba(255,255,255,0.35);
   }
-  [data-theme="dark"] .form-input:focus {
+  [data-theme="dark"] .form-input:focus-visible {
     border-color: rgba(255,255,255,0.55);
     animation: input-glow-pulse-dark 1.8s ease-in-out infinite;
   }
+  /* Dark theme contact: pink icon frames, labels, inputs; pink glow on hover */
+  [data-theme="dark"] #contact .social-icon-box {
+    color: #ffffff;
+  }
+  [data-theme="dark"] #contact .social-icon-box::before {
+    background: linear-gradient(135deg, #f9a8d4, #fbcfe8, #f9a8d4, #ec4899);
+  }
+  [data-theme="dark"] #contact .social-icon-box:hover,
+  [data-theme="dark"] #contact .social-item:hover .social-icon-box {
+    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+  [data-theme="dark"] #contact .social-icon-box:hover::before,
+  [data-theme="dark"] #contact .social-item:hover .social-icon-box::before {
+    background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9);
+    animation: border-flow 4s linear infinite;
+  }
+  [data-theme="dark"] #contact .form-label,
+  [data-theme="dark"] #contact .form-required {
+    color: #f9a8d4;
+  }
+  [data-theme="dark"] #contact .form-required {
+    opacity: 0.72;
+  }
+  [data-theme="dark"] #contact .form-input {
+    border-color: rgba(249,168,212,0.45);
+  }
+  [data-theme="dark"] #contact .form-input:hover {
+    border-color: rgba(249,168,212,0.65);
+    box-shadow: 0 0 26px rgba(249,168,212,0.35), 0 0 48px rgba(249,168,212,0.12);
+  }
+  [data-theme="dark"] #contact .form-input:focus-visible {
+    border-color: #f9a8d4;
+    box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+    animation: input-glow-pulse 1.8s ease-in-out infinite;
+  }
   @keyframes input-glow-pulse-dark {
-    0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.22), 0 0 42px rgba(255,255,255,0.08); }
-    50% { box-shadow: 0 0 32px rgba(255,255,255,0.38), 0 0 62px rgba(255,255,255,0.14); }
+    0%, 100% { box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 20px rgba(255,255,255,0.22), 0 0 42px rgba(255,255,255,0.08); }
+    50% { box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 32px rgba(255,255,255,0.38), 0 0 62px rgba(255,255,255,0.14); }
   }
   [data-theme="dark"] .btn-send:hover:not(:disabled) {
     background: rgba(255,255,255,0.12);
     box-shadow: 0 0 22px rgba(255,255,255,0.35);
     color: #ffffff;
   }
+
+  /* REDUCED MOTION — WCAG 2.2 AA (2.3.3 Animation from Interactions) */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
+      scroll-behavior: auto !important;
+    }
+
+    /* Scroll reveal — show content immediately */
+    section,
+    section.visible,
+    .tl-entry,
+    .tl-entry.visible {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    /* Navigation flash — no fade */
+    #flash-overlay {
+      transition: none !important;
+      opacity: 0 !important;
+    }
+
+    /* Hover — keep color/border feedback, remove movement */
+    .btn-resume:hover,
+    .btn-send:hover:not(:disabled),
+    .sidebar-item:hover .sidebar-icon,
+    .sidebar-item.active,
+    .skill-bubble:hover,
+    .proj-filter:hover,
+    .cert-link:hover,
+    .proj-github:hover,
+    .social-item:hover .social-icon-box,
+    .social-row:hover .social-icon-box,
+    #about .masonry-item:hover,
+    .tl-entry:hover .tl-dot,
+    .tl-entry:hover .tl-card,
+    .timeline > .tl-entry:nth-of-type(2n+1):hover .tl-card,
+    #experience .timeline > .tl-entry:nth-of-type(2n+1):hover .tl-card {
+      transform: none !important;
+    }
+
+    .tl-entry:hover .tl-dot {
+      transform: translateX(-50%) !important;
+    }
+
+    /* Carousel cards — instant state changes, no scale motion */
+    .proj-card,
+    .proj-card.center,
+    .cert-card,
+    .cert-card.center {
+      transition-property: box-shadow, opacity, filter, width !important;
+    }
+
+    .proj-card:not(.center),
+    .cert-card:not(.center) {
+      transform: none !important;
+    }
+
+    .proj-card.center,
+    .cert-card.center {
+      transform: none !important;
+    }
+
+    .proj-img-blur,
+    .proj-card.center .proj-img-blur {
+      transform: none !important;
+    }
+
+    /* Decorative / continuous animations */
+    .wave-emoji,
+    .wave-hand,
+    .pulse-dot,
+    .research-status::before,
+    .social-item .social-icon-box,
+    .social-row .social-icon-box,
+    .sidebar-item:hover .sidebar-icon {
+      animation: none !important;
+    }
+    .research-status::before {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    /* Hover borders — static gradient, no flowing animation */
+    .skill-bubble:hover::before,
+    .proj-card:hover::before,
+    .cert-card:hover::before,
+    .research-card:hover::before,
+    .home-card:hover::before,
+    .timeline-block:hover::before,
+    .social-icon-box:hover::before,
+    .social-item:hover .social-icon-box::before,
+    .social-row:hover .social-icon-box::before,
+    .proj-arrow:hover::before,
+    .cert-arrow:hover::before,
+    [data-theme="light"] .skill-bubble:hover::before,
+    [data-theme="light"] .proj-card:hover::before,
+    [data-theme="light"] .cert-card:hover::before,
+    [data-theme="light"] .research-card:hover::before,
+    [data-theme="light"] .home-card:hover::before,
+    [data-theme="light"] .timeline-block:hover::before,
+    [data-theme="light"] .social-icon-box:hover::before,
+    [data-theme="light"] .social-item:hover .social-icon-box::before,
+    [data-theme="light"] .proj-card.center:hover::before,
+    [data-theme="light"] .proj-arrow:hover::before,
+    [data-theme="light"] .cert-arrow:hover::before,
+    [data-theme="dark"] .proj-card:hover::before,
+    [data-theme="dark"] .cert-card:hover::before,
+    [data-theme="dark"] .research-card:hover::before,
+    [data-theme="dark"] .home-card:hover::before,
+    [data-theme="dark"] .timeline-block:hover::before,
+    [data-theme="dark"] .social-icon-box:hover::before,
+    [data-theme="dark"] .proj-arrow:hover::before,
+    [data-theme="dark"] .cert-arrow:hover::before,
+    [data-theme="dark"] .proj-card.center:hover::before,
+    [data-theme="dark"] .skill-bubble:hover::before {
+      animation: none !important;
+    }
+
+    /* Focus — static glow, no pulse */
+    .form-input:focus-visible {
+      animation: none !important;
+    }
+    [data-theme="dark"] .form-input:focus-visible {
+      animation: none !important;
+      box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 20px rgba(255,255,255,0.22) !important;
+    }
+    [data-theme="light"] .form-input:focus-visible {
+      animation: none !important;
+    }
+  }
+
 /*    RESPONSIVE — TABLET (≤900px) & MOBILE (≤600px) */
 
-/* ── TABLET (≤900px) ────────────────────────── */
+/* ── COMPACT NAV (tablet / phone / small laptop portrait) ── */
 @media (max-width: 900px) {
+  :root {
+    --sidebar-w: 0px;
+    --nav-edge-size: calc(52px + env(safe-area-inset-bottom, 0px));
+  }
 
-  /* Hide sidebar, shift layout left */
-  #sidebar { display: none; }
-  main, footer { margin-left: 0; }
+  html {
+    scroll-padding-bottom: calc(var(--nav-edge-size) + 12px);
+  }
+
+  #sidebar {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: var(--nav-edge-size);
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+    padding:
+      4px max(6px, env(safe-area-inset-right))
+      max(4px, env(safe-area-inset-bottom))
+      max(6px, env(safe-area-inset-left));
+    border-right: none;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+  }
+  [data-theme="light"] #sidebar {
+    border-top-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .sidebar-list {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 2px;
+  }
+  .sidebar-list::-webkit-scrollbar { display: none; }
+
+  .sidebar-list-item {
+    width: auto;
+    scroll-snap-align: center;
+  }
+
+  .sidebar-item {
+    flex-shrink: 0;
+  }
+
+  .sidebar-item.active {
+    transform: none;
+  }
+
+  .sidebar-tooltip {
+    display: none !important;
+  }
+
+  main, footer {
+    margin-left: 0;
+    padding-bottom: calc(var(--nav-edge-size) + 12px);
+  }
+
+  #custom-scrollbar {
+    height: calc(100vh - var(--header-h) - var(--nav-edge-size));
+  }
 
   /* Header: full-size logo; keep name visible */
   header {
@@ -2246,8 +2830,8 @@
     overflow: visible;
   }
   .logo-img {
-    object-fit: contain;
-    object-position: center center;
+    -webkit-mask-position: center center;
+    mask-position: center center;
   }
   .header-name {
     display: block;
@@ -2267,6 +2851,12 @@
   #research, #certifications, #about,
   #contact, #techstack, #projects, #home {
     padding: 60px 28px;
+  }
+  #contact {
+    padding-bottom: calc(72px + var(--nav-edge-size));
+  }
+  .contact-signoff {
+    bottom: calc(12px + var(--nav-edge-size));
   }
 
   /* Section headings */
@@ -2357,8 +2947,9 @@
   /* Carousel card sizes — tablet */
   :root {
     --proj-card-w: calc(300px + 2cm);
-    --proj-card-w-side: calc(252px + 2cm);
-    --proj-card-h: 460px;
+    --proj-card-w-side: var(--proj-card-w);
+    --proj-card-h: calc(460px - 1cm + 1.5cm);
+    --cert-card-h: calc(350px + 1cm);
     --proj-img-h: 172px;
   }
 
@@ -2388,6 +2979,12 @@
   #research, #certifications, #about,
   #contact, #techstack, #projects, #home {
     padding: 48px 18px;
+  }
+  #contact {
+    padding-bottom: calc(64px + var(--nav-edge-size));
+  }
+  .contact-signoff {
+    bottom: calc(10px + var(--nav-edge-size));
   }
 
   /* Section headings */
@@ -2498,29 +3095,32 @@
   .wave-emoji { font-size: 64px; }
   .sticker-main { width: 140px; }
 
-  /* Light theme logo — maroon #4a0520 on phone (same tuned filter as desktop) */
+  /* Light theme logo — same red as hero title (#590424) */
   [data-theme="light"] .logo-img {
-    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(90%) contrast(102%) !important;
+    background-color: #590424;
+    filter: none !important;
   }
   [data-theme="light"] .header-left:hover .logo-img {
-    filter: brightness(0) saturate(100%) invert(14%) sepia(28%) saturate(920%) hue-rotate(312deg) brightness(98%) contrast(102%) drop-shadow(0 0 10px rgba(74, 5, 32, 0.42)) !important;
+    background-color: #590424;
+    filter: drop-shadow(0 0 10px rgba(89, 4, 36, 0.42)) !important;
   }
 
   /* Carousel card sizes — mobile: +0.5cm each side vs prior width */
   :root {
     --proj-card-w: calc(100vw - 36px - 88px);
-    --proj-card-w-side: calc(100vw - 36px - 88px);
-    --proj-card-h: auto;
+    --proj-card-w-side: var(--proj-card-w);
+    --proj-card-h: calc(400px - 1cm + 1.5cm);
     --proj-img-h: 168px;
+    --cert-card-h: calc(320px + 1cm);
   }
 
   /* Cert carousel — same footprint as project cards */
   .cert-arrow { width: 36px; height: 36px; font-size: 16px; }
-  .cert-carousel-wrap { min-height: 0; gap: 6px; }
+  .cert-carousel-wrap { min-height: var(--cert-card-h); gap: 6px; }
   .cert-track {
     gap: 0;
     padding: 12px 0;
-    min-height: 0;
+    min-height: var(--cert-card-h);
     min-width: 0;
     flex: 1;
   }
@@ -2529,9 +3129,9 @@
     width: var(--cert-card-w) !important;
     max-width: 100%;
     box-sizing: border-box;
-    height: auto;
-    max-height: none;
-    min-height: calc(var(--proj-img-h) + 220px);
+    height: var(--cert-card-h) !important;
+    min-height: var(--cert-card-h);
+    max-height: var(--cert-card-h);
   }
 
   /* Project carousel */
@@ -2549,7 +3149,9 @@
     width: var(--proj-card-w) !important;
     max-width: 100%;
     box-sizing: border-box;
-    min-height: calc(var(--proj-img-h) + 220px);
+    height: var(--proj-card-h) !important;
+    min-height: var(--proj-card-h);
+    max-height: var(--proj-card-h);
   }
   .proj-card-footer:has(.proj-card-note:not(:empty)) {
     gap: 12px;
@@ -2573,7 +3175,7 @@
   .research-name { font-size: 17px; }
 
   /* Tech stack bubbles: slightly smaller */
-  .skill-bubble { padding: 10px 18px; font-size: 13px; }
+  .skill-bubble { padding: 10px 18px; font-size: calc(13px + 2pt); }
 
   /* About masonry */
   #about .about-masonry-grid { columns: 2; }
@@ -2643,81 +3245,99 @@
 </head>
 <body>
 
-<canvas id="liquid-bg"></canvas>
+<canvas id="liquid-bg" aria-hidden="true"></canvas>
 
 <!-- FLASH OVERLAY -->
-<div id="flash-overlay"></div>
+<div id="flash-overlay" aria-hidden="true"></div>
 
 <!-- CUSTOM SCROLLBAR -->
-<div id="custom-scrollbar"><div id="scroll-thumb"></div></div>
+<div id="custom-scrollbar" aria-hidden="true"><div id="scroll-thumb"></div></div>
 
 <!-- HEADER -->
-<header>
+<header aria-label="Site header">
   <a href="#home" class="header-left hoverable">
-    <img src="images/logo-mark.png" class="logo-img" alt="Logo">
+    <span class="logo-img" role="img" aria-label="Aayusha Hadke logo"></span>
     <span class="header-name">aayusha hadke</span>
   </a>
   <div class="header-right">
     <a href="https://drive.google.com/drive/folders/1qmBTKeEuFF8iw8AXRMWLACPgqOxTF0Rr?usp=drive_link" class="btn-resume hoverable" target="_blank" rel="noopener noreferrer">Resume</a>
     <a href="https://www.linkedin.com/in/aayusha-hadke/" target="_blank" rel="noopener noreferrer" class="icon-link icon-link--linkedin hoverable" aria-label="LinkedIn profile">
-      <svg viewBox="0 0 24 24" width="22" height="22"><path class="linkedin-svg" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle class="linkedin-svg" cx="4" cy="4" r="2"/></svg>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="linkedin-svg" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle class="linkedin-svg" cx="4" cy="4" r="2"/></svg>
     </a>
     <a href="https://github.com/Ahadke" target="_blank" rel="noopener noreferrer" class="icon-link hoverable" aria-label="GitHub">
-      <svg viewBox="0 0 24 24" width="22" height="22"><path class="github-svg" fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="github-svg" fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
     </a>
-    <div class="theme-toggle hoverable" id="themeToggle">
-      <div class="toggle-icon">
+    <button type="button" class="theme-toggle hoverable" id="themeToggle" aria-pressed="false" aria-label="Switch to light theme">
+      <span class="toggle-icon" aria-hidden="true">
         <!-- Moon -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      </div>
-      <div class="toggle-thumb"></div>
-      <div class="toggle-icon">
+      </span>
+      <span class="toggle-thumb" aria-hidden="true"></span>
+      <span class="toggle-icon" aria-hidden="true">
         <!-- Sun -->
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      </div>
-    </div>
+      </span>
+    </button>
   </div>
 </header>
 
-<!-- SIDEBAR -->
-<nav id="sidebar">
-  <a href="#home" class="sidebar-item hoverable active" data-section="home">
-    <i data-lucide="house"></i>
-    <span class="sidebar-tooltip">Home</span>
-  </a>
-  <a href="#experience" class="sidebar-item hoverable" data-section="experience">
-    <i data-lucide="briefcase"></i>
-    <span class="sidebar-tooltip">Experience</span>
-  </a>
-  <a href="#techstack" class="sidebar-item hoverable" data-section="techstack">
-    <i data-lucide="layers"></i>
-    <span class="sidebar-tooltip">Tech Stack</span>
-  </a>
-  <a href="#projects" class="sidebar-item hoverable" data-section="projects">
-    <i data-lucide="folder-kanban"></i>
-    <span class="sidebar-tooltip">Projects</span>
-  </a>
-  <a href="#research" class="sidebar-item hoverable" data-section="research">
-    <i data-lucide="scroll-text"></i>
-    <span class="sidebar-tooltip">Research</span>
-  </a>
-  <a href="#certifications" class="sidebar-item hoverable" data-section="certifications">
-    <i data-lucide="badge-check"></i>
-    <span class="sidebar-tooltip">Certifications</span>
-  </a>
-  <a href="#about" class="sidebar-item hoverable" data-section="about">
-    <i data-lucide="camera"></i>
-    <span class="sidebar-tooltip">Blog</span>
-  </a>
-  <a href="#contact" class="sidebar-item hoverable" data-section="contact">
-    <i data-lucide="mail"></i>
-    <span class="sidebar-tooltip">Contact</span>
-  </a>
+<!-- PRIMARY NAV -->
+<nav id="sidebar" aria-label="Primary Navigation">
+  <ul class="sidebar-list">
+    <li class="sidebar-list-item">
+      <a href="#home" class="sidebar-item hoverable active" data-section="home" aria-label="Home" aria-current="page">
+        <i data-lucide="house" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Home</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#experience" class="sidebar-item hoverable" data-section="experience" aria-label="Experience">
+        <i data-lucide="briefcase" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Experience</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#techstack" class="sidebar-item hoverable" data-section="techstack" aria-label="Tech Stack">
+        <i data-lucide="layers" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Tech Stack</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#projects" class="sidebar-item hoverable" data-section="projects" aria-label="Projects">
+        <i data-lucide="folder-kanban" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Projects</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#research" class="sidebar-item hoverable" data-section="research" aria-label="Research">
+        <i data-lucide="scroll-text" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Research</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#certifications" class="sidebar-item hoverable" data-section="certifications" aria-label="Certifications">
+        <i data-lucide="badge-check" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Certifications</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#about" class="sidebar-item hoverable" data-section="about" aria-label="More About Me">
+        <i data-lucide="camera" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Blog</span>
+      </a>
+    </li>
+    <li class="sidebar-list-item">
+      <a href="#contact" class="sidebar-item hoverable" data-section="contact" aria-label="Contact">
+        <i data-lucide="mail" aria-hidden="true"></i>
+        <span class="sidebar-tooltip" aria-hidden="true">Contact</span>
+      </a>
+    </li>
+  </ul>
 </nav>
 
 <!-- MAIN -->
 <main>
-  <section id="home">
+  <section id="home" aria-labelledby="homeTitle">
     <div class="home-wrap">
 
       <!-- TOP: FULL WIDTH HEADING -->
@@ -2726,7 +3346,7 @@
           <h1 class="home-name" id="homeTitle"></h1>
         </div>
         <div class="home-portrait-wrap">
-          <img class="home-portrait hoverable" id="homePortrait" src="images/portrait.png" width="992" height="1024" alt="aayushahadke" decoding="async">
+          <img class="home-portrait hoverable" id="homePortrait" src="images/portrait.png" width="992" height="1024" alt="Portrait of Aayusha Hadke" decoding="async">
         </div>
       </div>
 
@@ -2735,7 +3355,7 @@
         <div class="home-spacer"></div>
         <div class="home-right">
           <div class="home-location">
-            <i data-lucide="map-pin"></i>
+            <i data-lucide="map-pin" aria-hidden="true"></i>
             <span>Located in San Francisco, California</span>
           </div>
           <div class="home-card hoverable">
@@ -2747,7 +3367,7 @@
     </div>
   </section>
 
-  <section id="experience">
+  <section id="experience" aria-labelledby="expTitle">
     <div class="journey-wrap">
       <span class="section-tag">My Journey</span>
       <h2 class="journey-title" id="expTitle">Where I've Been</h2>
@@ -2757,7 +3377,7 @@
         <div class="journey-left">
 
           <div class="timeline-block block-exp">
-            <h3 class="timeline-heading"><span class="tl-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/><path d="M2 12h20"/></svg></span> Experience</h3>
+            <h3 class="timeline-heading"><span class="tl-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/><path d="M2 12h20"/></svg></span> Experience</h3>
             <div class="timeline">
               <div class="tl-line"></div>
 
@@ -2801,7 +3421,7 @@
           </div>
 
           <div class="timeline-block block-lead">
-            <h3 class="timeline-heading"><span class="tl-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> Leadership</h3>
+            <h3 class="timeline-heading"><span class="tl-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> Leadership</h3>
             <div class="timeline">
               <div class="tl-line tl-line-lead"></div>
 
@@ -2831,7 +3451,7 @@
         <div class="journey-right">
 
           <div class="timeline-block block-edu">
-            <h3 class="timeline-heading"><span class="tl-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span> Education</h3>
+            <h3 class="timeline-heading"><span class="tl-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span> Education</h3>
             <div class="timeline">
               <div class="tl-line tl-line-edu"></div>
 
@@ -2889,7 +3509,7 @@
     </div>
   </section>
 
-  <section id="techstack">
+  <section id="techstack" aria-labelledby="techTitle">
     <div class="skills-wrap">
       <h2 class="skills-title" id="techTitle"></h2>
       <div class="skills-categories">
@@ -2925,7 +3545,7 @@
           <div class="skills-grid">
             <div class="skill-bubble hoverable">PyTorch</div>
             <div class="skill-bubble hoverable">TensorFlow</div>
-            <div class="skill-bubble hoverable">Scikit-learn (sklearn)</div>
+            <div class="skill-bubble hoverable">Scikit-learn</div>
             <div class="skill-bubble hoverable">React</div>
             <div class="skill-bubble hoverable">Node.js</div>
             <div class="skill-bubble hoverable">FastAPI</div>
@@ -2956,38 +3576,39 @@
     </div>
   </section>
 
-  <section id="projects">
+  <section id="projects" aria-labelledby="projTitle">
     <div class="projects-wrap">
             <h2 class="projects-title" id="projTitle"></h2>
-<div class="proj-carousel-wrap">
-        <button class="proj-arrow proj-arrow-left" id="projLeft">&#8249;</button>
+<div class="proj-carousel-wrap" id="projCarousel" role="region" aria-roledescription="carousel" aria-label="Projects" tabindex="0">
+        <p id="projCarouselStatus" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+        <button type="button" class="proj-arrow proj-arrow-left" id="projLeft" aria-label="Previous project" aria-controls="projTrack"><span aria-hidden="true">&#8249;</span></button>
         <div class="proj-ring-track" id="projTrack">
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/Ahadke/BeyondMaps" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="BeyondMaps - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/beyondmaps-card.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the BeyondMaps offline Android travel assistant app" style="background-image: url('images/beyondmaps-card.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">BeyondMaps</h4>
+              <h3 class="proj-title">BeyondMaps</h3>
               <p class="proj-desc">An offline-first Android travel assistant that runs entirely on-device, with no internet and no cloud. Uses LiteRT for on-device LLM chat and translation, ML Kit for real-time OCR, and a local vector RAG system over a knowledge pack to answer contextual travel questions anywhere in the world.</p>
               <div class="proj-card-footer">
                 <p class="proj-card-note"><span class="proj-card-note-text">Selected from 450+ applicants at the Google X Qualcomm LiteRT Hackathon 2026 and built in 24 hours.</span></p>
                 <div class="proj-card-actions">
                 <div class="proj-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>LiteRT</span><span>ML Kit</span><span>Vector RAG</span><span>Android</span><span>On-device AI</span><span>OCR</span></div>
-                  <a href="https://github.com/Ahadke/BeyondMaps" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                  <a href="https://github.com/Ahadke/BeyondMaps" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/celinejp/ReliefNet" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="AlertU - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/alertu-card.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the AlertU disaster relief coordination app" style="background-image: url('images/alertu-card.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">AlertU</h4>
+              <h3 class="proj-title">AlertU</h3>
               <p class="proj-desc">An offline-first disaster communication platform designed to maintain critical connectivity during network outages and emergency scenarios. It enables peer-to-peer messaging, local resource sharing, and decentralized SOS coordination without stable internet, with resilient synchronization once connectivity is restored.</p>
               <div class="proj-card-footer">
                 <p class="proj-card-note"><span class="proj-card-note-text">Built in 24 hours at HackDavis 2026</span></p>
@@ -2997,15 +3618,15 @@
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/Bismanpal-Singh/SCSP---Mantle-AI" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Mantle AI - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/mantle-ai.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the Mantle AI application interface" style="background-image: url('images/mantle-ai.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">Mantle AI</h4>
+              <h3 class="proj-title">Mantle AI</h3>
               <p class="proj-desc">An agentic materials copilot built to accelerate critical mineral discovery. Takes mission-level language, converts it into search constraints, and queries the Materials Project with resilient retrieval. A planner loop scores and filters candidates iteratively and delivers ranked material portfolios with uncertainty estimates and lab test queues, all streamed live.</p>
               <div class="proj-card-footer">
                 <p class="proj-card-note"><span class="proj-card-note-text">Built in under 30 hours at SCSP National Security Hackathon 2026</span></p>
@@ -3015,15 +3636,15 @@
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/celinejp/Rooming" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Rooming - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/rooming.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the Rooming roommate matching app" style="background-image: url('images/rooming.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">Rooming</h4>
+              <h3 class="proj-title">Rooming</h3>
               <p class="proj-desc">A shared household management app that replaces the mess of group chats and spreadsheets. Supports Google sign-in, house onboarding, and admin/member roles, with a unified dashboard for expenses, chores, shopping lists, announcements, and a shared calendar, all synced in real time across housemates.</p>
               <div class="proj-card-footer">
                 <div class="proj-card-actions">
@@ -3032,15 +3653,15 @@
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/sophiequynn/graphq-llm" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="GraphQ-LLM - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/graphq-llm.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the GraphQ-LLM graph query interface" style="background-image: url('images/graphq-llm.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">GraphQ-LLM</h4>
+              <h3 class="proj-title">GraphQ-LLM</h3>
               <p class="proj-desc">An AI-powered query tutor for ResilientDB&apos;s GraphQL API. Ingests GraphQL documentation into a RAG pipeline so users can ask natural language questions, get structured explanations, complexity estimates, and efficiency tips without digging through docs, served through a clean Nexus UI with Dockerized backend services.</p>
               <div class="proj-card-footer">
                 <div class="proj-card-actions">
@@ -3049,15 +3670,15 @@
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/Ahadke/Demand-Forecasting-Revenue-Optimization-Pipeline" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Demand forecasting pipeline - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/demand-forecasting.png'); background-position: center 62%;"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the demand forecasting and revenue optimization pipeline dashboard" style="background-image: url('images/demand-forecasting.png'); background-position: center 62%;"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">Demand Forecasting &amp; Revenue Optimization</h4>
+              <h3 class="proj-title">Demand Forecasting &amp; Revenue Optimization</h3>
               <p class="proj-desc">An end-to-end revenue pipeline built on hotel booking data. Uses Prophet for demand forecasting, de-trended elasticity curves to model price sensitivity, constrained nonlinear optimization for pricing decisions, and multi-period dynamic programming to maximize revenue across booking windows, validated with A/B-style simulation.</p>
               <div class="proj-card-footer">
                 <div class="proj-card-actions">
@@ -3066,53 +3687,53 @@
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="Enterprise demand forecasting - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/enterprise-forecasting.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the enterprise causal demand forecasting system" style="background-image: url('images/enterprise-forecasting.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">Enterprise Causal Demand Forecasting</h4>
+              <h3 class="proj-title">Enterprise Causal Demand Forecasting</h3>
               <p class="proj-desc">A production-grade retail forecasting system that goes beyond naive baselines. Engineers causal features from promotions, pricing, and calendar effects, fits probabilistic quantile models for uncertainty-aware predictions, reconciles forecasts hierarchically across SKU, store, and geography, and monitors for distribution drift to stay reliable in production.</p>
               <div class="proj-card-footer">
                 <div class="proj-card-actions">
-                <div class="proj-tags"><span>Python</span><span>pandas</span><span>scikit-learn</span><span>Quantile Regression</span><span>Causal Features</span><span>Hierarchical Forecasting</span><span>Drift Monitoring</span><span>Inventory Optimization</span></div>
+                <div class="proj-tags"><span>Python</span><span>Quantile Regression</span><span>Causal Features</span><span>Hierarchical Forecasting</span><span>Drift Monitoring</span><span>Inventory Optimization</span></div>
                   <a href="https://github.com/Ahadke/Enterprise-Scale-Causal-Probabilistic-Demand-Forecasting-System" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="proj-card">
+          <article class="proj-card">
             <div class="proj-img">
               <a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" class="proj-img-link" target="_blank" rel="noopener noreferrer" aria-label="RFM segmentation - GitHub repository"></a>
-              <div class="proj-img-blur" style="background-image: url('images/rfm-retention.png')"></div>
+              <div class="proj-img-blur" role="img" aria-label="Screenshot of the RFM segmentation and retention modeling analytics dashboard" style="background-image: url('images/rfm-retention.png')"></div>
             </div>
             <div class="proj-info">
-              <h4 class="proj-title">RFM Segmentation &amp; Retention Modeling</h4>
+              <h3 class="proj-title">RFM Segmentation &amp; Retention Modeling</h3>
               <p class="proj-desc">A customer analytics pipeline that segments users by recency, frequency, and monetary value to identify high-value cohorts and churn-risk clusters. Predictive retention models then target each segment with tailored interventions, replacing one-size-fits-all campaigns with ROI-driven retention strategy built directly from transactional history.</p>
               <div class="proj-card-footer">
                 <div class="proj-card-actions">
-                <div class="proj-tags"><span>Python</span><span>RFM Analysis</span><span>scikit-learn</span><span>K-Means Clustering</span><span>Churn Prediction</span><span>Customer Segmentation</span><span>Predictive Modeling</span><span>CLV</span></div>
+                <div class="proj-tags"><span>Python</span><span>RFM Analysis</span><span>K-Means Clustering</span><span>Churn Prediction</span><span>Customer Segmentation</span><span>Predictive Modeling</span><span>CLV</span></div>
                   <a href="https://github.com/Ahadke/RFM-Driven-Segmentation-and-Predictive-Retention-Modeling" target="_blank" rel="noopener noreferrer" class="proj-github" onclick="event.stopPropagation()" aria-label="Open project repository"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
 
         </div>
-        <button class="proj-arrow proj-arrow-right" id="projRight">&#8250;</button>
+        <button type="button" class="proj-arrow proj-arrow-right" id="projRight" aria-label="Next project" aria-controls="projTrack"><span aria-hidden="true">&#8250;</span></button>
       </div>
 
     </div>
   </section>
-  <section id="research">
+  <section id="research" aria-labelledby="resTitle">
     <div class="research-wrap">
       <h2 class="research-title" id="resTitle"></h2>
 
-      <div class="research-card hoverable">
+      <article class="research-card hoverable">
         <span class="research-status">Ongoing</span>
         <div class="research-card-thumb">
           <img src="images/research-sealid.png" alt="Harbor seal with an identification tag on its head in turquoise water, eating a small fish" width="769" height="1024" decoding="async" loading="lazy" style="border: 1.5px solid #c8c8c8; border-radius: 6px;">
@@ -3146,49 +3767,105 @@
             <span class="research-meta-value">December 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>
 
-  <section id="certifications">
+  <section id="certifications" aria-labelledby="certTitle">
     <div class="cert-wrap">
       <span class="section-tag">Achievements</span>
       <h2 class="cert-title" id="certTitle"></h2>
 
-      <div class="cert-carousel-wrap">
-        <button class="cert-arrow" id="certLeft">&#8249;</button>
+      <div class="cert-carousel-wrap" id="certCarousel" role="region" aria-roledescription="carousel" aria-label="Certifications" tabindex="0">
+        <p id="certCarouselStatus" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+        <button type="button" class="cert-arrow" id="certLeft" aria-label="Previous certification" aria-controls="certTrack"><span aria-hidden="true">&#8249;</span></button>
         <div class="cert-track" id="certTrack">
 
-          <div class="cert-card">
+          <article class="cert-card">
             <span class="cert-issuer">Harvard Business School</span>
-            <h4 class="cert-name">Data Science for Business</h4>
+            <h3 class="cert-name">Data Science for Business</h3>
             <span class="cert-date">Credential ID · 2537OYDRAFEK</span>
             <p class="cert-learned">Covers the full analytics workflow: framing business problems as data problems, selecting and evaluating models, and translating findings into executive-level strategy. Bridges technical data science with real-world business impact.</p>
             <div class="cert-footer">
               <div class="cert-tags"><span>Business Analytics</span><span>Predictive Modeling</span><span>Statistical Analysis</span><span>Data-Driven Strategy</span><span>Machine Learning</span><span>A/B Testing</span></div>
-              <a href="https://cecredential-validation.tlt.harvard.edu/" target="_blank" rel="noopener noreferrer" class="cert-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="https://cecredential-validation.tlt.harvard.edu/" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify Data Science for Business certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
             </div>
-          </div>
+          </article>
 
-          <div class="cert-card">
+          <article class="cert-card">
+            <span class="cert-issuer">DeepLearning.AI</span>
+            <h3 class="cert-name">Machine Learning Specialization</h3>
+            <span class="cert-date">Credential ID · 3c9b4863-ef4f-41f2-89e5-5c100fa26b4d</span>
+            <p class="cert-learned">Learned core machine learning concepts through hands-on projects involving supervised and unsupervised learning, decision trees, ensemble methods, recommender systems, and practical model development using Python, TensorFlow, and scikit-learn.</p>
+            <div class="cert-footer">
+              <div class="cert-tags"><span>Machine Learning</span><span>Supervised Learning</span><span>Unsupervised Learning</span><span>Decision Trees</span><span>Scikit-learn</span><span>TensorFlow</span></div>
+              <a href="https://learn.deeplearning.ai/certificates/3c9b4863-ef4f-41f2-89e5-5c100fa26b4d" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify Machine Learning Specialization certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <span class="cert-issuer">DeepLearning.AI</span>
+            <h3 class="cert-name">Deep Learning Specialization</h3>
+            <span class="cert-date">Credential ID · e743f2b2-718e-4bfa-b02f-76a2e950e710</span>
+            <p class="cert-learned">Completed an advanced specialization covering deep neural networks, hyperparameter tuning, optimization techniques, convolutional neural networks (CNNs), sequence models, TensorFlow, and best practices for designing and deploying deep learning systems.</p>
+            <div class="cert-footer">
+              <div class="cert-tags"><span>Deep Learning</span><span>Neural Networks</span><span>TensorFlow</span><span>Convolutional Neural Networks (CNNs)</span><span>Sequence Models</span><span>Hyperparameter Tuning</span></div>
+              <a href="https://learn.deeplearning.ai/certificates/e743f2b2-718e-4bfa-b02f-76a2e950e710" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify Deep Learning Specialization certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <span class="cert-issuer">DeepLearning.AI</span>
+            <h3 class="cert-name">AI Prompting for Everyone</h3>
+            <span class="cert-date">Credential ID · 8edfd39f-318a-4361-a50f-15ff0b1789cf</span>
+            <p class="cert-learned">Developed practical prompting skills for working effectively with modern AI models. Learned how to craft better prompts for research, writing, brainstorming, image generation, and building simple AI-powered applications while improving the quality and reliability of AI responses.</p>
+            <div class="cert-footer">
+              <div class="cert-tags"><span>Prompt Engineering</span><span>Generative AI</span><span>Large Language Models (LLMs)</span><span>AI Productivity</span><span>AI Workflows</span></div>
+              <a href="https://learn.deeplearning.ai/certificates/8edfd39f-318a-4361-a50f-15ff0b1789cf" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify AI Prompting for Everyone certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <span class="cert-issuer">Amazon Web Services (AWS) × DeepLearning.AI</span>
+            <h3 class="cert-name">Generative AI with Large Language Models</h3>
+            <span class="cert-date">Credential ID · b7d9b5f9-1ed9-4e32-a315-714302ea4624</span>
+            <p class="cert-learned">Built a strong foundation in generative AI by exploring transformer architectures, foundation models, fine-tuning techniques, responsible AI practices, and deployment strategies for developing production-ready LLM applications on AWS.</p>
+            <div class="cert-footer">
+              <div class="cert-tags"><span>Generative AI</span><span>Large Language Models (LLMs)</span><span>Transformers</span><span>Foundation Models</span><span>Fine-Tuning</span><span>Amazon Bedrock</span></div>
+              <a href="https://learn.deeplearning.ai/certificates/b7d9b5f9-1ed9-4e32-a315-714302ea4624" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify Generative AI with Large Language Models certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </article>
+
+          <article class="cert-card">
+            <span class="cert-issuer">Snowflake × DeepLearning.AI</span>
+            <h3 class="cert-name">Fast Prototyping of GenAI Apps with Streamlit</h3>
+            <span class="cert-date">Credential ID · 2a54cf4a-37f2-4c19-98ce-cdc67d85f53b</span>
+            <p class="cert-learned">Designed and deployed interactive GenAI applications using Streamlit and Snowflake Cortex AI. Applied prompt engineering, Retrieval-Augmented Generation (RAG), and rapid prototyping techniques to build AI-powered applications from concept to working prototype.</p>
+            <div class="cert-footer">
+              <div class="cert-tags"><span>Streamlit</span><span>Snowflake Cortex AI</span><span>Generative AI</span><span>Retrieval-Augmented Generation (RAG)</span><span>LLM Applications</span><span>Python</span></div>
+              <a href="https://learn.deeplearning.ai/certificates/2a54cf4a-37f2-4c19-98ce-cdc67d85f53b" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify Fast Prototyping of GenAI Apps with Streamlit certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+            </div>
+          </article>
+
+          <article class="cert-card">
             <span class="cert-issuer">Udemy</span>
-            <h4 class="cert-name">The Complete SQL Bootcamp: Go from Zero to Hero</h4>
-            <span class="cert-date">Certificate · UC-72f531d9-b861-40b8-8ccd-843d8fd64c7b</span>
+            <h3 class="cert-name">The Complete SQL Bootcamp: Go from Zero to Hero</h3>
+            <span class="cert-date">Credential ID · UC-72f531d9-b861-40b8-8ccd-843d8fd64c7b</span>
             <p class="cert-learned">End-to-end SQL training from core querying through joins, aggregations, subqueries, and analytical workflows. Built practical database skills for extracting, transforming, and analyzing data with hands-on exercises.</p>
             <div class="cert-footer">
               <div class="cert-tags"><span>SQL</span><span>PostgreSQL</span><span>JOINs</span><span>Aggregations</span><span>Subqueries</span><span>Data Analysis</span></div>
-              <a href="https://www.udemy.com/certificate/UC-72f531d9-b861-40b8-8ccd-843d8fd64c7b/" target="_blank" rel="noopener noreferrer" class="cert-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="https://www.udemy.com/certificate/UC-72f531d9-b861-40b8-8ccd-843d8fd64c7b/" target="_blank" rel="noopener noreferrer" class="cert-link" aria-label="Verify SQL Bootcamp certificate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
             </div>
-          </div>
+          </article>
 
         </div>
-        <button class="cert-arrow" id="certRight">&#8250;</button>
+        <button type="button" class="cert-arrow" id="certRight" aria-label="Next certification" aria-controls="certTrack"><span aria-hidden="true">&#8250;</span></button>
       </div>
     </div>
   </section>
 
-  <section id="about">
+  <section id="about" aria-labelledby="aboutTitle">
     <div class="about-wrap">
       <h2 class="about-title" id="aboutTitle"></h2>
 
@@ -3200,55 +3877,61 @@
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-1">
-            <img src="images/gallery/dawn.jpg" alt="Gallery image 1" width="3024" height="4032" decoding="async" loading="lazy">
+            <img src="images/gallery/dawn.jpg" alt="Golden Gate Bridge illuminated at night, viewed from an elevated angle under a dark cloudy sky" width="3024" height="4032" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-2">
-            <img src="images/gallery/bloom.jpg" alt="Gallery image 2" width="3027" height="4187" decoding="async" loading="lazy">
+            <img src="images/gallery/bloom.jpg" alt="Hand holding a yellow flower against a soft sunset with silhouetted trees" width="3027" height="4187" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-3">
-            <img src="images/gallery/harbor.jpg" alt="Gallery image 3" width="3024" height="4032" decoding="async" loading="lazy">
+            <img src="images/gallery/harbor.jpg" alt="Golden sunset over calm bay waters with silhouetted hills and shimmering reflections" width="3024" height="4032" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-4">
-            <img src="images/gallery/ember.jpg" alt="Gallery image 4" width="3029" height="4452" decoding="async" loading="lazy">
+            <img src="images/gallery/ember.jpg" alt="Beach at sunset with waves rolling onto sandy shore marked with footprints" width="3029" height="4452" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-5">
-            <img src="images/gallery/cascade.jpg" alt="Gallery image 5" width="2650" height="3534" decoding="async" loading="lazy">
+            <img src="images/gallery/cascade.jpg" alt="Aayusha Hadke standing on a coastal cliff overlooking the ocean at sunset" width="2650" height="3534" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-6">
-            <img src="images/gallery/meadow.jpg" alt="Gallery image 6" width="3024" height="4032" decoding="async" loading="lazy">
+            <img src="images/gallery/meadow.jpg" alt="Dramatic sunset with fiery orange and red clouds above silhouetted trees" width="3024" height="4032" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-7">
-            <img src="images/gallery/solace.jpg" alt="Gallery image 7" width="3024" height="4032" decoding="async" loading="lazy">
+            <img src="images/gallery/solace.jpg" alt="Mumbai skyline and Bandra-Worli Sea Link at sunrise with sunlight reflecting on the Arabian Sea" width="3024" height="4032" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-8">
-            <img src="images/gallery/horizon.jpg" alt="Gallery image 8 — landscape" width="3025" height="2452" decoding="async" loading="lazy">
+            <img src="images/gallery/horizon.jpg" alt="Panoramic hilltop view of a green valley with a small lake and distant city under an overcast sky" width="3025" height="2452" decoding="async" loading="lazy">
           </div>
         </div>
 
         <div class="masonry-item hoverable">
           <div class="img-wrapper ratio-9">
-            <img src="images/gallery/twilight.jpg" alt="Gallery image 9" width="3024" height="4032" decoding="async" loading="lazy">
+            <img src="images/gallery/twilight.jpg" alt="Vibrant sunset over a suburban landscape with silhouetted trees and streetlights" width="3024" height="4032" decoding="async" loading="lazy">
+          </div>
+        </div>
+
+        <div class="masonry-item hoverable">
+          <div class="img-wrapper ratio-10">
+            <img src="images/gallery/gathering.jpg" alt="Large crowd silhouetted against a vibrant blue and orange sunset sky at an outdoor field with tall stadium lights" width="1024" height="768" decoding="async" loading="lazy">
           </div>
         </div>
 
@@ -3256,7 +3939,7 @@
     </div>
   </section>
 
-  <section id="contact">
+  <section id="contact" aria-labelledby="contactTitle">
     <div class="contact-wrap">
 
       <!-- LEFT: TITLE + FORM -->
@@ -3267,22 +3950,25 @@
 
         <form class="contact-form" id="contactForm" action="#" method="post" novalidate>
           <div class="form-group">
-            <label class="form-label" for="fname">Name</label>
-            <input class="form-input hoverable" type="text" id="fname" name="name" placeholder="What should I call you?">
+            <label class="form-label" for="fname">Name <span class="form-required" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+            <input class="form-input hoverable" type="text" id="fname" name="name" autocomplete="name" required placeholder="What should I call you?">
+            <span class="form-field-error" id="fname-error"></span>
           </div>
           <div class="form-group">
-            <label class="form-label" for="femail">Email</label>
-            <input class="form-input hoverable" type="email" id="femail" name="email" placeholder="What is your email id?">
+            <label class="form-label" for="femail">Email <span class="form-required" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+            <input class="form-input hoverable" type="email" id="femail" name="email" autocomplete="email" required inputmode="email" spellcheck="false" placeholder="What is your email id?">
+            <span class="form-field-error" id="femail-error"></span>
           </div>
           <div class="form-group">
-            <label class="form-label" for="fmsg">Message</label>
-            <textarea class="form-input hoverable" id="fmsg" name="message" rows="4" placeholder="What's on your mind?"></textarea>
+            <label class="form-label" for="fmsg">Message <span class="form-required" aria-hidden="true">*</span><span class="sr-only"> (required)</span></label>
+            <textarea class="form-input hoverable" id="fmsg" name="message" rows="4" autocomplete="off" required placeholder="What's on your mind?"></textarea>
+            <span class="form-field-error" id="fmsg-error"></span>
           </div>
-          <button class="form-btn btn-send hoverable" type="submit" id="sendBtn" aria-live="polite">
+          <button class="form-btn btn-send hoverable" type="submit" id="sendBtn">
             <span id="sendLabel">Send Message</span>
             <svg id="sendPlane" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
-          <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+          <p id="formStatus" class="form-status" role="status" aria-live="polite" aria-atomic="true"></p>
         </form>
       </div>
 
@@ -3292,21 +3978,21 @@
 
           <a href="mailto:ahadke26@gmail.com" class="social-item hoverable">
             <div class="social-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
             </div>
             <span class="social-label">ahadke26@gmail.com</span>
           </a>
 
           <a href="https://www.linkedin.com/in/aayusha-hadke/" target="_blank" rel="noopener noreferrer" class="social-item hoverable">
             <div class="social-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             </div>
             <span class="social-label">aayusha-hadke</span>
           </a>
 
           <a href="https://github.com/Ahadke" target="_blank" rel="noopener noreferrer" class="social-item hoverable">
             <div class="social-icon-box">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
             </div>
             <span class="social-label">Ahadke</span>
           </a>
@@ -3315,16 +4001,38 @@
       </div>
 
     </div>
-    <p class="contact-signoff">Crafted by Aayusha Hadke with <span class="signoff-heart" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span> in 2026</p>
+    <footer class="contact-signoff">Crafted by Aayusha Hadke with <span class="signoff-heart" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span> in 2026</footer>
   </section>
 </main>
 
 <script>
+  const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function prefersReducedMotion() {
+    return motionMediaQuery.matches;
+  }
+
+  function applyInstantScrollReveals() {
+    if (!prefersReducedMotion()) return;
+    document.querySelectorAll('section').forEach((section) => section.classList.add('visible'));
+    document.querySelectorAll('.tl-entry').forEach((entry) => entry.classList.add('visible'));
+  }
+
+  applyInstantScrollReveals();
+  motionMediaQuery.addEventListener('change', applyInstantScrollReveals);
+
   // Init Lucide icons
   lucide.createIcons();
+  document.querySelectorAll('#sidebar .sidebar-item i, #sidebar .sidebar-item svg').forEach(el => {
+    el.setAttribute('aria-hidden', 'true');
+  });
+  document.querySelectorAll(
+    '.proj-github svg, .cert-link svg, #contact .social-icon-box svg, .home-location svg, .home-location i'
+  ).forEach(el => {
+    el.setAttribute('aria-hidden', 'true');
+  });
 
-  // Hero portrait: images/portrait.png (rebuild: python scripts/rebuild-home-portrait.py
-  // — checker tiles → transparent only; layout/CSS unchanged).
+  // Hero portrait:
 
   // THEME TOGGLE
   const html = document.documentElement;
@@ -3334,20 +4042,39 @@
   html.setAttribute('data-theme', theme);
   if (!saved) localStorage.setItem('theme', 'dark');
 
-  toggle.addEventListener('click', () => {
+  function syncThemeToggleA11y(themeName) {
+    if (!toggle) return;
+    const isLight = themeName === 'light';
+    toggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+    toggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+  }
+
+  syncThemeToggleA11y(theme);
+
+  toggle?.addEventListener('click', () => {
     const current = html.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+    syncThemeToggleA11y(next);
   });
 
   // SCROLLBAR - track sits below fixed header; thumb travel matches track minus thumb height
   const thumb = document.getElementById('scroll-thumb');
+  const compactNavQuery = window.matchMedia('(max-width: 900px)');
+
+  function getNavBottomInset() {
+    if (!compactNavQuery.matches) return 0;
+    const edge = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-edge-size'));
+    return Number.isFinite(edge) ? edge : 0;
+  }
+
   function updateScrollThumb() {
     const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 65;
+    const navBottom = getNavBottomInset();
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const ratio = window.scrollY / maxScroll;
-    const trackH = window.innerHeight - headerH;
+    const trackH = window.innerHeight - headerH - navBottom;
     const thumbH = thumb.offsetHeight || 60;
     const travel = Math.max(0, trackH - thumbH);
     thumb.style.top = (ratio * travel) + 'px';
@@ -3366,6 +4093,26 @@
   );
 
   let sidebarSpyQueued = false;
+
+  function setSidebarActiveState(activeId) {
+    sidebarItems.forEach(item => {
+      const isActive = item.dataset.section === activeId;
+      item.classList.toggle('active', isActive);
+      if (isActive) {
+        item.setAttribute('aria-current', 'page');
+        if (compactNavQuery.matches) {
+          item.scrollIntoView({
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+        }
+      } else {
+        item.removeAttribute('aria-current');
+      }
+    });
+  }
+
   function updateSidebarActive() {
     sidebarSpyQueued = false;
     if (!navSections.length) return;
@@ -3376,9 +4123,7 @@
       const top = sec.getBoundingClientRect().top + window.scrollY;
       if (activation >= top) activeId = sec.id;
     }
-    sidebarItems.forEach(item => {
-      item.classList.toggle('active', item.dataset.section === activeId);
-    });
+    setSidebarActiveState(activeId);
   }
 
   function queueSidebarActive() {
@@ -3393,15 +4138,80 @@
   window.addEventListener('load', queueSidebarActive);
   queueSidebarActive();
 
-  // SIDEBAR CLICK - smooth scroll + flash
-  sidebarItems.forEach(item => {
-    item.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.getElementById(item.dataset.section);
-      if (!target) return;
+  // SIDEBAR NAV — scroll to section title (click, Enter, or Space)
+  const SECTION_TITLE_IDS = {
+    home: 'homeTitle',
+    experience: 'expTitle',
+    techstack: 'techTitle',
+    projects: 'projTitle',
+    research: 'resTitle',
+    certifications: 'certTitle',
+    about: 'aboutTitle',
+    contact: 'contactTitle',
+  };
+
+  let sidebarNavBusy = false;
+
+  function navigateToSection(sectionId) {
+    if (sidebarNavBusy) return;
+    sidebarNavBusy = true;
+    setTimeout(() => { sidebarNavBusy = false; }, 450);
+
+    const titleEl = document.getElementById(SECTION_TITLE_IDS[sectionId] || '');
+    const sectionEl = document.getElementById(sectionId);
+    const scrollTarget = titleEl || sectionEl;
+    if (!scrollTarget) return;
+
+    if (sectionEl) {
+      sectionEl.classList.add('visible');
+      sectionEl.querySelectorAll('.tl-entry').forEach(el => el.classList.add('visible'));
+    }
+
+    if (!prefersReducedMotion()) {
       flash.style.opacity = '1';
       setTimeout(() => { flash.style.opacity = '0'; }, 200);
-      target.scrollIntoView({ behavior: 'smooth' });
+    }
+    scrollTarget.scrollIntoView({
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+      block: 'start',
+    });
+
+    setSidebarActiveState(sectionId);
+
+    if (history.replaceState) {
+      history.replaceState(null, '', '#' + sectionId);
+    } else {
+      location.hash = sectionId;
+    }
+  }
+
+  function onSidebarActivate(e, item) {
+    e.preventDefault();
+    e.stopPropagation();
+    navigateToSection(item.dataset.section);
+  }
+
+  sidebarItems.forEach((item, index) => {
+    item.addEventListener('click', e => onSidebarActivate(e, item));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onSidebarActivate(e, item);
+        return;
+      }
+      const isHorizontal = compactNavQuery.matches;
+      const nextKeys = isHorizontal ? ['ArrowRight'] : ['ArrowDown'];
+      const prevKeys = isHorizontal ? ['ArrowLeft'] : ['ArrowUp'];
+      let targetIndex = -1;
+      if (nextKeys.includes(e.key)) {
+        targetIndex = (index + 1) % sidebarItems.length;
+      } else if (prevKeys.includes(e.key)) {
+        targetIndex = (index - 1 + sidebarItems.length) % sidebarItems.length;
+      }
+      if (targetIndex >= 0) {
+        e.preventDefault();
+        sidebarItems[targetIndex].focus();
+      }
     });
   });
 
@@ -3421,9 +4231,13 @@
       if (entry.isIntersecting) {
         const tlEntries = entry.target.querySelectorAll('.tl-entry');
         const reversed = Array.from(tlEntries).reverse();
-        reversed.forEach((el, i) => {
-          setTimeout(() => el.classList.add('visible'), i * 150);
-        });
+        if (prefersReducedMotion()) {
+          reversed.forEach((el) => el.classList.add('visible'));
+        } else {
+          reversed.forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 150);
+          });
+        }
         tlObserver.unobserve(entry.target);
       }
     });
@@ -3524,6 +4338,95 @@
     formStatus.className = 'form-status' + (type ? ' ' + type : '');
   }
 
+  const contactFieldConfigs = [
+    {
+      inputId: 'fname',
+      errorId: 'fname-error',
+      validate(value) {
+        if (!value.trim()) return 'Please enter your name.';
+        return '';
+      },
+    },
+    {
+      inputId: 'femail',
+      errorId: 'femail-error',
+      validate(value) {
+        const trimmed = value.trim();
+        if (!trimmed) return 'Please enter your email address.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return 'Please enter a valid email address.';
+        return '';
+      },
+    },
+    {
+      inputId: 'fmsg',
+      errorId: 'fmsg-error',
+      validate(value) {
+        if (!value.trim()) return 'Please enter a message.';
+        return '';
+      },
+    },
+  ];
+
+  function getContactFieldElements(config) {
+    return {
+      input: document.getElementById(config.inputId),
+      error: document.getElementById(config.errorId),
+    };
+  }
+
+  function setContactFieldError(config, message) {
+    const { input, error } = getContactFieldElements(config);
+    if (!input || !error) return;
+    if (message) {
+      input.setAttribute('aria-invalid', 'true');
+      error.textContent = message;
+      input.setAttribute('aria-describedby', error.id);
+    } else {
+      input.removeAttribute('aria-invalid');
+      error.textContent = '';
+      input.removeAttribute('aria-describedby');
+    }
+  }
+
+  function clearContactFieldErrors() {
+    contactFieldConfigs.forEach((config) => setContactFieldError(config, ''));
+  }
+
+  function validateContactForm(options = {}) {
+    const { focusFirstInvalid = false } = options;
+    let firstInvalid = null;
+    let valid = true;
+
+    contactFieldConfigs.forEach((config) => {
+      const { input } = getContactFieldElements(config);
+      const message = config.validate(input ? input.value : '');
+      setContactFieldError(config, message);
+      if (message) {
+        valid = false;
+        if (!firstInvalid && input) firstInvalid = input;
+      }
+    });
+
+    if (!valid && focusFirstInvalid && firstInvalid) firstInvalid.focus();
+    return { valid, firstInvalid };
+  }
+
+  contactFieldConfigs.forEach((config) => {
+    const { input } = getContactFieldElements(config);
+    if (!input) return;
+    input.addEventListener('input', () => {
+      if (input.getAttribute('aria-invalid') === 'true') {
+        const message = config.validate(input.value);
+        if (!message) setContactFieldError(config, '');
+      }
+    });
+    input.addEventListener('blur', () => {
+      if (input.getAttribute('aria-invalid') === 'true') {
+        setContactFieldError(config, config.validate(input.value));
+      }
+    });
+  });
+
   async function sendViaServer(payload) {
     const r = await fetch('/api/contact', {
       method: 'POST',
@@ -3583,25 +4486,24 @@
     contactForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       showFormStatus('', '');
+      const { valid } = validateContactForm({ focusFirstInvalid: true });
+      if (!valid) {
+        showFormStatus('Please correct the errors below.', 'error');
+        return;
+      }
       const fname = document.getElementById('fname');
       const femail = document.getElementById('femail');
       const fmsg = document.getElementById('fmsg');
       const name = fname ? fname.value.trim() : '';
       const email = femail ? femail.value.trim() : '';
       const message = fmsg ? fmsg.value.trim() : '';
-      if (!name || !email || !message) {
-        showFormStatus('Please fill in all fields.', 'error');
-        return;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showFormStatus('Please enter a valid email address.', 'error');
-        return;
-      }
       setSendButtonState('sending');
       try {
         await deliverContactMessage({ name, email, message });
         setSendButtonState('sent');
+        clearContactFieldErrors();
         contactForm.reset();
+        showFormStatus('Your message was sent successfully.', 'success');
         setTimeout(function() {
           setSendButtonState('idle');
           showFormStatus('', '');
@@ -3617,20 +4519,175 @@
   window.addEventListener('scroll', () => {
     const light = document.documentElement.getAttribute('data-theme') === 'light';
     const pink = window.scrollY > 60 ? 'rgba(249,168,212,0.4)' : 'rgba(249,168,212,0.22)';
-    const lightBorder = window.scrollY > 60 ? 'rgba(74,5,32,0.14)' : 'rgba(0,0,0,0.06)';
+    const lightBorder = window.scrollY > 60 ? 'rgba(89,4,36,0.14)' : 'rgba(0,0,0,0.06)';
     document.querySelector('header').style.borderBottomColor = light ? lightBorder : pink;
   });
 
-  // RING CAROUSEL - seamless wrap (last → first, no index glitches)
+  // Pack skill tags on project/cert cards — priority tag stays first, rest reordered to wrap cleanly
   (function() {
-    const cards = Array.from(document.querySelectorAll('#projects .proj-card'));
+    const TAG_GAP_X = 6;
+
+    function originalLabels(container) {
+      if (!container.dataset.tagsOriginal) {
+        container.dataset.tagsOriginal = JSON.stringify(
+          [...container.querySelectorAll('span')].map(s => s.textContent.trim())
+        );
+      }
+      return JSON.parse(container.dataset.tagsOriginal);
+    }
+
+    function restoreOriginalTags(container) {
+      const labels = originalLabels(container);
+      const byText = new Map(
+        [...container.querySelectorAll('span')].map(s => [s.textContent.trim(), s])
+      );
+      container.textContent = '';
+      labels.forEach(label => {
+        const span = byText.get(label);
+        if (span) container.appendChild(span);
+      });
+      return [...container.querySelectorAll('span')];
+    }
+
+    function layoutScore(widths, maxW, gap) {
+      if (!widths.length) return { rows: 0, lastRowW: 0 };
+      let rows = 1;
+      let rowW = widths[0];
+      let lastRowW = rowW;
+      for (let i = 1; i < widths.length; i++) {
+        const w = widths[i];
+        if (rowW + gap + w > maxW + 0.5) {
+          rows++;
+          rowW = w;
+          lastRowW = w;
+        } else {
+          rowW += gap + w;
+          lastRowW = rowW;
+        }
+      }
+      return { rows, lastRowW };
+    }
+
+    function permutations(items) {
+      if (items.length <= 1) return [items.slice()];
+      const out = [];
+      function walk(prefix, rest) {
+        if (!rest.length) {
+          out.push(prefix.slice());
+          return;
+        }
+        rest.forEach((item, i) => {
+          const next = rest.slice();
+          const picked = next.splice(i, 1)[0];
+          walk(prefix.concat(picked), next);
+        });
+      }
+      walk([], items);
+      return out;
+    }
+
+    function bestTagOrder(widths, maxW, gap) {
+      if (widths.length <= 1) return [0];
+      const rest = widths.slice(1).map((_, i) => i + 1);
+      let best = rest;
+      let bestScore = { rows: Infinity, lastRowW: -1 };
+
+      const candidates = rest.length <= 6
+        ? permutations(rest)
+        : [rest.slice().sort((a, b) => widths[b] - widths[a])];
+
+      candidates.forEach(order => {
+        const orderWidths = [widths[0], ...order.map(i => widths[i])];
+        const score = layoutScore(orderWidths, maxW, gap);
+        if (
+          score.rows < bestScore.rows ||
+          (score.rows === bestScore.rows && score.lastRowW > bestScore.lastRowW)
+        ) {
+          best = order;
+          bestScore = score;
+        }
+      });
+
+      return [0, ...best];
+    }
+
+    function optimizeTagContainer(container) {
+      const spans = restoreOriginalTags(container);
+      if (spans.length < 2) return;
+
+      const card = container.closest('.proj-card, .cert-card');
+      if (card && card.style.display === 'none') return;
+
+      const maxW = container.clientWidth;
+      if (maxW < 24) return;
+
+      const widths = spans.map(s => s.getBoundingClientRect().width);
+      const order = bestTagOrder(widths, maxW, TAG_GAP_X);
+
+      container.textContent = '';
+      order.forEach(i => container.appendChild(spans[i]));
+    }
+
+    function layoutVisibleCardTags() {
+      document.querySelectorAll('.proj-tags, .cert-tags').forEach(optimizeTagContainer);
+    }
+
+    function scheduleCardTagLayout() {
+      requestAnimationFrame(() => requestAnimationFrame(layoutVisibleCardTags));
+    }
+
+    window.scheduleCardTagLayout = scheduleCardTagLayout;
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(scheduleCardTagLayout, 120);
+    });
+
+    scheduleCardTagLayout();
+  })();
+
+  // RING CAROUSEL — accessible projects + certifications carousels
+  function initRingCarousel(cfg) {
+    const cards = Array.from(document.querySelectorAll(cfg.cardSelector));
     const n = cards.length;
     let ci = 0;
     let lastNav = 0;
+    const wrap = document.getElementById(cfg.wrapId);
+    const track = document.getElementById(cfg.trackId);
+    const leftBtn = document.getElementById(cfg.leftId);
+    const rightBtn = document.getElementById(cfg.rightId);
+    const statusEl = document.getElementById(cfg.statusId);
 
     function mod(i) {
       if (n <= 0) return 0;
       return ((i % n) + n) % n;
+    }
+
+    function cardTitle(card) {
+      const el = card.querySelector(cfg.titleSelector);
+      return el ? el.textContent.trim() : '';
+    }
+
+    function syncCarouselA11y() {
+      if (n === 0) return;
+      const title = cardTitle(cards[ci]);
+      if (statusEl) {
+        statusEl.textContent = cfg.itemSingular + ' ' + (ci + 1) + ' of ' + n + ': ' + title;
+      }
+      cards.forEach((c, idx) => {
+        if (idx === ci) {
+          c.removeAttribute('aria-hidden');
+          c.setAttribute('role', 'group');
+          c.setAttribute('aria-roledescription', 'slide');
+          c.setAttribute('aria-label', (ci + 1) + ' of ' + n + ': ' + cardTitle(c));
+        } else {
+          c.setAttribute('aria-hidden', 'true');
+          c.removeAttribute('role');
+          c.removeAttribute('aria-roledescription');
+          c.removeAttribute('aria-label');
+        }
+      });
     }
 
     function update() {
@@ -3654,6 +4711,13 @@
       cards[r].style.display = 'flex';
       cards[r].style.order = '2';
       cards[r].style.zIndex = '2';
+      if (cfg.hideArrowsWhenSingle) {
+        const showArrows = n > 1;
+        if (leftBtn) leftBtn.style.visibility = showArrows ? 'visible' : 'hidden';
+        if (rightBtn) rightBtn.style.visibility = showArrows ? 'visible' : 'hidden';
+      }
+      syncCarouselA11y();
+      if (typeof scheduleCardTagLayout === 'function') scheduleCardTagLayout();
     }
 
     function go(delta) {
@@ -3664,18 +4728,17 @@
       update();
     }
 
-    document.getElementById('projLeft')?.addEventListener('click', () => go(-1));
-    document.getElementById('projRight')?.addEventListener('click', () => go(1));
-
-    function projectsInView() {
-      const el = document.getElementById('projects');
-      if (!el) return false;
-      const r = el.getBoundingClientRect();
-      return r.bottom > 40 && r.top < window.innerHeight - 40;
+    function carouselHasFocus() {
+      if (!wrap) return false;
+      const active = document.activeElement;
+      return active === wrap || wrap.contains(active);
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (!projectsInView()) return;
+    leftBtn?.addEventListener('click', () => go(-1));
+    rightBtn?.addEventListener('click', () => go(1));
+
+    wrap?.addEventListener('keydown', (e) => {
+      if (!carouselHasFocus()) return;
       if (e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
       if (e.key === 'ArrowLeft' || e.key === ',') {
         e.preventDefault();
@@ -3686,12 +4749,10 @@
       }
     });
 
-    const track = document.getElementById('projTrack');
     let sx = 0;
     let tracking = false;
     track?.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      // Pointer capture steals events from links/buttons - skip swipe when starting on controls.
       if (e.target.closest('a[href], button, input, textarea, select, [role="button"]')) return;
       sx = e.clientX;
       tracking = true;
@@ -3709,7 +4770,31 @@
     track?.addEventListener('pointercancel', () => { tracking = false; });
 
     update();
-  })();
+  }
+
+  initRingCarousel({
+    cardSelector: '#projects .proj-card',
+    wrapId: 'projCarousel',
+    trackId: 'projTrack',
+    leftId: 'projLeft',
+    rightId: 'projRight',
+    statusId: 'projCarouselStatus',
+    titleSelector: '.proj-title',
+    itemSingular: 'Project',
+    hideArrowsWhenSingle: false,
+  });
+
+  initRingCarousel({
+    cardSelector: '#certifications .cert-card',
+    wrapId: 'certCarousel',
+    trackId: 'certTrack',
+    leftId: 'certLeft',
+    rightId: 'certRight',
+    statusId: 'certCarouselStatus',
+    titleSelector: '.cert-name',
+    itemSingular: 'Certification',
+    hideArrowsWhenSingle: true,
+  });
 
 
   // Fluid bg - same GLSL as yet-another-fork cheapnoise / React FluidBackground.jsx
@@ -3769,11 +4854,14 @@
         color = mix(color, color4, clamp(length(v2.x), 0.0, 1.0));
         float denom = n * n + n * 7.;
         if (isLight > 0.5) {
-          denom = denom * 0.68 + 0.64;
+          denom = denom * 0.48 + 0.72;
         }
         color /= denom;
         if (isLight > 0.5) {
-          color = min(color * vec3(1.15, 1.09, 1.11) + vec3(0.036, 0.022, 0.028), vec3(1.0));
+          color = mix(color, vec3(1.0), 0.28);
+          /* Very light blush — background only, keeps fluid movement */
+          vec3 blush = vec3(1.0, 0.972, 0.984);
+          color = mix(color, blush, 0.18);
         }
         gl_FragColor = vec4(color, 1.);
       }
@@ -3826,11 +4914,11 @@
         gl.uniform3fv(uC3, hex('#595454'));
         gl.uniform3fv(uC4, hex('#000000'));
       } else {
-        /* Light theme - uniform near-white fluid */
-        gl.uniform3fv(uC1, hex('#ffffff'));
-        gl.uniform3fv(uC2, hex('#ffffff'));
-        gl.uniform3fv(uC3, hex('#ffffff'));
-        gl.uniform3fv(uC4, hex('#ffffff'));
+        /* Light theme — near-white fluid with whisper of pink */
+        gl.uniform3fv(uC1, hex('#fffefe'));
+        gl.uniform3fv(uC2, hex('#fff6f9'));
+        gl.uniform3fv(uC3, hex('#fff2f6'));
+        gl.uniform3fv(uC4, hex('#fffafc'));
       }
     }
 
@@ -3842,12 +4930,15 @@
     function resize(){
       canvas.width=window.innerWidth; canvas.height=window.innerHeight;
       gl.viewport(0,0,canvas.width,canvas.height);
+      if (prefersReducedMotion()) paintFrame();
     }
     window.addEventListener('resize',resize); resize();
 
     let start=performance.now();
-    function render(){
-      const t=(performance.now()-start)/1000;
+    let rafId = null;
+
+    function paintFrame() {
+      const t = prefersReducedMotion() ? 0 : (performance.now() - start) / 1000;
       const dark=document.documentElement.getAttribute('data-theme')!=='light';
       setColors(dark);
       gl.bindBuffer(gl.ARRAY_BUFFER,posBuf);
@@ -3858,74 +4949,39 @@
       gl.uniform2f(uRes,canvas.width,canvas.height);
       gl.uniform1f(uIsLight, dark ? 0.0 : 1.0);
       gl.drawArrays(gl.TRIANGLES,0,6);
-      requestAnimationFrame(render);
-    }
-    render();
-  })();
-
-  // CERT CAROUSEL - seamless wrap
-  (function() {
-    const cards = Array.from(document.querySelectorAll('#certifications .cert-card'));
-    const n = cards.length;
-    let ci = 0;
-    let lastNav = 0;
-
-    function mod(i) {
-      if (n <= 0) return 0;
-      return ((i % n) + n) % n;
     }
 
-    const certLeft = document.getElementById('certLeft');
-    const certRight = document.getElementById('certRight');
-
-    function update() {
-      if (n === 0) return;
-      ci = mod(ci);
-      cards.forEach((c, i) => {
-        const active = i === ci;
-        c.classList.toggle('center', active);
-        if (active) c.style.removeProperty('display');
-        else c.style.display = 'none';
-      });
-      const showArrows = n > 1;
-      if (certLeft) certLeft.style.visibility = showArrows ? 'visible' : 'hidden';
-      if (certRight) certRight.style.visibility = showArrows ? 'visible' : 'hidden';
+    function render() {
+      paintFrame();
+      if (!prefersReducedMotion()) {
+        rafId = requestAnimationFrame(render);
+      }
     }
 
-    function go(delta) {
-      const t = Date.now();
-      if (t - lastNav < 45) return;
-      lastNav = t;
-      ci = mod(ci + delta);
-      update();
+    function restartMotionLoop() {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      if (prefersReducedMotion()) {
+        paintFrame();
+      } else {
+        start = performance.now();
+        render();
+      }
     }
 
-    document.getElementById('certLeft')?.addEventListener('click', () => go(-1));
-    document.getElementById('certRight')?.addEventListener('click', () => go(1));
+    motionMediaQuery.addEventListener('change', restartMotionLoop);
 
-    const track = document.getElementById('certTrack');
-    let sx = 0;
-    let tracking = false;
-    track?.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      // Pointer capture steals events from links/buttons - skip swipe when starting on controls.
-      if (e.target.closest('a[href], button, input, textarea, select, [role="button"]')) return;
-      sx = e.clientX;
-      tracking = true;
-      try { track.setPointerCapture(e.pointerId); } catch (_) {}
+    const themeObserver = new MutationObserver(() => {
+      if (prefersReducedMotion()) paintFrame();
     });
-    track?.addEventListener('pointerup', (e) => {
-      if (!tracking) return;
-      tracking = false;
-      try { track.releasePointerCapture(e.pointerId); } catch (_) {}
-      const d = e.clientX - sx;
-      if (Math.abs(d) < 48) return;
-      if (d < 0) go(1);
-      else go(-1);
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
     });
-    track?.addEventListener('pointercancel', () => { tracking = false; });
 
-    update();
+    restartMotionLoop();
   })();
 
 
