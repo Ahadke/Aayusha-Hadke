@@ -395,7 +395,7 @@
     filter: drop-shadow(0 0 5px rgba(102, 5, 42, 0.38));
   }
 
-  /* PRIMARY NAV — vertical rail (desktop); adapts to bottom dock ≤900px */
+  /* PRIMARY NAV — vertical rail (desktop); drawer ≤1024px */
   #sidebar {
     position: fixed; left: 0; top: var(--header-h); bottom: 0;
     width: var(--sidebar-w);
@@ -503,9 +503,60 @@
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 1001;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 10;
   }
+  .sidebar-label {
+    display: none;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* Hamburger + drawer (phone / tablet) */
+  .nav-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--accent-2);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .nav-menu-btn svg { width: 22px; height: 22px; stroke: currentColor; }
+  .nav-menu-btn:hover,
+  .nav-menu-btn:focus-visible {
+    background: rgba(249, 168, 212, 0.15);
+    color: #f9a8d4;
+    box-shadow: 0 0 0 4px var(--focus-ring-glow), 0 0 24px rgba(249, 168, 212, 0.35);
+  }
+  [data-theme="light"] .nav-menu-btn {
+    background: rgba(102, 5, 42, 0.08);
+    color: var(--accent-2);
+  }
+  .nav-drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .nav-drawer-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  body.nav-drawer-open { overflow: hidden; }
   .sidebar-item:hover .sidebar-tooltip,
   .sidebar-item:focus-visible .sidebar-tooltip {
     opacity: 1;
@@ -1074,7 +1125,7 @@
   .proj-github svg,
   .cert-link svg { width: 18px; height: 18px; }
 
-  /* ABOUT — CSS column masonry (per-image aspect ratios, object-fit: fill) */
+  /* ABOUT — CSS column masonry (Pinterest-style, natural aspect ratios) */
   #about { align-items: center; }
   .about-wrap {
     display: flex;
@@ -1087,25 +1138,24 @@
   }
 
   #about .about-masonry-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--gallery-gap);
+    columns: 4;
+    column-gap: var(--gallery-gap);
     width: 100%;
-    align-items: start;
   }
 
   #about .masonry-item {
-    margin-bottom: 0;
-    break-inside: auto;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: var(--gallery-gap);
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
     background: rgba(255, 255, 255, 0.07);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer;
-  }
-  #about .masonry-item--quote {
-    grid-column: 1 / -1;
+    display: inline-block;
+    width: 100%;
   }
   [data-theme="light"] #about .masonry-item {
     background: rgba(255, 255, 255, 0.62);
@@ -1124,6 +1174,7 @@
     box-sizing: border-box;
     background: transparent;
     box-shadow: none;
+    column-span: all;
   }
   #about .masonry-item--quote:hover {
     transform: none;
@@ -1158,34 +1209,24 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+    line-height: 0;
   }
 
-  /* Intrinsic height via aspect-ratio so absolute img gets a non-zero box height */
-  #about .ratio-1 { aspect-ratio: 3024 / 4032; }
-  #about .ratio-2 { aspect-ratio: 3027 / 4187; }
-  #about .ratio-3 { aspect-ratio: 3024 / 4032; }
-  #about .ratio-4 { aspect-ratio: 3029 / 4452; }
-  #about .ratio-5 { aspect-ratio: 2650 / 3534; }
-  #about .ratio-6 { aspect-ratio: 3024 / 4032; }
-  #about .ratio-7 { aspect-ratio: 3024 / 4032; }
-  #about .ratio-8 { aspect-ratio: 3025 / 2452; }
-  #about .ratio-9 { aspect-ratio: 3024 / 4032; }
-  #about .ratio-10 { aspect-ratio: 1024 / 768; }
-
   #about .img-wrapper img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 
   @media (max-width: 1024px) {
-    #about .about-masonry-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    #about .about-masonry-grid { columns: 3; }
   }
   @media (max-width: 768px) {
-    #about .about-masonry-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #about .about-masonry-grid { columns: 2; }
+  }
+  @media (max-width: 480px) {
+    #about .about-masonry-grid { columns: 1; }
   }
 
   /* CONTACT */
@@ -1193,7 +1234,7 @@
     align-items: center;
     flex-direction: column;
     padding: var(--section-pad-y) var(--section-pad-x);
-    padding-bottom: calc(var(--section-pad-y) + clamp(12px, 2vw, 24px));
+    padding-bottom: var(--section-pad-y);
     position: relative;
     gap: var(--section-gap);
   }
@@ -2395,7 +2436,12 @@
     text-align: right;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
+    header { padding: 0 var(--header-pad-x) 0 max(2px, 4px); }
+    .icon-link { display: none; }
+    .icon-link--linkedin { display: flex !important; }
+    .contact-title { font-size: 36px; }
+    .contact-right { padding-top: 0; }
     .research-card .research-card-thumb {
       float: none;
       width: 100%;
@@ -2408,11 +2454,6 @@
       width: 100%;
     }
     .research-card .research-name { overflow: visible; }
-    .contact-title { font-size: 36px; }
-    .contact-right { padding-top: 0; }
-    header { padding: 0 var(--header-pad-x) 0 max(2px, 4px); }
-    .icon-link { display: none; }
-    .icon-link--linkedin { display: flex !important; }
   }
 
   @media (max-width: 480px) {
@@ -2452,17 +2493,53 @@
     }
     .proj-ring-track,
     .cert-track {
-      align-items: stretch;
+      align-items: center;
       min-height: 0;
+      overflow: visible;
+      padding: 12px 0;
     }
     .proj-carousel-wrap,
     .cert-carousel-wrap {
+      display: grid;
+      grid-template-columns: var(--carousel-arrow) minmax(0, 1fr) var(--carousel-arrow);
+      align-items: center;
+      gap: clamp(10px, 2.5vw, 16px);
       min-height: 0;
-      align-items: stretch;
+      width: 100%;
+    }
+    .proj-arrow,
+    .cert-arrow {
+      align-self: center;
+      position: relative;
+      z-index: 5;
+      grid-row: 1;
+    }
+    .proj-carousel-wrap > .proj-arrow:first-of-type,
+    .cert-carousel-wrap > .cert-arrow:first-of-type {
+      grid-column: 1;
+    }
+    .proj-ring-track,
+    .cert-track {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .proj-carousel-wrap > .proj-arrow:last-of-type,
+    .cert-carousel-wrap > .cert-arrow:last-of-type {
+      grid-column: 3;
+    }
+    .proj-title,
+    .cert-name {
+      text-align: left;
+      text-justify: auto;
+      overflow-wrap: break-word;
+      word-break: normal;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      line-height: 1.25;
     }
   }
 
-  /* Laptop / desktop — carousel cards + contact row */
+  /* Laptop / desktop — carousel cards + contact row + hero side-by-side */
   @media (min-width: 901px) {
     :root {
       --carousel-inner-w: calc(var(--main-content-w) - 2 * var(--section-pad-x) - 2 * var(--carousel-arrow) - 32px);
@@ -2472,6 +2549,31 @@
     .contact-wrap {
       flex-direction: row;
       flex-wrap: nowrap;
+    }
+    .home-wrap {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: center;
+      gap: clamp(24px, 4vw, 56px);
+    }
+    .home-left {
+      flex: 1 1 0;
+      min-width: 0;
+      max-width: min(52%, 580px);
+    }
+    .home-bottom {
+      flex: 1 1 0;
+      min-width: 0;
+      max-width: min(var(--home-card-max), 46%);
+      margin-top: clamp(56px, 9vw, 120px);
+      align-items: flex-start;
+      align-self: flex-start;
+    }
+    .home-right {
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
     }
   }
 
@@ -2624,6 +2726,65 @@
   .proj-arrow:hover::before,
   .cert-arrow:hover::before {
     background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9); animation: border-flow 4s linear infinite;
+  }
+
+  /* Global focus/active glow — matches card hover treatment */
+  .skill-bubble:focus-visible,
+  .proj-card:focus-within,
+  .cert-card:focus-within,
+  .research-card:focus-visible,
+  .research-card:focus-within,
+  .home-card:focus-visible,
+  .home-card:focus-within,
+  .timeline-block:focus-visible,
+  .timeline-block:focus-within,
+  #about .masonry-item:focus-visible,
+  .social-icon-box:focus-visible,
+  .social-item:focus-visible .social-icon-box,
+  .proj-arrow:focus-visible,
+  .cert-arrow:focus-visible,
+  .proj-filter:focus-visible,
+  .btn-send:focus-visible,
+  .btn-resume:focus-visible,
+  .theme-toggle:focus-visible,
+  .sidebar-item:focus-visible,
+  .header-left:focus-visible,
+  .icon-link:focus-visible,
+  .proj-github:focus-visible,
+  .cert-link:focus-visible {
+    box-shadow: 0 0 30px rgba(249,168,212,0.4), 0 0 50px rgba(249,168,212,0.15);
+  }
+  .skill-bubble:focus-visible::before,
+  .proj-card:focus-within::before,
+  .cert-card:focus-within::before,
+  .research-card:focus-visible::before,
+  .research-card:focus-within::before,
+  .home-card:focus-visible::before,
+  .home-card:focus-within::before,
+  .timeline-block:focus-visible::before,
+  .timeline-block:focus-within::before,
+  .social-icon-box:focus-visible::before,
+  .social-item:focus-visible .social-icon-box::before,
+  .proj-arrow:focus-visible::before,
+  .cert-arrow:focus-visible::before {
+    background: linear-gradient(135deg, #f9a8d4, #e879f9, #f9a8d4, #e879f9);
+    animation: border-flow 4s linear infinite;
+  }
+  .skill-bubble:active,
+  .proj-card.center:active,
+  .cert-card.center:active,
+  .research-card:active,
+  .home-card:active,
+  .timeline-block:active,
+  #about .masonry-item:active,
+  .proj-filter:active,
+  .btn-send:active:not(:disabled),
+  .sidebar-item:active {
+    box-shadow: 0 0 24px rgba(249,168,212,0.35), 0 0 40px rgba(249,168,212,0.12);
+  }
+  .contact-form:focus-within {
+    box-shadow: 0 0 30px rgba(249,168,212,0.25), 0 0 50px rgba(249,168,212,0.1);
+    border-radius: 16px;
   }
 
   /* Light theme: glass cards, black frame, white glow on hover */
@@ -2981,79 +3142,97 @@
     }
   }
 
-/*    RESPONSIVE — TABLET (≤900px) & MOBILE (≤600px) */
+/*    RESPONSIVE — TABLET (≤1024px) & MOBILE (≤600px) */
 
-/* ── COMPACT NAV (tablet / phone / small laptop portrait) ── */
-@media (max-width: 900px) {
+/* ── DRAWER NAV (tablet / phone) ── */
+@media (max-width: 1024px) {
   :root {
     --sidebar-w: 0px;
-    --nav-edge-size: calc(52px + env(safe-area-inset-bottom, 0px));
+    --nav-edge-size: 0px;
   }
 
-  html {
-    scroll-padding-bottom: calc(var(--nav-edge-size) + 12px);
+  .nav-menu-btn {
+    display: flex;
+  }
+  .nav-drawer-backdrop {
+    display: block;
   }
 
   #sidebar {
-    left: 0;
+    left: auto;
     right: 0;
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    height: var(--nav-edge-size);
-    flex-direction: row;
+    top: var(--header-h);
+    bottom: auto;
+    width: min(320px, 88vw);
+    height: calc(100dvh - var(--header-h));
+    max-height: calc(100dvh - var(--header-h));
+    flex-direction: column;
     align-items: stretch;
-    justify-content: stretch;
-    padding:
-      4px max(6px, env(safe-area-inset-right))
-      max(4px, env(safe-area-inset-bottom))
-      max(6px, env(safe-area-inset-left));
+    justify-content: flex-start;
+    padding: clamp(12px, 3vw, 20px);
     border-right: none;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px 16px 0 0;
-    overflow: hidden;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px 0 0 16px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease, background 0.4s;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1100;
   }
   [data-theme="light"] #sidebar {
-    border-top-color: rgba(0, 0, 0, 0.08);
+    border-left-color: rgba(0, 0, 0, 0.08);
+  }
+  #sidebar.is-open {
+    transform: translateX(0);
   }
 
   .sidebar-list {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0;
-    overflow: hidden;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow: visible;
     width: 100%;
     padding: 0;
-    flex: 1;
+    flex: none;
   }
 
   .sidebar-list-item {
-    flex: 1 1 0;
+    flex: none;
     min-width: 0;
-    width: auto;
-    display: flex;
-    justify-content: center;
-    scroll-snap-align: none;
+    width: 100%;
+    display: block;
+    justify-content: stretch;
   }
 
   .sidebar-item {
-    flex-shrink: 1;
-    width: min(100%, 44px);
-    height: min(calc(var(--nav-edge-size) - 10px), 44px);
+    flex-shrink: 0;
+    width: 100%;
+    height: auto;
     min-width: 0;
-    min-height: 36px;
-    margin: 0 auto;
-  }
-  .sidebar-item svg {
-    width: clamp(16px, 4vw, 20px);
-    height: clamp(16px, 4vw, 20px);
-  }
-
-  .sidebar-item.active {
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    justify-content: flex-start;
+    gap: 14px;
     transform: none;
   }
-
+  .sidebar-item svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+  .sidebar-label {
+    display: inline;
+  }
+  .sidebar-item.active {
+    transform: none;
+    background: rgba(249, 168, 212, 0.1);
+  }
+  [data-theme="light"] .sidebar-item.active {
+    background: rgba(102, 5, 42, 0.08);
+  }
   .sidebar-tooltip {
     display: none !important;
   }
@@ -3061,11 +3240,11 @@
   main, footer {
     margin-left: 0;
     padding-right: 0;
-    padding-bottom: calc(var(--nav-edge-size) + 12px);
+    padding-bottom: 0;
   }
 
   #contact {
-    padding-bottom: calc(var(--section-pad-y) + var(--nav-edge-size) + 8px);
+    padding-bottom: var(--section-pad-y);
   }
 
   /* Journey stacks on tablet */
@@ -3106,16 +3285,76 @@
     min-height: 0;
   }
 
-  /* Contact: stack columns */
-  .contact-wrap { flex-direction: column; gap: clamp(28px, 5vw, 40px); }
-  .contact-right { padding-top: 0; }
+  /* Contact: balanced tablet layout */
+  .contact-wrap {
+    flex-direction: column;
+    gap: clamp(28px, 5vw, 40px);
+    align-items: center;
+  }
+  .contact-left {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+  .contact-left .section-tag,
+  .contact-title,
+  .contact-sub {
+    text-align: center;
+    margin-inline: auto;
+  }
+  .contact-sub {
+    max-width: min(520px, 100%);
+  }
+  .contact-form {
+    width: 100%;
+    max-width: min(520px, 100%);
+    margin-inline: auto;
+  }
+  .contact-right {
+    padding-top: 0;
+    width: 100%;
+    max-width: min(400px, 100%);
+    align-self: center;
+  }
   .social-list { padding-top: 0; }
 
   /* Carousel card widths — tablet */
   :root {
-    --proj-card-w: min(calc(300px + 2cm), calc(100vw - 2 * var(--section-pad-x) - 2 * var(--carousel-arrow) - 16px));
+    --proj-card-w: min(calc(300px + 2cm), calc(100vw - 2 * var(--section-pad-x) - 2 * var(--carousel-arrow) - 32px));
     --proj-card-w-side: var(--proj-card-w);
     --proj-img-h: 172px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr minmax(220px, 340px);
+    grid-template-areas:
+      "head head"
+      "form social";
+    align-items: start;
+    gap: clamp(24px, 4vw, 36px);
+  }
+  .contact-left {
+    display: contents;
+  }
+  .contact-left .section-tag,
+  .contact-left .contact-title,
+  .contact-left .contact-sub {
+    grid-area: head;
+    justify-self: center;
+    text-align: center;
+  }
+  .contact-form {
+    grid-area: form;
+    max-width: none;
+    margin-inline: 0;
+  }
+  .contact-right {
+    grid-area: social;
+    align-self: start;
+    max-width: none;
   }
 }
 
@@ -3300,8 +3539,13 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
       </span>
     </button>
+    <button type="button" class="nav-menu-btn hoverable" id="navMenuBtn" aria-expanded="false" aria-controls="sidebar" aria-label="Open navigation menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </header>
+
+<div class="nav-drawer-backdrop" id="navDrawerBackdrop" aria-hidden="true"></div>
 
 <!-- PRIMARY NAV -->
 <nav id="sidebar" aria-label="Primary Navigation">
@@ -3309,48 +3553,56 @@
     <li class="sidebar-list-item">
       <a href="#home" class="sidebar-item hoverable active" data-section="home" aria-label="Home" aria-current="page">
         <i data-lucide="house" aria-hidden="true"></i>
+        <span class="sidebar-label">Home</span>
         <span class="sidebar-tooltip" aria-hidden="true">Home</span>
       </a>
     </li>
     <li class="sidebar-list-item">
       <a href="#experience" class="sidebar-item hoverable" data-section="experience" aria-label="Experience">
         <i data-lucide="briefcase" aria-hidden="true"></i>
+        <span class="sidebar-label">Experience</span>
         <span class="sidebar-tooltip" aria-hidden="true">Experience</span>
       </a>
     </li>
     <li class="sidebar-list-item">
       <a href="#techstack" class="sidebar-item hoverable" data-section="techstack" aria-label="Tech Stack">
         <i data-lucide="layers" aria-hidden="true"></i>
+        <span class="sidebar-label">Tech Stack</span>
         <span class="sidebar-tooltip" aria-hidden="true">Tech Stack</span>
       </a>
     </li>
     <li class="sidebar-list-item">
       <a href="#projects" class="sidebar-item hoverable" data-section="projects" aria-label="Projects">
         <i data-lucide="folder-kanban" aria-hidden="true"></i>
+        <span class="sidebar-label">Projects</span>
         <span class="sidebar-tooltip" aria-hidden="true">Projects</span>
       </a>
     </li>
     <li class="sidebar-list-item">
       <a href="#research" class="sidebar-item hoverable" data-section="research" aria-label="Research">
         <i data-lucide="scroll-text" aria-hidden="true"></i>
+        <span class="sidebar-label">Research</span>
         <span class="sidebar-tooltip" aria-hidden="true">Research</span>
       </a>
     </li>
     <li class="sidebar-list-item">
       <a href="#certifications" class="sidebar-item hoverable" data-section="certifications" aria-label="Certifications">
         <i data-lucide="badge-check" aria-hidden="true"></i>
+        <span class="sidebar-label">Certifications</span>
         <span class="sidebar-tooltip" aria-hidden="true">Certifications</span>
       </a>
     </li>
     <li class="sidebar-list-item">
-      <a href="#about" class="sidebar-item hoverable" data-section="about" aria-label="More About Me">
+      <a href="#about" class="sidebar-item hoverable" data-section="about" aria-label="Gallery">
         <i data-lucide="camera" aria-hidden="true"></i>
-        <span class="sidebar-tooltip" aria-hidden="true">Blog</span>
+        <span class="sidebar-label">Gallery</span>
+        <span class="sidebar-tooltip" aria-hidden="true">Gallery</span>
       </a>
     </li>
     <li class="sidebar-list-item">
       <a href="#contact" class="sidebar-item hoverable" data-section="contact" aria-label="Contact">
         <i data-lucide="mail" aria-hidden="true"></i>
+        <span class="sidebar-label">Contact</span>
         <span class="sidebar-tooltip" aria-hidden="true">Contact</span>
       </a>
     </li>
@@ -4086,12 +4338,10 @@
   // SCROLLBAR - track sits below fixed header; thumb travel matches track minus thumb height
   const scrollbar = document.getElementById('custom-scrollbar');
   const thumb = document.getElementById('scroll-thumb');
-  const compactNavQuery = window.matchMedia('(max-width: 900px)');
+  const drawerNavQuery = window.matchMedia('(max-width: 1024px)');
 
   function getNavBottomInset() {
-    if (!compactNavQuery.matches) return 0;
-    const edge = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-edge-size'));
-    return Number.isFinite(edge) ? edge : 0;
+    return 0;
   }
 
   function updateScrollThumb() {
@@ -4108,12 +4358,58 @@
   }
   window.addEventListener('scroll', updateScrollThumb, { passive: true });
   window.addEventListener('resize', updateScrollThumb);
-  if (compactNavQuery.addEventListener) {
-    compactNavQuery.addEventListener('change', updateScrollThumb);
+  if (drawerNavQuery.addEventListener) {
+    drawerNavQuery.addEventListener('change', updateScrollThumb);
   } else {
-    compactNavQuery.addListener(updateScrollThumb);
+    drawerNavQuery.addListener(updateScrollThumb);
   }
   updateScrollThumb();
+
+  // Mobile / tablet navigation drawer
+  const navMenuBtn = document.getElementById('navMenuBtn');
+  const navDrawerBackdrop = document.getElementById('navDrawerBackdrop');
+  const sidebarNav = document.getElementById('sidebar');
+
+  function closeNavDrawer() {
+    sidebarNav?.classList.remove('is-open');
+    navDrawerBackdrop?.classList.remove('is-open');
+    navMenuBtn?.setAttribute('aria-expanded', 'false');
+    navMenuBtn?.setAttribute('aria-label', 'Open navigation menu');
+    document.body.classList.remove('nav-drawer-open');
+  }
+
+  function openNavDrawer() {
+    if (!drawerNavQuery.matches) return;
+    sidebarNav?.classList.add('is-open');
+    navDrawerBackdrop?.classList.add('is-open');
+    navMenuBtn?.setAttribute('aria-expanded', 'true');
+    navMenuBtn?.setAttribute('aria-label', 'Close navigation menu');
+    document.body.classList.add('nav-drawer-open');
+  }
+
+  function toggleNavDrawer() {
+    if (sidebarNav?.classList.contains('is-open')) closeNavDrawer();
+    else openNavDrawer();
+  }
+
+  navMenuBtn?.addEventListener('click', toggleNavDrawer);
+  navDrawerBackdrop?.addEventListener('click', closeNavDrawer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebarNav?.classList.contains('is-open')) {
+      closeNavDrawer();
+      navMenuBtn?.focus();
+    }
+  });
+  drawerNavQuery.addEventListener?.('change', (e) => {
+    if (!e.matches) closeNavDrawer();
+  });
+
+  // Keyboard focus for non-link interactive surfaces
+  document.querySelectorAll(
+    '.skill-bubble.hoverable, .timeline-block, .home-card.hoverable, #about .masonry-item.hoverable, .research-card.hoverable'
+  ).forEach(el => {
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+  });
 
   // SIDEBAR ACTIVE - scroll spy (one section at a time; works for short sections e.g. blog)
   const sections = document.querySelectorAll('section');
@@ -4132,13 +4428,6 @@
       item.classList.toggle('active', isActive);
       if (isActive) {
         item.setAttribute('aria-current', 'page');
-        if (compactNavQuery.matches) {
-          item.scrollIntoView({
-            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-            block: 'nearest',
-            inline: 'center',
-          });
-        }
       } else {
         item.removeAttribute('aria-current');
       }
@@ -4209,6 +4498,7 @@
     });
 
     setSidebarActiveState(sectionId);
+    closeNavDrawer();
 
     if (history.replaceState) {
       history.replaceState(null, '', '#' + sectionId);
@@ -4231,7 +4521,7 @@
         onSidebarActivate(e, item);
         return;
       }
-      const isHorizontal = compactNavQuery.matches;
+      const isHorizontal = false;
       const nextKeys = isHorizontal ? ['ArrowRight'] : ['ArrowDown'];
       const prevKeys = isHorizontal ? ['ArrowLeft'] : ['ArrowUp'];
       let targetIndex = -1;
