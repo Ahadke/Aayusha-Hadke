@@ -1616,6 +1616,31 @@
     pointer-events: auto;
     box-sizing: border-box;
   }
+  .home-name {
+    position: relative;
+    z-index: 1;
+    font-family: 'Bodoni Moda', 'Noto Serif Display', Georgia, serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: clamp(44px, 14vw, 188px);
+    line-height: 1.05;
+    color: #66052a;
+    -webkit-text-fill-color: #66052a !important;
+    letter-spacing: 0.012em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.1em 0;
+    text-align: center;
+    transform: scaleY(1.24);
+    transform-origin: center center;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    pointer-events: auto;
+    box-sizing: border-box;
+  }
   .home-portrait-wrap {
     align-self: center;
     width: min(var(--home-portrait-max), 100%);
@@ -1658,31 +1683,6 @@
   .home-greeting {
     font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 300;
     color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase;
-  }
-  .home-name {
-    position: relative;
-    z-index: 1;
-    font-family: 'Bodoni Moda', 'Noto Serif Display', Georgia, serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: clamp(44px, 15cqi, 188px);
-    line-height: 1.05;
-    color: #66052a;
-    -webkit-text-fill-color: #66052a !important;
-    letter-spacing: 0.012em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 0.1em 0;
-    text-align: center;
-    transform: scaleY(1.24);
-    transform-origin: center center;
-    font-feature-settings: "kern" 1, "liga" 1;
-    -webkit-font-smoothing: antialiased;
-    pointer-events: auto;
-    box-sizing: border-box;
   }
   [data-theme="dark"] .home-name,
   [data-theme="dark"] .home-name em,
@@ -2476,10 +2476,18 @@
       height: auto !important;
       min-height: 0 !important;
       max-height: none !important;
-      overflow: visible;
+      overflow: hidden;
+      border-radius: 20px;
       width: var(--proj-card-w) !important;
       max-width: 100%;
       box-sizing: border-box;
+    }
+    .proj-img {
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+    }
+    .proj-img-blur {
+      border-radius: inherit;
     }
     .proj-info {
       overflow: visible;
@@ -2539,7 +2547,7 @@
     }
   }
 
-  /* Laptop / desktop — carousel cards + contact row + hero side-by-side */
+  /* Laptop / desktop — full-width headline + portrait | card row */
   @media (min-width: 901px) {
     :root {
       --carousel-inner-w: calc(var(--main-content-w) - 2 * var(--section-pad-x) - 2 * var(--carousel-arrow) - 32px);
@@ -2551,28 +2559,43 @@
       flex-wrap: nowrap;
     }
     .home-wrap {
-      flex-direction: row;
-      flex-wrap: nowrap;
-      align-items: flex-start;
-      justify-content: center;
-      gap: clamp(24px, 4vw, 56px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      grid-template-areas:
+        "hero-headline hero-headline"
+        "hero-portrait hero-card";
+      column-gap: clamp(20px, 3.5vw, 48px);
+      row-gap: 0;
+      align-items: start;
+      width: 100%;
+      max-width: var(--container-max-wide);
     }
-    .home-left {
-      flex: 1 1 0;
-      min-width: 0;
-      max-width: min(52%, 580px);
-    }
+    .home-left,
+    .home-hero-headline,
     .home-bottom {
-      flex: 1 1 0;
-      min-width: 0;
-      max-width: min(var(--home-card-max), 46%);
-      margin-top: clamp(56px, 9vw, 120px);
-      align-items: flex-start;
-      align-self: flex-start;
+      display: contents;
+    }
+    .home-name-rail {
+      grid-area: hero-headline;
+      width: 100%;
+      max-width: 100%;
+      justify-self: stretch;
+    }
+    .home-portrait-wrap {
+      grid-area: hero-portrait;
+      justify-self: center;
+      align-self: start;
+      width: min(var(--home-portrait-max), 100%);
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
     }
     .home-right {
+      grid-area: hero-card;
+      align-self: start;
+      margin-top: clamp(48px, 8vw, 110px);
       width: 100%;
-      max-width: none;
+      max-width: var(--home-card-max);
       margin-inline: 0;
     }
   }
@@ -3164,12 +3187,13 @@
     top: var(--header-h);
     bottom: auto;
     width: min(320px, 88vw);
-    height: calc(100dvh - var(--header-h));
+    height: auto;
     max-height: calc(100dvh - var(--header-h));
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
     padding: clamp(12px, 3vw, 20px);
+    padding-bottom: clamp(16px, 3vw, 24px);
     border-right: none;
     border-left: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px 0 0 16px;
@@ -3259,6 +3283,10 @@
   .research-title, .about-title, .contact-title { font-size: clamp(30px, 5vw, 36px) !important; }
 
   /* Hero — portrait overlaps heading only; card sits below with clear gap */
+  .home-name-rail {
+    width: 100%;
+    max-width: 100%;
+  }
   .home-bottom {
     margin-top: var(--home-hero-gap);
     max-width: min(var(--home-card-max), 100%);
@@ -3285,30 +3313,41 @@
     min-height: 0;
   }
 
-  /* Contact: balanced tablet layout */
+  /* Contact: titles left like other sections; form/social centered blocks */
   .contact-wrap {
     flex-direction: column;
     gap: clamp(28px, 5vw, 40px);
-    align-items: center;
+    align-items: stretch;
   }
   .contact-left {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
     width: 100%;
   }
   .contact-left .section-tag,
   .contact-title,
   .contact-sub {
-    text-align: center;
-    margin-inline: auto;
+    text-align: left;
+    margin-inline: 0;
+    align-self: flex-start;
   }
   .contact-sub {
-    max-width: min(520px, 100%);
+    max-width: min(560px, 100%);
+    text-align: left;
   }
   .contact-form {
     width: 100%;
     max-width: min(520px, 100%);
     margin-inline: auto;
+    align-self: center;
+  }
+  .contact-form .form-group {
+    align-items: flex-start;
+    width: 100%;
+  }
+  .contact-form .form-label {
+    text-align: left;
+    width: 100%;
   }
   .contact-right {
     padding-top: 0;
@@ -3329,32 +3368,49 @@
 @media (min-width: 768px) and (max-width: 1024px) {
   .contact-wrap {
     display: grid;
-    grid-template-columns: 1fr minmax(220px, 340px);
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 340px);
     grid-template-areas:
-      "head head"
+      "tag tag"
+      "title title"
+      "sub sub"
       "form social";
     align-items: start;
-    gap: clamp(24px, 4vw, 36px);
+    column-gap: clamp(24px, 4vw, 36px);
+    row-gap: clamp(12px, 2.5vw, 20px);
   }
   .contact-left {
     display: contents;
   }
-  .contact-left .section-tag,
-  .contact-left .contact-title,
+  .contact-left .section-tag {
+    grid-area: tag;
+    justify-self: start;
+    text-align: left;
+  }
+  .contact-left .contact-title {
+    grid-area: title;
+    justify-self: start;
+    text-align: left;
+  }
   .contact-left .contact-sub {
-    grid-area: head;
-    justify-self: center;
-    text-align: center;
+    grid-area: sub;
+    justify-self: start;
+    text-align: left;
+    max-width: min(680px, 100%);
+    margin-bottom: clamp(8px, 2vw, 16px);
   }
   .contact-form {
     grid-area: form;
-    max-width: none;
+    justify-self: center;
+    width: 100%;
+    max-width: min(480px, 100%);
     margin-inline: 0;
   }
   .contact-right {
     grid-area: social;
     align-self: start;
     max-width: none;
+    width: 100%;
+    justify-self: stretch;
   }
 }
 
@@ -4570,13 +4626,16 @@
   function fitHomeName() {
     const rail = document.querySelector('.home-name-rail');
     const el = document.getElementById('homeTitle');
+    const wrap = document.querySelector('.home-wrap');
     if (!rail || !el) return;
     const cs = getComputedStyle(rail);
     const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-    const maxW = rail.clientWidth - padX;
+    const railW = Math.max(0, rail.clientWidth - padX);
+    const wrapW = wrap ? Math.max(0, wrap.clientWidth - padX) : railW;
+    const maxW = Math.max(railW, wrapW);
     if (maxW < 1) return;
     let lo = 28;
-    let hi = 260;
+    let hi = Math.min(420, Math.max(160, Math.floor(maxW * 0.24)));
     let best = lo;
     el.style.width = 'max-content';
     el.style.maxWidth = '100%';
@@ -4600,12 +4659,17 @@
     const homeTitle = document.getElementById('homeTitle');
     if (homeTitle) {
       homeTitle.innerHTML = 'HI, <em class="home-name-im">I&rsquo;m</em> AAYUSHA';
-      const runFit = () => fitHomeName();
+      const runFit = () => requestAnimationFrame(fitHomeName);
       runFit();
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(runFit);
       }
       window.addEventListener('resize', runFit);
+      window.addEventListener('orientationchange', () => setTimeout(runFit, 120));
+      const heroWrap = document.querySelector('.home-wrap');
+      if (heroWrap && typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(runFit).observe(heroWrap);
+      }
     }
     const map = [
       ['expTitle', "Where I've Been"],
